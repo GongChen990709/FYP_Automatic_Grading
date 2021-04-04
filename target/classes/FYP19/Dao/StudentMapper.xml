@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FYP19.Dao.StudentMapper">
+
+    <insert id="addStudent" parameterType="Student">
+        insert into FYP_AutoGrading.Student (studentNum, studentName, password, stage)
+        values (#{studentNum},#{studentName},#{password},#{stage})
+    </insert>
+
+    <delete id="deleteStudentByNum">
+        delete from FYP_AutoGrading.Student
+        where studentNum = #{studentNum}
+    </delete>
+
+    <update id="updateStudent" parameterType="Student">
+        update FYP_AutoGrading.Student
+        set studentName = #{studentName}, password = #{password}, stage = #{stage}
+        where studentNum = #{studentNum}
+    </update>
+
+    <select id="queryAllStudents" resultType="Student">
+        select * from FYP_AutoGrading.Student
+    </select>
+
+
+</mapper>

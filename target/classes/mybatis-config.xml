@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+<!--Simplify the process of locating the entities class in mapper.xml files-->
+<!--Default aliases for entities are the lower-case class name-->
+    <typeAliases>
+        <package name="FYP19.Entities"/>
+    </typeAliases>
+
+
+<!--Register all mapper.xml files; Note: all mapper files should be the same name with their corresponding Dao interfaces     -->
+    <mappers>
+        <package name="FYP19.Dao"/>
+    </mappers>
+
+</configuration>
