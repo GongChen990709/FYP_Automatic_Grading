@@ -8,9 +8,9 @@
 *.log
 
 # Output directories and some configs
-.idea/
-.out/
-.target/
+/.idea/
+/out/
+/target/
 *.iml
 
 

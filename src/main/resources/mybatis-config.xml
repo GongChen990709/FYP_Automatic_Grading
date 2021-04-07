@@ -3,7 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-    
 <!--Simplify the process of locating the entities class in mapper.xml files-->
 <!--Default aliases for entities are the lower-case class name-->
     <typeAliases>
