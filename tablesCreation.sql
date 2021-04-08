@@ -65,6 +65,7 @@ CREATE TABLE `Assignment` (
   `marking_scheme` VARCHAR(300),
   `pdf_path` VARCHAR(100),
   `module_code` VARCHAR(100) NOT NULL,
+  `due_date` DATETIME,
   FOREIGN KEY(`module_code`) REFERENCES `Module`(`code`) ON UPDATE CASCADE ON DELETE CASCADE,
   PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -90,6 +91,19 @@ CREATE TABLE `Assignment_creation` (
   FOREIGN KEY(`teacher_id`) REFERENCES `Teacher`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
   PRIMARY KEY(`assignment_id`,`ta_id`,`teacher_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `Assignment_submission` (
+  `student_id` INT NOT NULL,
+  `assignment_id` INT NOT NULL,
+  `file_path` VARCHAR(100),
+  `submission_date` DATETIME,
+  FOREIGN KEY(`student_id`) REFERENCES `Student`(`ucd_id`) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY(`assignment_id`) REFERENCES `Assignment`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+  PRIMARY KEY(`student_id`,`assignment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
 CREATE TABLE `Administrator` (
   `id` INT NOT NULL,
