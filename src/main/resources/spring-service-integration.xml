@@ -19,6 +19,14 @@
         <property name="studentMapper" ref="studentMapper"/>
     </bean>
 
+    <bean id="StudentsServiceImpl" class="FYP19.Service.StudentsServiceImpl">
+        <property name="studentsMapper" ref="studentsMapper"/>
+    </bean>
+
+    <bean id="TeacherServiceImpl" class="FYP19.Service.TeacherServiceImpl">
+        <property name="teacherMapper" ref="teacherMapper"/>
+    </bean>
+
 <!--Declarative transaction supports for database operations-->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
