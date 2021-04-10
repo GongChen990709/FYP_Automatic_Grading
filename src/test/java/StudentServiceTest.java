@@ -1,3 +1,4 @@
+import FYP19.Entities.Module;
 import FYP19.Entities.Student;
 import FYP19.Entities.Students;
 import FYP19.Service.StudentService;
@@ -6,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.List;
 
 public class StudentServiceTest {
 
@@ -22,6 +25,15 @@ public class StudentServiceTest {
     public void queryAllStudents(){
        Students stu = studentsServiceIImp.queryStudentById(172059141);
         System.out.println(stu);
+    }
+
+
+    @Test
+    public void getAllModules(){
+        List<Module> modules = studentsServiceIImp.getAllModules(17205914);
+        for(Module m : modules){
+            System.out.println(m);
+        }
     }
 
 

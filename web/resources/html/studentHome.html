@@ -5,27 +5,105 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="../../jquery-3.6.0.js"></script>
 
     <script>
-
-
-
-
         function jumpToUserSetting(){
             window.location.href="userSetting.html";
         }
         
         function jumpToLoginPage(){
-            window.location.href="login.html";
+            window.location.href="../../login.html";
         }
 
+        // function load(){
+            
+        //     var html="";
+        //     $.ajax({
+        //         url:"", 
+        //         type:"post",
+        //         dataType:"json",
+        //         success:function(json){
+        //             for(var i=0;i<json.length;i++){
+        //                 var ls = json[i];     
+        //                 html+= "<span>module："+ls.name+"</span>"+"<br/>";
+        //             }
+        //             $("#module_list").html(html);
+        //         }
+        //     });
+        // }
 
+        $(function (){
+            var basepath = "/" + window.location.pathname.split("/")[1];
+            var html="";
+            $.ajax({
+                url:basepath+"/student/allModules",
+                type:"post",
+                dataType:"json",
+                success:function(json){
+                    for(var i=0;i<json.length;i++){
+                        var ls = json[i];     
+                        html+= "<span>module："+ls.name+"</span>"+"<br/>";
+                    }
+                    $("#module_list").html(html);
+                }
+            });
+        });
     </script>
+
+    <style type="text/css">
+        #corner{
+                width: 212px;
+				height: 52px;
+				background: rgb(38, 245, 228);
+				position:absolute;/*绝对定位*/
+				right:2px;/*距离浏览器右边200px*/
+				top:2px;/*距离浏览器底部20px*/
+
+        }
+        
+        #corner #usbutton{
+            background-color: lightgrey;
+            width: 100px;
+            
+            padding: 9px;
+            margin: 7px;
+        }
+        
+        #corner #logout{
+            background-color: rgb(231, 80, 20);
+            width: 76px;
+            
+            padding: 9px;
+            margin: 7px;
+        }
+    </style>
 </head>
+
+
 <body>
     <h2>student home page</h2>
     <h3>welcome to automatic assignment grading system</h3>
-    <input type="button" value="user setting" onclick="javascript:jumpToUserSetting()"/>
-    <input type="button"  value="log out" onclick="javascript:jumpToLoginPage()"/>
+    
+    <div id="module">
+        <h3>My Modules</h3>
+        
+        <div id="module_list">
+
+
+        </div>
+    </div>
+
+    <div>
+        <h3>Upcoming Events</h3>
+
+    </div>
+
+    <div id="corner">
+
+        <input id="usbutton" type="button" value="user setting" onclick="javascript:jumpToUserSetting()"/>
+        <input id="logout" type="button"  value="log out" onclick="javascript:jumpToLoginPage()"/>
+    </div>
+    
 </body>
 </html>
