@@ -8,4 +8,5 @@ import java.util.List;
 public interface StudentsService {
     Students queryStudentById(int ucd_id);
     List<Module> getAllModules(int ucd_id);
+    Module getModuleByName(String module_name);
 }

@@ -69,4 +69,11 @@ public class UserController {
     }
 
 
+    @RequestMapping("doLogOut")
+    @ResponseBody
+    public void logOut(HttpServletRequest request){
+        request.getSession().removeAttribute(Constants.USER_SESSION);
+    }
+
+
 }
