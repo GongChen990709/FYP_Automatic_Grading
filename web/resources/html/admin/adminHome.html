@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../js/admin/adminHome.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/admin/adminHome.css">
+</head>
+<body>
+
+    <div class="header">
+
+        <div class="logo">
+            <img src="../../images/admin/UCD_Logo.png" alt="">
+        </div>
+
+        <div class="admin" onmouseleave="set1()">
+            <div id="name" onclick="set()">
+                <a href="#">admin</a>
+            </div>
+            <div id="setting">
+                <a href="../../html/common/userSetting.html">Reset Password</a>  <br/>
+                <a href="../../../login.html">Log Out</a>
+            </div>
+        </div>
+
+
+        <div class="adminLogo">
+            Administrator Home
+        </div>
+
+
+    </div>
+
+    <div id="splitArea">    
+
+    </div>
+
+
+    <div class="content">
+        
+        <div class="studentContent" onclick="jumpToAdminStudent()">
+            <img src="../../images/admin/student.png" class="studentImage">
+            <div class="info">
+                <h3 > <a href="#">STUDENT</a> </h3>    
+            </div>
+
+        </div>
+
+
+        <div class="teacherContent" onclick="jumpToAdminTeacher()">
+            <img src="../../images/admin/teacher.png" class="teacherImage">
+            <div class="info">
+                <h3 > <a href="#">TEACHER</a> </h3>    
+            </div>
+
+        </div>
+
+
+    </div>
+
+    
+
+
+    <!-- <h2>Student Information</h2>  
+    <input type="button" value="register an account for a new student" onclick="javascrtpt:jumpToStudentRegister()" />
+    
+    <h2>Teacher Information</h2>  
+    <input type="button" value="register an account for a new teacher" onclick="javascrtpt:jumpToTeacherRegister()" />
+    <br/>
+    <input type="button" value="log out" onclick="javascript:jumpToLoginPage()"> -->
+</body>
+</html>

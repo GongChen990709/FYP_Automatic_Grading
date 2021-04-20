@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="../../jquery-3.6.0.js"></script>
+    <script src="../../../jquery-3.6.0.js"></script>
 
     <script>
         function jumpToUserSetting(){
@@ -13,7 +13,7 @@
         }
         
         function jumpToLoginPage(){
-            window.location.href="../../login.html";
+            window.location.href="../../../login.html";
         }
 
         
@@ -26,6 +26,7 @@
                 type:"post",
                 dataType:"json",
                 success:function(json){
+                    alert(JSON.stringify(json))
                     for(var i=0;i<json.length;i++){
                         var ls = json[i];     
                         var moduleName = ls.name;

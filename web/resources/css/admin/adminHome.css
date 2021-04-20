@@ -1,0 +1,168 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+
+.header{
+    margin: 30px auto;
+    width: 1200px;
+}
+
+
+.header .logo{
+    position: relative;
+    float: left;
+    left: -32px;
+    top: -12px;
+}
+
+.header .admin {
+    position: relative;
+    float: right;
+    right: 57px;
+    margin-top: 1px;
+}
+
+
+
+.header .admin #name  a{
+    text-decoration: none;  /* //去除超链接的横线*/
+    color: rgb(123, 18, 194);
+    font-style: normal;
+    font-size: 37px;
+    font-family:fantasy;
+}
+
+.header .admin #setting{
+    display: none;
+    position: absolute;
+    
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.header .admin #setting a{
+    position: relative;
+    float: left;
+    font-size: 19px;
+    color: black;
+    padding: 7px 2px;
+    text-decoration: none;
+    display: block;
+}
+
+#setting a:hover {background-color: #b82d2d}
+
+
+.admin:hover #name a {
+    background-color: #aabdf0;
+}
+
+#splitArea{
+    position: relative;
+    top: 69px;
+    height: 47px;
+    background-color: rgb(35, 129, 236);
+    z-index: -1;
+}
+
+.header .adminLogo{
+    font-size: 30px;
+    font-style: normal;
+    position: relative;
+    float: left;
+    width: 542;
+    height: 41;
+
+}
+
+
+
+.content{
+    position: relative;
+    top: 70px;
+    height: 521px;
+    width: 1200px;
+    margin: 25px auto;
+}
+
+.content .studentContent{
+    
+    float: left;
+    margin-left: 30px;
+    margin-top: 30px;
+    border-radius: 16px;
+    height: 400px;
+    /* box-shadow: 0 0 5px 3px #cccccc; */
+    background-color: rgba(139, 196, 243, 0.925);
+}
+
+.content .studentContent:hover img{filter:alpha(Opacity=20);-moz-opacity:0.8;opacity: 0.8} 
+
+.content .studentContent .studentImage{
+    border-radius: 16px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    width: 400px;
+    height: 300px;
+}
+
+.content .studentContent .info h3 {
+
+    position: relative;
+    float: left;
+    margin-top: 4px;
+    margin-left: 122px;
+}
+
+
+.content .studentContent .info h3 a{
+    text-decoration: none;
+    font-size: 30px;
+    font-style: normal;
+    position: relative;
+    float: left;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.content .teacherContent{
+    
+    float: left;
+    margin-left: 170px;
+    margin-top: 30px;
+    border-radius: 16px;
+    height: 400px;
+    /* box-shadow: 0 0 5px 3px #cccccc; */
+    background-color: rgba(139, 196, 243, 0.925);
+}
+
+.content .teacherContent:hover img{filter:alpha(Opacity=20);-moz-opacity:0.8;opacity: 0.8} 
+
+.content .teacherContent .teacherImage{
+    border-radius: 16px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    width: 400px;
+    height: 300px;
+}
+
+.content .teacherContent .info h3 {
+
+    position: relative;
+    float: left;
+    margin-top: 4px;
+    margin-left: 122px;
+}
+
+
+.content .teacherContent .info h3 a{
+    text-decoration: none;
+    font-size: 30px;
+    font-style: normal;
+    position: relative;
+    float: left;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}

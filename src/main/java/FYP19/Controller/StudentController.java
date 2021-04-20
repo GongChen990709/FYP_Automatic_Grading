@@ -35,7 +35,6 @@ public class StudentController{
     @RequestMapping("/oneModule")
     @ResponseBody
     public Module queryOneModule(@RequestBody Map<String,String> map, HttpServletRequest request){
-        Students student  = (Students) request.getSession().getAttribute(Constants.USER_SESSION);
         String moduleName = map.get("moduleName");
         Module module = studentService.getModuleByName(moduleName);
         return module;
