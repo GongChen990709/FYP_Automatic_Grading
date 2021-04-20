@@ -1,0 +1,68 @@
+#loginform{
+    width: 33%;
+    height: 291px;
+    background:#17d4c540;
+    margin:auto;
+    margin-top: 8%;
+    text-align: center;
+    border-radius: 122px;
+    padding: 70px 63px;
+}
+
+#loginform #formbody #identity{
+    border:0;
+    width: 60%;
+    font-size: 15px;
+    color: rgb(168, 21, 131);
+    background: #ffffff00;
+    border-bottom: 2px solid#1c6dca50;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+#loginform #formbody #id{
+    border:0;
+    width: 60%;
+    font-size: 15px;
+    color: rgb(168, 21, 131);
+    background: #ffffff00;
+    border-bottom: 2px solid#1c6dca50;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+#loginform #formbody #pwd{
+    border:0;
+    width: 60%;
+    font-size: 15px;
+    color: rgb(168, 21, 131);
+    background: #ffffff00;
+    border-bottom: 2px solid#1c6dca50;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+
+#loginform #formbody #loginbutton{
+    margin-top: 50px;
+    width: 40%;
+    height: 30px;
+    border-radius: 10px;
+    border: 0;
+    color: #fff;
+    font-size: 15px;
+    background-image: linear-gradient(to top, #30324d 0%, #5f6298 100%);
+}
+
+#loginform #formbody #form1 #h2{
+    color: #140404fa;
+    margin-top: 5%;
+}
+
+#loginform #formbody #forget{
+    margin-top: 26px;
+    width: 100%;
+    height: 30px;
+    border-radius: 10px;
+    border: 0;
+    color: #fff;
+    font-size: 15px;
+    
+}

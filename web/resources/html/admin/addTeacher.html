@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../../jquery-3.6.0.js"></script>
+    <script src="../../js/admin/addStudent.js"></script>
+    <script src="../../js/common/Back.js"></script>
+    <script src="../../js/admin/adminHome.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/admin/adminStudent.css">
+
+</head>
+<body>
+
+    <div class="header">
+
+        <div class="logo" onclick="Back()">
+            <img src="../picture/UCD_Logo.png" title="back" alt="">
+        </div>
+
+        <div class="admin" onmouseleave="set1()">
+            <div id="name" onclick="set()">
+                <a href="#">admin</a>
+            </div>
+            <div id="setting">
+                <a href="userSetting.html">Reset Password</a>  <br/>
+                <a href="login.html">Log Out</a> 
+            </div>
+
+        </div>
+
+        
+        <div class="adminLogo">
+            Teacher
+        </div>
+
+
+    </div>
+
+    <div id="splitArea">    
+
+    </div>
+
+
+    <div class="register">
+        <div class="form">
+            
+            <input type="text" id="teacherId"  name="teacherId" placeholder="UCD ID" required="required">
+            <div id="idmsg"></div>
+            <div id="notInt"></div>
+            
+            <input type="text" id="teacherName" name="teacherName" placeholder="Teacher Name">
+            <div id="namemsg"></div>
+
+            <input type="text" id="teacherPwd" name="teacherPwd" placeholder="Set initial password">
+            <div id="pwdmsg"></div>
+
+            <input type="text" id="teacherEmail" name="teacherEmail" placeholder="Email">
+            <div id="emailmsg"></div>
+
+            <input type="text" id="depCode" name="depCode" placeholder="Department Code">
+            <div id="depmsg"></div>
+
+            <button id="register">Register</button>
+            <button id="back" onclick="Back()">Back</button>
+        </div>
+        
+    </div>
+
+
+    
+
+    
+</body>
+</html>

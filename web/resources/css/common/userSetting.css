@@ -1,0 +1,62 @@
+#form{
+    width: 33%;
+    height: 253px;
+    background:#17d4c540;
+    margin:auto;
+    margin-top: 15%;
+    text-align: center;
+    border-radius: 87px;
+    padding: 42px 71px;
+
+    position:absolute;/*绝对定位*/
+    right:400px;/*距离浏览器右边200px*/
+    top:-100px;/*距离浏览器底部20px*/
+}
+
+#newPwd{
+    width: 56%;
+    height: fit-content;
+    background:#17d4c540;
+    margin:auto;
+    margin-top: 5%;
+    text-align: center;
+    border-radius: 15px;
+    padding: 15px 35px;
+}
+
+#confirmPwd{
+    width: 56%;
+    height: fit-content;
+    background:#17d4c540;
+    margin:auto;
+    margin-top: 10%;
+    text-align: center;
+    border-radius: 15px;
+    padding: 15px 35px;
+}
+
+#confirm{
+    width: 56%;
+    height: fit-content;
+    background:#0d2cdad8;
+    margin:auto;
+    margin-top: 10%;
+    text-align: center;
+    border-radius: 11px;
+    padding: 13px 27px;
+}
+
+#back{
+    width: 12%;
+    height: fit-content;
+    background:#28f016ec;
+    margin:auto;
+    margin-top: 47%;
+    text-align: center;
+    border-radius: 11px;
+    padding: 10px 29px;
+
+    position:absolute;/*绝对定位*/
+    right:630px;/*距离浏览器右边200px*/
+    bottom:140px;/*距离浏览器底部20px*/
+}

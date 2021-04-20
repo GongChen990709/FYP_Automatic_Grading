@@ -5,113 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
     <script src="jquery-3.6.0.js"></script>
-    <script>
-            var basepath = "/" + window.location.pathname.split("/")[1];
-            function login(){
-                    var $identity = $("#identity").val();
-                    var $id = $("#id").val();
-                    var $pwd = $("#pwd").val();
-                    var obj = { "identity":$identity, "id":$id, "pwd":$pwd};
-                    var myJson = JSON.stringify(obj);
-                    console.log(myJson);
-                    $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        url: basepath+'/doLogin',
-                        contentType: "application/json",
-                        data: myJson,
-                        success: function (result) {
-                            console.log("data is :" + JSON.stringify(result));
-                            if (result.status == "Login Success") {
-                                window.location.href = "resources/html/studentHome.html";
-                            }
-                            else {
-                                alert(result.status+" Please check again");
-                            }
-                        }
-                    });
-            }
-    </script>
-
-    <style type="text/css">
-        #loginform{
-            width: 33%;
-            height: 291px;
-            background:#17d4c540;
-            margin:auto;
-            margin-top: 8%;
-            text-align: center;
-            border-radius: 122px;
-            padding: 70px 63px;
-        }
-        
-        #loginform #formbody #identity{
-            border:0;
-            width: 60%;
-            font-size: 15px;
-            color: rgb(168, 21, 131);
-            background: #ffffff00;
-            border-bottom: 2px solid#1c6dca50;
-            padding: 5px 10px;
-            margin-top: 10px;
-        }
-        #loginform #formbody #id{
-            border:0;
-            width: 60%;
-            font-size: 15px;
-            color: rgb(168, 21, 131);
-            background: #ffffff00;
-            border-bottom: 2px solid#1c6dca50;
-            padding: 5px 10px;
-            margin-top: 10px;
-        }
-        #loginform #formbody #pwd{
-            border:0;
-            width: 60%;
-            font-size: 15px;
-            color: rgb(168, 21, 131);
-            background: #ffffff00;
-            border-bottom: 2px solid#1c6dca50;
-            padding: 5px 10px;
-            margin-top: 10px;
-        }
-
-        #loginform #formbody #loginbutton{
-            margin-top: 50px;
-            width: 40%;
-            height: 30px;
-            border-radius: 10px;
-            border: 0;
-            color: #fff;
-            font-size: 15px;
-            background-image: linear-gradient(to top, #30324d 0%, #5f6298 100%);
-        }
-
-        #loginform #formbody #form1 #h2{
-            color: #140404fa;
-            margin-top: 5%;
-        }
-
-        #loginform #formbody #forget{
-            margin-top: 26px;
-            width: 100%;
-            height: 30px;
-            border-radius: 10px;
-            border: 0;
-            color: #fff;
-            font-size: 15px;
-            
-        }
-
-    </style>
+    <script src="login.js"></script>
+    <link rel="stylesheet" type="text/css" href="login.css">
+    
+    
 </head>
 <body>
-
     <div id="loginform">
 
         <div id="formbody">
+            
+
             <form action="" id="form1" method="POST">
                 <h2 id="h2">Choose identity</h2>
                 <select id="identity" name="identity">
@@ -120,9 +25,11 @@
                     <option value ="TA">TA</option>
                     <option value="admin">admin</option>
                 </select>  <br/>
+                <div id="idmsg"></div>
                 <input type="text" id="id" name="id" placeholder="enter your id"/><br/>
+                <div id="pwdmsg"></div>
                 <input type="password" id="pwd" name="pwd" placeholder="enter your password"/><br/>
-                <input type="button" id="loginbutton" value="Login" onclick="login()"/><br/>
+                <input type="button" id="loginbutton" value="Login" /><br/>
             </form>
             
             <div id="forget">
