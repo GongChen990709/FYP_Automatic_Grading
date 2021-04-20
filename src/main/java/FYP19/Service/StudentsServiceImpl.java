@@ -23,4 +23,8 @@ public class StudentsServiceImpl implements StudentsService{
     public List<Module> getAllModules(int ucd_id) {
         return studentsMapper.getAllModules(ucd_id);
     }
+
+    public Module getModuleByName(String module_name) {
+        return studentsMapper.getModuleByName(module_name);
+    }
 }

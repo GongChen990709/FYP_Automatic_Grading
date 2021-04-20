@@ -16,22 +16,7 @@
             window.location.href="../../login.html";
         }
 
-        // function load(){
-            
-        //     var html="";
-        //     $.ajax({
-        //         url:"", 
-        //         type:"post",
-        //         dataType:"json",
-        //         success:function(json){
-        //             for(var i=0;i<json.length;i++){
-        //                 var ls = json[i];     
-        //                 html+= "<span>module："+ls.name+"</span>"+"<br/>";
-        //             }
-        //             $("#module_list").html(html);
-        //         }
-        //     });
-        // }
+        
 
         $(function (){
             var basepath = "/" + window.location.pathname.split("/")[1];
@@ -43,7 +28,8 @@
                 success:function(json){
                     for(var i=0;i<json.length;i++){
                         var ls = json[i];     
-                        html+= "<span>module："+ls.name+"</span>"+"<br/>";
+                        var moduleName = ls.name;
+                        html+= "<span>module："+ " <a href='homework.html?msg="+     moduleName+ "  '> " + moduleName + "</a> </span>"   +  "<br/>";
                     }
                     $("#module_list").html(html);
                 }
