@@ -9,4 +9,58 @@
         SELECT * FROM FYP_Automatic_Grading.Teacher
         WHERE id = #{teacher_id}
     </select>
+
+    <insert id="insertDepartment" parameterType="Department">
+        INSERT INTO FYP_Automatic_Grading.Department (code, name)
+        VALUES (#{code},#{name})
+    </insert>
+
+    <select id="queryDepartmentByCode" resultType="Department">
+        SELECT * FROM FYP_Automatic_Grading.Department
+        WHERE code = #{code}
+    </select>
+
+    <insert id="registerTeacher" parameterType="Teacher">
+        INSERT INTO FYP_Automatic_Grading.Teacher (id, name, email, department_code)
+        VALUES (#{id},#{name},#{email},#{department_code})
+    </insert>
+
+    <select id="queryDepartByCode" resultType="Department">
+        SELECT * FROM FYP_Automatic_Grading.Department
+        WHERE code = #{depart_code}
+    </select>
+
+
+    <update id="updateActivationCodeById">
+        UPDATE FYP_Automatic_Grading.Teacher
+        SET activation_code = #{A_code}
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="queryActivationCodeById" resultType="string">
+        SELECT activation_code FROM FYP_Automatic_Grading.Teacher
+        WHERE id = #{teacher_id}
+    </select>
+
+
+    <update id="updateSaltById">
+        UPDATE FYP_Automatic_Grading.Teacher
+        SET salt = #{salt}
+        WHERE id = #{teacher_id}
+    </update>
+
+    <update id="updateIsActivatedById">
+        UPDATE FYP_Automatic_Grading.Teacher
+        SET is_activated = #{isActivated}
+        WHERE id = #{teacher_id}
+    </update>
+
+    <update id="updatePwdById">
+        UPDATE FYP_Automatic_Grading.Teacher
+        SET pwd = #{pwd}
+        WHERE id = #{teacher_id}
+    </update>
+
+
 </mapper>

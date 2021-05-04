@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../../jquery-3.6.0.js"></script>
+    <script src="../../js/teacher/teacherSetPwd.js"></script>
+    <script src="../../js/common/Back.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/student/StudentSetPwd.css">
+</head>
+<body>
+    <div class="setPwd">
+        <div class="form">
+            <input type="text" id="teacherId"  name="teacherId" placeholder="Fill in your id" required="required">
+            <div id="idmsg"></div>
+            <div id="notInt"></div>
+  
+            <input type="password" id="newpwd"  name="newpwd" placeholder="Set your password" required="required">
+            <div id="newpwdmsg"></div>
+            
+            <input type="password" id="confirmpwd" name="confirmpwd" placeholder="Reconfirm the password" required="required">
+            <div id="confirmmsg"></div>
+
+            <button id="confirm">Confirm</button>
+            <button id="back" onclick="Back()">Back</button>
+        </div>
+
+        <div class="errormsg" id="errormsg">
+            
+        </div>
+    
+    </div>
+</body>
+</html>

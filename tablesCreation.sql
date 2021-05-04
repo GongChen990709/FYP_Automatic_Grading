@@ -1,4 +1,4 @@
-CREATE TABLE `Major` (
+åCREATE TABLE `Major` (
   `code` VARCHAR(100) NOT NULL,
   `title` VARCHAR(100) NOT NULL,
   PRIMARY KEY(`code`)
@@ -7,7 +7,7 @@ CREATE TABLE `Major` (
 CREATE TABLE `Student` (
   `ucd_id` INT NOT NULL,
   `name` VARCHAR(100) NOT NULL,
-  `pwd` VARCHAR(100) NOT NULL,
+  `pwd` VARCHAR(100),
   `email` VARCHAR(100) NOT NULL,
   `major_code` VARCHAR(100),
   FOREIGN KEY(`major_code`) REFERENCES `Major`(`code`) ON UPDATE CASCADE ON DELETE SET NULL,

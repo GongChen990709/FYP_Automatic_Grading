@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FYP19.Dao.ModuleMapper">
+    <insert id="insertModule" parameterType="Module">
+        INSERT INTO FYP_Automatic_Grading.Module (code, name, teacher_id)
+        VALUES (#{code},#{name},#{teacher_id})
+    </insert>
+
+    <select id="queryModulesByTid" resultType="Module">
+        SELECT * FROM FYP_Automatic_Grading.Module
+        WHERE teacher_id = #{teacher_id}
+    </select>
+
+</mapper>
