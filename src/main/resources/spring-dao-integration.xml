@@ -9,7 +9,7 @@
 
 
 <!--Read the database information by Spring-->
-    <context:property-placeholder location="classpath:database.properties"/>
+    <context:property-placeholder location="classpath:database.properties" ignore-unresolvable="true"/>
 
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">

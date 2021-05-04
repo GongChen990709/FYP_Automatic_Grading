@@ -1,3 +1,4 @@
+var basepath = "/" + window.location.pathname.split("/")[1];
 function jumpToAdminHome(){
     window.location.href="../../html/admin/adminHome.html";
 }
@@ -7,7 +8,6 @@ $(function(){
     $("#register").on("click",function(){
         var id = $("#teacherId").val();
         var name = $("#teacherName").val();
-        var pwd = $("#teacherPwd").val();
         var email = $("#teacherEmail").val();
         var depCode = $("#depCode").val();
 
@@ -26,11 +26,6 @@ $(function(){
             $("#teacherName").focus();
             setTimeout("$('#namemsg').html('')",2400);
             return false;
-        }else if(!pwd){
-            $("#pwdmsg").html("password cannot be null");
-            $("#teacherPwd").focus();
-            setTimeout("$('#pwdmsg').html('')",2400);
-            return false;
         }else if(!email){
             $("#emailmsg").html("email cannot be null");
             $("#teacherEmail").focus();
@@ -44,12 +39,11 @@ $(function(){
         }else{
             $("#idmsg").html("");
             $("#namemsg").html("");
-            $("#pwdmsg").html("");
             $("#emailmsg").html("");
             $("#depmsg").html("");
         }
 
-        var obj = { "id":id, "name":name, "pwd":pwd,"email":email,"deparCode":depCode};
+        var obj = { "id":id, "name":name,"email":email,"department_code":depCode};
         var myJson = JSON.stringify(obj);
 
         alert(myJson)
@@ -57,7 +51,7 @@ $(function(){
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: "",
+            url: basepath+"/register/sendEmailToTeacher",
             contentType: "application/json",
             data: myJson,
             success: function (result) {

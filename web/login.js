@@ -6,6 +6,7 @@ $(function(){
         var identity = $("#identity").val();
         var id = $("#id").val();
         var pwd = $("#pwd").val();
+        alert("aaaa");
 
         if(!id){
             $("#idmsg").html("id cannot be null");
@@ -27,7 +28,7 @@ $(function(){
             $("#pwdmsg").html("");
         }
 
-        var obj = { "identity":identity, "id":id, "pwd":pwd};
+        var obj = {"id":id, "pwd":pwd};
         var myJson = JSON.stringify(obj);
 
        alert(myJson)
@@ -41,7 +42,15 @@ $(function(){
             success: function (result) {
                 console.log("data is :" + JSON.stringify(result));
                 if (result.status == "Login Success") {
-                    window.location.href = "resources/html/student/studentHome.html";
+                    if(result.identity=="student"){
+                        window.location.href = "resources/html/student/studentHome.html";
+                    }
+                    else if(result.identity=="teacher"){
+                        window.location.href = "resources/html/common/sthomepage.html";
+                    }
+                    else if(result.identity=="admin"){
+                        window.location.href = "resources/html/admin/adminHome.html";
+                    }
                 }
                 else {
                     alert(result.status+" Please check again");

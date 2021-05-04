@@ -23,4 +23,58 @@
         WHERE name = #{module_name}
     </select>
 
+    <insert id="registerStudent" parameterType="Students">
+        INSERT INTO FYP_Automatic_Grading.Student (ucd_id, name, email, major_code)
+        VALUES (#{ucd_id},#{name},#{email},#{major_code})
+    </insert>
+
+    <insert id="insertMajor" parameterType="Major">
+        INSERT INTO FYP_Automatic_Grading.Major (code, title)
+        VALUES (#{code},#{title})
+    </insert>
+
+    <select id="queryMajorByCode" resultType="Major">
+        SELECT * FROM FYP_Automatic_Grading.Major
+        WHERE code = #{code}
+    </select>
+
+    <select id="queryActivationCodeById" resultType="string">
+        SELECT activation_code FROM FYP_Automatic_Grading.Student
+        WHERE ucd_id = #{ucd_id}
+    </select>
+
+    <update id="updateActivationCodeById">
+        UPDATE FYP_Automatic_Grading.Student
+        SET activation_code = #{A_code}
+        WHERE ucd_id = #{ucd_id}
+    </update>
+
+    <update id="updateIsActivatedById">
+        UPDATE FYP_Automatic_Grading.Student
+        SET is_activated = #{isActivated}
+        WHERE ucd_id = #{ucd_id}
+    </update>
+
+    <update id="updatePwdById">
+        UPDATE FYP_Automatic_Grading.Student
+        SET pwd = #{pwd}
+        WHERE ucd_id = #{ucd_id}
+    </update>
+
+    <select id="queryIsActivatedById" resultType="boolean">
+        SELECT is_activated FROM FYP_Automatic_Grading.Student
+        WHERE ucd_id = #{ucd_id}
+    </select>
+
+    <update id="updateSaltById">
+        UPDATE FYP_Automatic_Grading.Student
+        SET salt = #{salt}
+        WHERE ucd_id = #{ucd_id}
+    </update>
+
+    <select id="querySaltById" resultType="string">
+        SELECT salt FROM FYP_Automatic_Grading.Student
+        WHERE ucd_id = #{ucd_id}
+    </select>
+
 </mapper>

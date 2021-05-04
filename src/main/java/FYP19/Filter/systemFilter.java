@@ -19,8 +19,12 @@ public class systemFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         Object user = req.getSession().getAttribute(Constants.USER_SESSION);
         System.out.println(user);
-        if(user==null){
-            resp.sendRedirect(req.getContextPath()+"/errors/notLogin.html");
+
+        if(req.getRequestURI().contains("StudentSetPwd.html")){
+            filterChain.doFilter(servletRequest, servletResponse);
+        }
+        else if(user==null){
+            resp.sendRedirect(req.getContextPath()+"/status/notLogin.html");
         }
         else{
             filterChain.doFilter(servletRequest, servletResponse);

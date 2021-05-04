@@ -1,15 +1,12 @@
 package FYP19.Controller;
 
 import FYP19.Entities.Module;
-import FYP19.Entities.Student;
 import FYP19.Entities.Students;
-import FYP19.Service.StudentService;
 import FYP19.Service.StudentsService;
 import FYP19.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,6 +36,7 @@ public class StudentController{
         Module module = studentService.getModuleByName(moduleName);
         return module;
     }
+
 
 
 }

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="../../../jquery-3.6.0.js"></script>
-    <script src="../../js/admin/addStudent.js"></script>
+    <script src="../../js/admin/addTeacher.js"></script>
     <script src="../../js/common/Back.js"></script>
     <script src="../../js/admin/adminHome.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/admin/adminStudent.css">
@@ -17,7 +17,7 @@
     <div class="header">
 
         <div class="logo" onclick="Back()">
-            <img src="../picture/UCD_Logo.png" title="back" alt="">
+            <img src="../../images/admin/UCD_Logo.png" title="back" alt="">
         </div>
 
         <div class="admin" onmouseleave="set1()">
@@ -25,8 +25,8 @@
                 <a href="#">admin</a>
             </div>
             <div id="setting">
-                <a href="userSetting.html">Reset Password</a>  <br/>
-                <a href="login.html">Log Out</a> 
+                <a href="../common/userSetting.html">Reset Password</a>  <br/>
+                <a href="../../../login.html">Log Out</a>
             </div>
 
         </div>
@@ -53,9 +53,6 @@
             
             <input type="text" id="teacherName" name="teacherName" placeholder="Teacher Name">
             <div id="namemsg"></div>
-
-            <input type="text" id="teacherPwd" name="teacherPwd" placeholder="Set initial password">
-            <div id="pwdmsg"></div>
 
             <input type="text" id="teacherEmail" name="teacherEmail" placeholder="Email">
             <div id="emailmsg"></div>

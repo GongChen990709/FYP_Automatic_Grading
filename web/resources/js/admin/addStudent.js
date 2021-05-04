@@ -1,11 +1,9 @@
-
-
+var basepath = "/" + window.location.pathname.split("/")[1];
 function jumpToAdminHome(){
     window.location.href="../../html/admin/adminHome.html";
 }
 
 $(function(){
-
     $("#register").on("click",function(){
         var id = $("#studentId").val();
         var name = $("#studentName").val();
@@ -30,12 +28,8 @@ $(function(){
             $("#studentName").focus();
             setTimeout("$('#namemsg').html('')",2400);
             return false;
-        }else if(!pwd){
-            $("#pwdmsg").html("password cannot be null");
-            $("#studentPwd").focus();
-            setTimeout("$('#pwdmsg').html('')",2400);
-            return false;
-        }else if(!email){
+        }
+        else if(!email){
             $("#emailmsg").html("email cannot be null");
             $("#studentEmail").focus();
             setTimeout("$('#emailmsg').html('')",2400);
@@ -53,7 +47,7 @@ $(function(){
             $("#majormsg").html("");
         }
 
-        var obj = { "id":id, "name":name, "pwd":pwd,"email":email,"majorCode":majorCode};
+        var obj = { "ucd_id":id, "name":name,"email":email,"major_code":majorCode};
         var myJson = JSON.stringify(obj);
 
         alert(myJson)
@@ -61,7 +55,7 @@ $(function(){
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: "",
+            url: basepath+"/register/sendEmailToStudent",
             contentType: "application/json",
             data: myJson,
             success: function (result) {

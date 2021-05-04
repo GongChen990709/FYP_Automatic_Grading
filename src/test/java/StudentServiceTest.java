@@ -1,9 +1,6 @@
 import FYP19.Entities.Module;
-import FYP19.Entities.Student;
 import FYP19.Entities.Students;
-import FYP19.Service.StudentService;
-import FYP19.Service.StudentsService;
-import org.apache.ibatis.annotations.Param;
+import FYP19.Service.*;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -14,6 +11,10 @@ public class StudentServiceTest {
 
     ApplicationContext context = new ClassPathXmlApplicationContext("ApplicationContext.xml");
     StudentsService studentsServiceIImp = (StudentsService) context.getBean("StudentsServiceImpl");
+    TeacherService teacherServiceIImp = (TeacherService) context.getBean("TeacherServiceImpl");
+
+    MailService mailService = (MailService) context.getBean("MailService");
+    EncryptionService encryptionService = (EncryptionService) context.getBean("EncryptionService");
 
 
     @Test
@@ -35,6 +36,33 @@ public class StudentServiceTest {
             System.out.println(m);
         }
     }
+
+    @Test
+    public void aa(){
+        teacherServiceIImp.registerModule(new Module("COMP2003J","Object-Oriented Programming",2));
+        teacherServiceIImp.registerModule(new Module("COMP2004J","Database and Info System",2));
+        teacherServiceIImp.registerModule(new Module("COMP2005J","Object-Oriented Design",2));
+        teacherServiceIImp.registerModule(new Module("COMP2006J","Cloud Computing",2));
+        teacherServiceIImp.registerModule(new Module("COMP2007J","Python",2));
+    }
+
+    @Test
+    public void test11(){
+        System.out.println(studentsServiceIImp.queryActivationCodeById(3123));
+    }
+
+
+    @Test
+    public void test1112(){
+
+    }
+
+//    @Test
+//    public void textEmail(){
+//        //studentsServiceIImp.registerStudent(new Students(11111,"helloWorld",null,"chen.gong@ucdconnect.ie","EEEN"));
+//        mailService.registerStudent(new Students(11111,"helloWorld",null,"chen.gong@ucdconnect.ie","EEEN"));
+//    }
+
 
 
 }
