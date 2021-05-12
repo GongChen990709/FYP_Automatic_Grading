@@ -8,4 +8,10 @@
         SELECT * FROM FYP_Automatic_Grading.Administrator
         WHERE id = #{id}
     </select>
+
+    <select id="querySaltById" resultType="string">
+        SELECT salt FROM FYP_Automatic_Grading.Administrator
+        WHERE id = #{admin_id}
+    </select>
+
 </mapper>

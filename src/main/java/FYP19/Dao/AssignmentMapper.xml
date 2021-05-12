@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FYP19.Dao.AssignmentMapper">
+
+    <insert id="insertAssignmentForm" parameterType="Assignment">
+        INSERT INTO FYP_Automatic_Grading.Assignment (id, title, description, module_code, due_date, creation_date, creator_id)
+        VALUES (#{id},#{title},#{description},#{module_code},#{due_date},#{creation_date},#{creator_id})
+    </insert>
+
+    <select id="queryAssignment" resultType="Assignment">
+        SELECT * FROM FYP_Automatic_Grading.Assignment
+        WHERE title = #{title}
+    </select>
+
+
+    <select id="queryAssignmentsByCreatorIdAndModule" resultType="Assignment">
+        SELECT * FROM FYP_Automatic_Grading.Assignment
+        WHERE creator_id = #{creator_id}
+        AND module_code = #{module_code}
+    </select>
+
+    <insert id="initFilesPathById">
+        INSERT INTO FYP_Automatic_Grading.Assignment_Files (assignment_id)
+        VALUES (#{id})
+    </insert>
+
+    <update id="updatePdfPathById">
+        UPDATE FYP_Automatic_Grading.Assignment_Files
+        SET pdf_path = #{PdfPath}
+        WHERE assignment_id = #{id}
+    </update>
+
+    <update id="updateJavaPathById">
+        UPDATE FYP_Automatic_Grading.Assignment_Files
+        SET source_path = #{JavaPath}
+        WHERE assignment_id = #{id}
+    </update>
+
+    <update id="updateDataPathById">
+        UPDATE FYP_Automatic_Grading.Assignment_Files
+        SET data_path = #{DataPath}
+        WHERE assignment_id = #{id}
+    </update>
+
+    <update id="updateDataTypePathById">
+        UPDATE FYP_Automatic_Grading.Assignment_Files
+        SET datatype_path = #{DataTypePath}
+        WHERE assignment_id = #{id}
+    </update>
+
+</mapper>

@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface TeacherService {
     Teacher queryTeacherById(int id);
-    void batchRegTeachers(List<Teacher> teacherList);
     int registerModule(Module module);
     List<Module> queryAllModules(int teacher_id);
 

@@ -62,5 +62,14 @@
         WHERE id = #{teacher_id}
     </update>
 
+    <select id="queryIsActivatedById" resultType="boolean">
+        SELECT is_activated FROM FYP_Automatic_Grading.Teacher
+        WHERE id = #{t_id}
+    </select>
+
+    <select id="querySaltById" resultType="string">
+        SELECT salt FROM FYP_Automatic_Grading.Teacher
+        WHERE id = #{t_id}
+    </select>
 
 </mapper>

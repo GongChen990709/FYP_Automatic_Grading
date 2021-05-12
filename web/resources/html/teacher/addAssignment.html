@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="../common/layui-v2.6.5/layui/css/layui.css"/>
+    <script type="text/javascript" src="../common/layui-v2.6.5/layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/teacher/GetCourseNameAndUserName.js"></script>
+
+    <script>
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                               elem: '#date1' //指定元素
+                               ,type:'datetime'
+                               ,lang:'en'
+                           });
+        });
+    </script>
+    <script>
+        layui.use('form',function () {
+
+            var code=GetCourseID();
+            var form = layui.form;
+            form.on('submit(formDemo)', function (data) {
+
+                var form_data=JSON.stringify(data.field);
+
+                console.log(data.field);
+                console.log(data.field.title);
+                console.log(form_data);
+                //console.log(code);
+               // console.log({"title":data.field.title,"due_data":data.field.date,
+                           //     "description":data.field.description,"module_code":code});
+                var basepath = "/" + window.location.pathname.split("/")[1];
+                var data = {"title":data.field.title,"due_date":data.field.date,
+                    "description":data.field.description,"module_code":code};
+                var json = JSON.stringify(data);
+                $.ajax({
+                    url:basepath+'/assignment/form',
+                    type:'post',
+                    data:json,
+                    dataType:'json',
+                    contentType: "application/json",
+                    success: function (json) {
+                        if (json.code == 0) {
+                            layer.msg("success")
+                            // 接收返回的assignment id
+
+                            var assignment_id=json.id;
+                            console.log("id:"+assignment_id);
+                            var course_name=GetCourseName();
+                            console.log("returned course name is"+course_name);
+                            var user_name=GetUserName();
+                            html1 =
+                                "<span> <a href='teacher_upload_file.html?"+course_name+"&Username:"+user_name+"&Ass_ID:"+assignment_id+" ' class='layui-btn'> " +
+                                "Next Step" +
+                                "</a > </span>";
+                            $(".next").html(html1);
+
+                        } else {
+                            layer.msg("fail")
+                        }
+                    }
+                })
+                return false;
+            });
+        })
+    </script>
+
+
+</head>
+<body>
+<div>
+    <form action="" class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">Name</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" required lay-verify="required"
+                       placeholder="enter the assignment name" autocomplete="off" class="layui-input">
+            </div>
+
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">Deadline</label>
+                <div class="layui-input-block">
+                    <input type="text" name="date" id="date1" required lay-verify="required" autocomplete="off"
+                           class="layui-input"
+                           placeholder="set the due date">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">Description</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" required lay-verify="required" name="description"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <button class="layui-btn" lay-submit="" lay-filter="formDemo">Submit</button>
+        </div>
+
+    </form>
+
+
+    <div class="next">
+
+    </div>
+
+
+
+</div>
+
+</body>
+</html>

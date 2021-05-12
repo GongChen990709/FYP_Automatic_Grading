@@ -45,8 +45,6 @@ public class StudentsServiceImpl implements StudentsService{
         }
     }
 
-
-
 ///////////////////////////////
 //Registration Service
     public boolean updateIsActivatedById(int ucd_id, boolean isActivated) {
@@ -83,11 +81,14 @@ public class StudentsServiceImpl implements StudentsService{
         boolean role_flag = false;
         if(major==null){
             String title = "";
-            if(stu.getMajor_code().equals("EEEN")){
-                title = "Electronic Engineer";
+            if(stu.getMajor_code().equals("EIE")){
+                title = "Electronic Information Engineering";
             }
-            else if(stu.getMajor_code().equals("COMP")){
+            else if(stu.getMajor_code().equals("IOT")){
                 title = "Internet Of Things";
+            }
+            else if(stu.getMajor_code().equals("SE")){
+                title = "Software Engineering";
             }
             if(studentsMapper.insertMajor(new Major(stu.getMajor_code(),title))==1){
                 major_flag=true;

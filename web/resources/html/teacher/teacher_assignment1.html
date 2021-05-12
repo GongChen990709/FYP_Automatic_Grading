@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Assignment</title>
+    <!--<link rel="stylesheet" type="text/css" href="../css/file.css">-->
+
+    <script type="text/javascript" src="../../js/teacher/GetCourseNameAndUserName.js"></script>
+    <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="../common/layui-v2.6.5/layui/css/layui.css"/>
+    <script type="text/javascript" src="../common/layui-v2.6.5/layui/layui.js"></script>
+    <style>
+        .file_part{
+            margin-left: 600px;
+        }
+    </style>
+
+
+    <script>
+        $(function () {
+            var course_name=GetCourseName();
+            console.log("returned course name is"+course_name)
+            var user_name=GetUserName();
+
+
+
+            html1 = "<span> <a href='addAssignment.html?"+course_name+"Username:"+user_name+" ' class='layui-btn'> " +
+                "Add a new Assignment" +
+                "</a > </span>";
+
+            $(".file_part").html(html1);
+        })
+
+    </script>
+</head>
+<body>
+
+    <div>
+        <div class="demoTable">
+            Search Assignment：
+            <div class="layui-inline">
+                <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+            </div>
+            <button class="layui-btn" id="searchBtn" datatype="reload">Search</button>
+
+        </div>
+
+        <table id="demo" lay-filter="test">
+
+        </table>
+    </div>
+
+    <div class="file_part">
+
+       <!-- <form action="/ReceiveFileServlet" method="post" enctype="multipart/form-data">
+            <div class="choose_file">
+                <a href="javascript:;" class="file">Choose File
+                    <input type="file" name="" id="fileupload" multiple onchange="showFileName()">
+                </a>
+                <span id="filename"> </span>
+            </div>
+
+            <div class="layui-inline">
+                Deadline:<input type="text" class="layui-input" id="set_deadline">
+            </div>
+
+            <div class="button">
+                <input type="submit" value="Submit">
+            </div>
+        </form>-->
+
+
+
+
+    </div>
+
+
+    <script>
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+            //执行一个laydate实例
+            laydate.render({
+                               elem: '#set_deadline' //指定元素
+                               ,type:'datetime'
+                               ,lang:'en'
+                           });
+        });
+    </script>
+
+
+
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit"> Edit</a>
+        <a class="layui-btn layui-btn-xs" lay-event="download">Download</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">Delete</a>
+
+    </script>
+
+    <script type="text/javascript">
+        layui.use('table', function(){
+            var table = layui.table;
+            var $ = layui.jquery;
+            var module_code=GetCourseID();
+            var basepath = "/" + window.location.pathname.split("/")[1];
+            table.render({
+                             elem:"#demo",
+                             url:basepath+"/teacher/allAssignments",
+                             where:{
+                               module_code:module_code
+                             },
+                             cols:[[
+                                 {field:"number",type:"numbers"},
+                                 {field: 'title', title: 'Name',align:"center",edit:'text'},
+                                 {field: 'due_date', title: 'Deadline', sort: true,align:"center",edit:'text'},
+                                 {field:"operation",title:'Operation',toolbar:"#barDemo",align:"center"}
+
+                             ]],
+                             page:false,
+                             size:"lg",
+                             even:true,
+                         });
+            table.on('tool(test)',function (obj) {
+                //得到当前操作行的相关信息
+                var tr= obj.data;
+                console.log(tr);
+                //得到事件名
+                var eventname=obj.event;
+                if(eventname=='del'){
+
+                    layer.confirm("Delete it?",{btn:['OK','Cancle'],title:"Delete"},function (index) {
+                        $.ajax({
+                            url:"",
+                            type:"post",
+                            data:{"assignment_name":tr.name}, // delete....
+                            success: function (msg) {
+                             if(msg==200){
+                                 obj.del();
+                                 layer.close(index);
+                                 layer.msg("delete successfully",{icon:6});
+                             }
+                             else {
+                                 layer.msg("delete failed",{icon:5});
+                             }
+
+                            }
+                        });
+                        return false;
+                    })
+                } else if(eventname=='edit'){
+                    layer.prompt({
+                        formType:0,
+                        value:tr.deadline
+                    },function (value,index) {
+                        //修改指定单元格的值
+                        //value表示输入的值
+                        obj.update({
+                            deadline:value
+                                   });
+                        layer.close(index);
+                    });
+
+                } else if(eventname=='download'){
+                    var id= tr.name;
+                    var link =document.createElement('a');
+                    link.href="/download?id:"+id;
+                    link.click();
+                }
+
+            });
+
+            table.on('edit(test)',function (obj) {
+                console.log(obj);
+                //获取修改后的值
+                var value_modified = obj.value;
+                $.ajax({
+                    url:'',
+                    data:value_modified,
+                    type:'post',
+                    success:function (obj) {
+                        if(obj.code==0){
+                            lay.msg("modify successfully",{icon:6});
+                        }
+                    }
+                       })
+
+                });
+
+            $(document).on('click','#searchBtn',function () {
+                //获取搜索文本框的值
+                var search = $("#demoReload");
+
+                //调用数据表格的重载方法
+                table.reload('demo',{
+                    url:"",
+
+                    where:{  //设定需要传递的参数
+                        name: search.val(),
+                    },
+                    method:'post',
+                    /* page:{
+                         //表示让条件查询从第一页开始 如果未设置 从当前页开始查询 前面不管了
+                         curr:1
+                     }*/
+                });
+
+            })
+
+        })
+
+
+
+
+
+    </script>
+<!--</div>-->
+
+</body>
+</html>

@@ -46,7 +46,7 @@ $(function(){
                         window.location.href = "resources/html/student/studentHome.html";
                     }
                     else if(result.identity=="teacher"){
-                        window.location.href = "resources/html/common/sthomepage.html";
+                        window.location.href = "resources/html/teacher/teacherHomePage.html";
                     }
                     else if(result.identity=="admin"){
                         window.location.href = "resources/html/admin/adminHome.html";

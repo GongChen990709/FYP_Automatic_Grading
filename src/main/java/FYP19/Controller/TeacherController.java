@@ -1,5 +1,6 @@
 package FYP19.Controller;
 
+import FYP19.Entities.Assignment;
 import FYP19.Entities.Module;
 import FYP19.Entities.Teacher;
 import FYP19.Service.TeacherService;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/teacher")
@@ -29,9 +32,9 @@ public class TeacherController {
         resultList.add(teacher);
         List<Module> moduleList= teacherService.queryAllModules(teacher.getId());
         resultList.addAll(moduleList);
-        for(Object o : resultList){
-            System.out.println(o);
-        }
         return resultList;
     }
+
+
+
 }
