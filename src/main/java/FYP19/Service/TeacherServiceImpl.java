@@ -13,22 +13,20 @@ public class TeacherServiceImpl implements TeacherService{
     private TeacherMapper teacherMapper;
     private ModuleMapper moduleMapper;
     private UserMapper userMapper;
-
     public void setTeacherMapper(TeacherMapper teacherMapper) {
         this.teacherMapper = teacherMapper;
     }
     public void setModuleMapper(ModuleMapper moduleMapper){this.moduleMapper = moduleMapper;}
     public void setUserMapper(UserMapper userMapper){this.userMapper = userMapper;}
 
+
+
     public Teacher queryTeacherById(int id) {
         return teacherMapper.queryTeacherById(id);
     }
-
     public int registerModule(Module module) {
         return moduleMapper.insertModule(module);
     }
-
-
     public List<Module> queryAllModules(int teacher_id) {
         return moduleMapper.queryModulesByTid(teacher_id);
     }
@@ -112,26 +110,5 @@ public class TeacherServiceImpl implements TeacherService{
        boolean code_flag = updateActivationCodeById(teacher_id,null);
        return pwd_flag&&code_flag&&activate_flag;
    }
-    //Batch registration
-    public void batchRegTeachers(List<Teacher> teacherList) {
-        for(Teacher teacher : teacherList){
-            Department depart = teacherMapper.queryDepartmentByCode(teacher.getDepartment_code());
-            if(depart==null){
-                String name = "";
-                if(teacher.getDepartment_code().equals("EEEN")){
-                    name = "School of Electrical and Electronic Engineering";
-                }
-                else if(teacher.getDepartment_code().equals("COMP")){
-                    name = "School of Computer Science";
-                }
-                teacherMapper.insertDepartment(new Department(teacher.getDepartment_code(),name));
-            }
-            teacherMapper.registerTeacher(teacher);
-        }
-    }
 /////////////////////////////
-
-
-
-
 }

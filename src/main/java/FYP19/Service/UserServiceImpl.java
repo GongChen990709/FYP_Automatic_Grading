@@ -47,57 +47,52 @@ public class UserServiceImpl implements UserService{
             returnMap.put("status", "User Not Found: Check your id please");
             return returnMap;
         }
-//        if(identity.equals("student")){
-//            System.out.println(studentsMapper.queryIsActivatedById(Integer.parseInt(id))+"dasdasdasdasdasdasdas");
-//            if(studentsMapper.queryIsActivatedById(Integer.parseInt(id))==true) {
-//                Students stu = studentsMapper.queryStudentById(Integer.parseInt(id));
-//                if (stu != null) {
-//                    if(pwdCheck(stu.getUcd_id(),pwd)){
-//                        req.getSession().setAttribute(Constants.USER_SESSION, stu);
-//                        msg = "Login Success";
-//                    }
-//                    else{
-//                        msg = "Password incorrect";
-//                    }
-//                }
-//            }
-//            else{
-//                msg = "Do not activate yet";
-//            }
-//        }
-//
-//        else if(identity.equals("teacher")){
-//            Teacher teacher = teacherMapper.queryTeacherById(Integer.parseInt(id));
-//            if(teacher!=null){
-//                if(teacher.getPwd().equals(pwd)){
-//                    req.getSession().setAttribute(Constants.USER_SESSION, teacher);
-//                    msg = "";
-//                }
-//            }
-//        }
 
         if(identity.equals("admin")){
+            int adminId = Integer.parseInt(id);
             Administrator admin = adminMapper.queryAdminById(Integer.parseInt(id));
-            if(admin.getPwd().equals(pwd)){
+            if(BCrypt.hashpw(pwd,adminMapper.querySaltById(adminId)).equals(admin.getPwd())){
+                returnMap.put("status","Login Success");
+                returnMap.put("identity","admin");
                 req.getSession().setAttribute(Constants.USER_SESSION, admin);
-                returnMap.put("status", "Login Success");
-                returnMap.put("identity", "admin");
                 return returnMap;
             }
         }
 
-        returnMap.put("status", "Incorrect Password");
-        return returnMap;
-    }
-
-
-    public boolean pwdCheck(int ucd_id, String plainPwd){
-        String salt = studentsMapper.querySaltById(ucd_id);
-        Students stu = studentsMapper.queryStudentById(ucd_id);
-        if(BCrypt.hashpw(plainPwd,salt).equals(stu.getPwd())){
-            return true;
+        if(identity.equals("student")){
+            int ucd_id = Integer.parseInt(id);
+            boolean isActivated = studentsMapper.queryIsActivatedById(ucd_id);
+            if(!isActivated){
+                returnMap.put("status","Not Activated");
+                return returnMap;
+            }
+            Students stu = studentsMapper.queryStudentById(ucd_id);
+            if(BCrypt.hashpw(pwd,studentsMapper.querySaltById(ucd_id)).equals(stu.getPwd())){
+                returnMap.put("status","Login Success");
+                returnMap.put("identity","student");
+                req.getSession().setAttribute(Constants.USER_SESSION, stu);
+                return returnMap;
+            }
         }
-        return false;
+
+        if(identity.equals("teacher")){
+            int t_id = Integer.parseInt(id);
+            boolean isActivated = teacherMapper.queryIsActivatedById(t_id);
+            if(!isActivated){
+                returnMap.put("status","Not Activated");
+                return returnMap;
+            }
+            Teacher teacher = teacherMapper.queryTeacherById(t_id);
+            if(BCrypt.hashpw(pwd,teacherMapper.querySaltById(t_id)).equals(teacher.getPwd())){
+                returnMap.put("status","Login Success");
+                returnMap.put("identity","teacher");
+                req.getSession().setAttribute(Constants.USER_SESSION, teacher);
+                return returnMap;
+            }
+        }
+
+        returnMap.put("status", "Password entered is incorrect.");
+        return returnMap;
     }
 
 }

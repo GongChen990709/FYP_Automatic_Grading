@@ -5,4 +5,5 @@ import org.apache.ibatis.annotations.Param;
 
 public interface AdminMapper {
     Administrator queryAdminById(@Param("id") int id);
+    String querySaltById(@Param("admin_id") int id);
 }

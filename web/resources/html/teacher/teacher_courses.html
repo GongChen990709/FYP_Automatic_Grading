@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>course_page</title>
+    <!--<link rel="stylesheet" type="text/css" href="../css/username.css">-->
+    <link rel="stylesheet" type="text/css" href="../../css/common/header.css">
+
+    <script type="text/javascript" src="../../js/common/username.js"></script>
+    <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <script type="text/javascript" src="../../js/teacher/GetCourseNameAndUserName.js"></script>
+
+  <!--  <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                       url:"/homepage",                /*请求的地址*/
+                       type:"get",
+                       dataType:"json",
+                       success:function (json) {
+                           //var name=JSON.parse(json);
+                           //console.log(json);
+                           //console.log(name);
+                           console.log(json[0].name);
+                           //console.log(json[1].date);
+                           $("#username").html(json[0].name);
+                       }
+                   })
+        })
+    </script>-->
+
+    <script type="text/javascript">
+        $(function () {
+            var course=GetCourseName();
+            console.log("returned course name is"+course);
+            var user_name=GetUserName();
+            //console.log("(course):"+course_name);
+
+            html1 = "<span> <a href='teacher_assignment1.html?"+ course+ "Username:"+user_name+" '> " +
+                    "Assignment" +
+                    "</a> </span>";
+            html2 = "<span> <a href='teacher_grade_1.html?"+ course+"Username:"+ user_name +" '> " + "Grade" +
+                    "</a> </span>";
+
+            $("#assignment").html(html1);
+            $("#grade").html(html2);
+
+            $("#course_name").html(course);
+            $("#username").html(user_name);
+        });
+    </script>
+
+</head>
+<body>
+
+<div class="header">
+    <div class="logo">
+        <img src="../../images/UCD_Logo.png">
+    </div>
+
+
+
+    <div class="course_name" >
+        <a href="#" id="course_name">
+            <!-- 插入课程-->
+        </a >
+    </div>
+
+    <div class="user" onmouseleave="set1()" >
+
+        <div class="user_name" onclick="set()">
+            <a href="#" id="username">  <!--插入用户名-->  </a>
+        </div>
+
+        <ul id="menu2">
+            <li><a href="../../html/common/userSetting.html">Reset Password</a> </li>
+            <li><a href="../../../login.html">Log Out</a> </li>
+        </ul>
+    </div>
+</div>
+
+<div class="splitArea">
+
+</div>
+
+<div class="tab"><!--Assessment-->
+    <ul>
+        <li id="assignment"><!--<a href="../02_html/teacher_assignment.html"> Assignments </a>--> </li>
+        <li id="grade"><!--<a href="../02_html/teacher_grade.html"> Grade </a>--></li>
+    </ul>
+</div>
+
+</body>
+</html>

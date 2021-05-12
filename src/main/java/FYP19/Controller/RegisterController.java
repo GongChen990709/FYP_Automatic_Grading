@@ -2,6 +2,7 @@ package FYP19.Controller;
 import FYP19.Entities.Students;
 import FYP19.Entities.Teacher;
 import FYP19.Service.*;
+import FYP19.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -35,39 +36,12 @@ public class RegisterController {
     @Qualifier("EncryptionService")
     private EncryptionService encryptionService;
 
-    @RequestMapping("/batchStudents")
-    @ResponseBody
-    public Map<String,String> batchRegisterStudents(@RequestBody List<Students> studentLists){
-        Map<String, String> resultMap = new HashMap<String, String>();
-        studentService.batchRegStudents(studentLists);
-        resultMap.put("status","true");
-        return resultMap;
-    }
-
-
-
-    @RequestMapping("/batchTeachers")
-    @ResponseBody
-    public Map<String,String> batchRegisterTeachers(@RequestBody List<Teacher> teacherList){
-        Map<String, String> resultMap = new HashMap<String, String>();
-        teacherService.batchRegTeachers(teacherList);
-        resultMap.put("status","true");
-        return resultMap;
-    }
-
-
-
-
-
 //////////////////////////////////////////////////////////////////////////
-//Controller Mappings for registering single student/teacher
+//Controller Mappings for registering student(s）and teacher(s)
     @RequestMapping("/sendEmailToStudent")
     @ResponseBody
     public Map<String, String> sendEmailToStudent(HttpServletRequest request, @RequestBody Students student){
         Map<String, String> resultMap = new HashMap<String, String>();
-        System.out.println(request.getParameter("code"));
-        System.out.println("Go to activate success");
-        System.out.println(student.toString());
         String uuid = UUID.randomUUID().toString();
         boolean email_flag = mailService.sendEmailToStudent(student,uuid);
         boolean student_flag = false;
@@ -76,6 +50,31 @@ public class RegisterController {
         }
         if(student_flag&&email_flag){
             resultMap.put("status","true");
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/sendEmailToMultipleStudents")
+    @ResponseBody
+    public Map<String, String> sendEmailToStudent(HttpServletRequest request, @RequestBody List<Students> studentList){
+        Map<String, String> resultMap = new HashMap<String, String>();
+        resultMap.put("status","failed");
+        int email_count = 0;
+        request.getSession().setAttribute(Constants.SUCCESS_EMAIL_COUNT, email_count);
+        for(Students stu : studentList){
+            String uuid = UUID.randomUUID().toString();
+            boolean email_flag = mailService.sendEmailToStudent(stu,uuid);
+            boolean student_flag = false;
+            if(email_flag==true) {
+                student_flag = studentService.initialRegisterStudent(stu, uuid);
+            }
+            if(student_flag&&email_flag){
+                email_count++;
+                request.getSession().setAttribute(Constants.SUCCESS_EMAIL_COUNT, email_count);
+            }
+        }
+        if(studentList.size()==email_count){
+            resultMap.put("status","success");
         }
         return resultMap;
     }
@@ -122,6 +121,32 @@ public class RegisterController {
         }
         if(teacher_flag&&email_flag){
             resultMap.put("status","true");
+        }
+        return resultMap;
+    }
+
+
+    @RequestMapping("/sendEmailToMultipleTeachers")
+    @ResponseBody
+    public Map<String, String> sendEmailToMultipleTeacher(HttpServletRequest request, @RequestBody List<Teacher> teacherList){
+        Map<String, String> resultMap = new HashMap<String, String>();
+        resultMap.put("status","failed");
+        int email_count = 0;
+        request.getSession().setAttribute(Constants.SUCCESS_EMAIL_COUNT, email_count);
+        for(Teacher teacher : teacherList){
+            String uuid = UUID.randomUUID().toString();
+            boolean email_flag = mailService.sendEmailToTeacher(teacher,uuid);
+            boolean teacher_flag = false;
+            if(email_flag==true) {
+                teacher_flag = teacherService.initialRegisterTeacher(teacher, uuid);
+            }
+            if(teacher_flag&&email_flag){
+                email_count++;
+                request.getSession().setAttribute(Constants.SUCCESS_EMAIL_COUNT, email_count);
+            }
+        }
+        if(teacherList.size()==email_count){
+            resultMap.put("status","success");
         }
         return resultMap;
     }

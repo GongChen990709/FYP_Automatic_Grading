@@ -58,17 +58,29 @@ CREATE TABLE `Module_registration` (
   PRIMARY KEY(`student_id`,`module_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE `Assignment` (
-  `id` INT NOT NULL,
-  `title` VARCHAR(100) NOT NULL,
-  `description` VARCHAR(300),
-  `marking_scheme` VARCHAR(300),
-  `pdf_path` VARCHAR(100),
-  `module_code` VARCHAR(100) NOT NULL,
-  `due_date` DATETIME,
-  FOREIGN KEY(`module_code`) REFERENCES `Module`(`code`) ON UPDATE CASCADE ON DELETE CASCADE,
-  PRIMARY KEY(`id`)
+  `id` varchar(300) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `description` varchar(300) DEFAULT NULL,
+  `requirement_path` varchar(300) DEFAULT NULL,
+  `datatype_path` varchar(300) DEFAULT NULL,
+  `data_path` varchar(300) DEFAULT NULL,
+  `module_code` varchar(100) NOT NULL,
+  `due_date` datetime DEFAULT NULL,
+  `creation_date` datetime DEFAULT NULL,
+  `teacher_id` int DEFAULT NULL,
+  `TA_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `module_code` (`module_code`),
+  KEY `teacher_id` (`teacher_id`),
+  KEY `TA_id` (`TA_id`),
+  CONSTRAINT `assignment_ibfk_1` FOREIGN KEY (`module_code`) REFERENCES `Module` (`code`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `assignment_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `Teacher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `assignment_ibfk_3` FOREIGN KEY (`TA_id`) REFERENCES `Student` (`ucd_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
 CREATE TABLE `Assessment` (
   `assignment_id` INT NOT NULL,
@@ -81,16 +93,8 @@ CREATE TABLE `Assessment` (
   PRIMARY KEY(`assignment_id`,`student_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `Assignment_creation` (
-  `creation_date` DATE,
-  `assignment_id` INT NOT NULL,
-  `ta_id` INT NOT NULL,
-  `teacher_id` INT NOT NULL,
-  FOREIGN KEY(`assignment_id`) REFERENCES `Assignment`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY(`ta_id`) REFERENCES `TA`(`ucd_id`) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY(`teacher_id`) REFERENCES `Teacher`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-  PRIMARY KEY(`assignment_id`,`ta_id`,`teacher_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
 
 CREATE TABLE `Assignment_submission` (

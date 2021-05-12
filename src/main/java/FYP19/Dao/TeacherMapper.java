@@ -18,5 +18,10 @@ public interface TeacherMapper {
     int registerTeacher(Teacher teacher);
     ////////////////////////////////
 
+    ////////////////////////////////
+    //Login DAO
+    boolean queryIsActivatedById(@Param("t_id") int id);
+    String querySaltById(@Param("t_id") int id);
+    // //////////////////////////////
     Teacher queryTeacherById(@Param("teacher_id") int id);
 }

@@ -13,11 +13,10 @@ function uploadStudentCSV(){//transfer csv to json array
             var json = {};
             var data =splitdate[i].split(",");
             console.log(data);
-            json.ucd_id = data[1];
-            json.name = data[0];
-            json.pwd = data[2];
-            json.email = data[3];
-            json.major_code = data[4];
+            json.ucd_id = data[0];
+            json.name = data[1];
+            json.email = data[2];
+            json.major_code = data[3];
             console.log(json);
             userList.push(json);
         }
@@ -27,12 +26,12 @@ function uploadStudentCSV(){//transfer csv to json array
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: basepath+"/register/batchStudents",
+            url: basepath+"/register/sendEmailToMultipleStudents",
             contentType: "application/json",
             data: myJson,
             success: function (result) {
                 console.log("data is :" + JSON.stringify(result));
-                if (result.status == "true") {
+                if (result.status == "success") {
                     alert("upload csv file success")
                     window.location.href = "adminHome.html";
                 }

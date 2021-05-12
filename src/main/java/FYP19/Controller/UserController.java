@@ -23,6 +23,7 @@ public class UserController {
     @ResponseBody //return value in JSON format and will not be resolved as a path to view resolver when added this annotation
     public Map<String, String> doLogin(@RequestBody Map<String,String> map, HttpServletRequest req){
         Map<String, String> message = userService.loginCheck(map,req);
+        System.out.println(req.getSession().getServletContext().getRealPath("/upload"));
         System.out.println("Controller===="+ message);
         return message;
     }
