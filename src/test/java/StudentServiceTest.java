@@ -40,13 +40,6 @@ public class StudentServiceTest {
     }
 
 
-    @Test
-    public void getAllModules(){
-        List<Module> modules = studentsServiceIImp.getAllModules(17205914);
-        for(Module m : modules){
-            System.out.println(m);
-        }
-    }
 
     @Test
     public void aa(){
@@ -65,7 +58,7 @@ public class StudentServiceTest {
 
     @Test
     public void test1112(){
-
+        System.out.println(studentsServiceIImp.queryAllModules(17));
     }
 
 //    @Test
@@ -109,7 +102,7 @@ public class StudentServiceTest {
 
     @Test
     public void tesaas(){
-
+        System.out.println(studentsServiceIImp.countStudentNumByCode("COMP"));
     }
 
 

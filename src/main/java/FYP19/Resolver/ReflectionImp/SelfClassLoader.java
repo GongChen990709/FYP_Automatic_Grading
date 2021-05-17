@@ -1,9 +1,12 @@
-package FYP19.Resolver;
+package FYP19.Resolver.ReflectionImp;
+
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
 
 public class SelfClassLoader extends ClassLoader {
     private String loadingPath;
@@ -16,7 +19,7 @@ public class SelfClassLoader extends ClassLoader {
     protected Class<?> findClass (String name) throws  ClassNotFoundException {
         File file = new File(this.loadingPath,getFileName(name));
         try {
-            System.out.println(file);
+//            System.out.println(file);
             FileInputStream fin = new FileInputStream(file);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             int len = 0;
@@ -31,7 +34,7 @@ public class SelfClassLoader extends ClassLoader {
             byte[] data = baos.toByteArray();
             fin.close();
             baos.close();
-            System.out.println(name);
+//            System.out.println(name);
             return defineClass(name,data,0,data.length);
 
 

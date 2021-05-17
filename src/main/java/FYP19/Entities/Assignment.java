@@ -1,20 +1,15 @@
 package FYP19.Entities;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
 public class Assignment {
-    String id;
-    String title;
-    String description;
-    String module_code;
-    @JsonFormat(
-            pattern = "yyyy-MM-dd HH:mm:ss",
-            timezone = "GMT+8"
-    )
-    Date due_date;
-    Date creation_date;
-    int creator_id;
+    private String id;
+    private String title;
+    private String description;
+    private String module_code;
+    private Date due_date;
+    private Date creation_date;
+    private int creator_id;
 
     public Assignment(String id, String title, String description, String module_code, Date due_date, Date creation_date, int creator_id) {
         this.id = id;

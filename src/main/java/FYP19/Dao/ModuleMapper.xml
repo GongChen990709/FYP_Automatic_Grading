@@ -14,4 +14,15 @@
         WHERE teacher_id = #{teacher_id}
     </select>
 
+    <select id="queryModulesBySid" resultType="Module">
+        SELECT m.code, m.name, m.teacher_id FROM FYP_Automatic_Grading.Module AS m, FYP_Automatic_Grading.Module_registration AS r
+        WHERE m.code = r.module_code
+        AND r.student_id = #{ucd_id}
+    </select>
+
+    <select id="countStudentNumByCode" resultType="int">
+        SELECT COUNT(*) FROM FYP_Automatic_Grading.Module_registration
+        WHERE module_code = #{module_code}
+    </select>
+
 </mapper>

@@ -154,8 +154,9 @@
     top: 0px;
     height: 290px;
 
-    width: 23%;
-    
+    /* width: 23%; */
+    width: 50%;
+
     background:#ffffff;
     margin:auto;
     margin-top: 3%;
@@ -167,7 +168,8 @@
 .register .form #studentId{
     
     border:0;
-    width: 60%;
+    /* width: 60%; */
+    width: 30%;
     height: 8%;
     font-size: 15px;
     color: rgb(0, 0, 0);
@@ -181,7 +183,9 @@
 .register .form #studentName{
     
     border:0;
-    width: 60%;
+    /* width: 60%; */
+    width: 30%;
+
     height: 8%;
     font-size: 15px;
     color: rgb(0, 0, 0);
@@ -205,7 +209,8 @@
 .register .form #studentEmail{
     
     border:0;
-    width: 60%;
+    /* width: 60%; */
+    width: 30%;
     height: 8%;
     font-size: 15px;
     color: rgb(0, 0, 0);
@@ -215,9 +220,10 @@
     margin-top: 10px;
 }
 .register .form #majorCode{
-    
+    box-sizing: content-box;     /*box-sizing*/
     border:0;
-    width: 60%;
+    /* width: 60%; */
+    width: 30%;
     height: 8%;
     font-size: 15px;
     color: rgb(0, 0, 0);
@@ -228,53 +234,91 @@
 }
 
 
-.register .form #idmsg{
+/* .register .form #idmsg{
     position: relative;
     top: -10%;
     left: 62%;
     color: rgb(230, 22, 22);
     
+} */
+
+.register .form #idmsg{
+    position: absolute;
+    float: left;
+    top: 20%;
+    left: 65%;
+    color: rgb(230, 22, 22);
+    
 }
 
-.register .form #notInt{
+/* .register .form #notInt{
     position: relative;
     top: -10%;
     left: 91%;
     color: rgb(230, 22, 22);
+} */
+.register .form #notInt{
+    position: absolute;
+    float: left;
+    top: 20%;
+    left: 65%;
+    color: rgb(230, 22, 22);
 }
 
-.register .form #namemsg{
+/* .register .form #namemsg{
     position: relative;
     top: -10%;
     left: 62%;
     color: rgb(230, 22, 22);
+} */
+.register .form #namemsg{
+    position: absolute;
+    float: left;
+    top: 30%;
+    left: 65%;
+    color: rgb(230, 22, 22);
 }
 
-.register .form #pwdmsg{
+/* .register .form #pwdmsg{
     position: relative;
     top: -10%;
     left: 70%;
     color: rgb(230, 22, 22);
-}
+} */
+
+/* .register .form #emailmsg{
+    position: relative;
+    top: -10%;
+    left: 62%;
+    color: rgb(230, 22, 22);
+} */
 
 .register .form #emailmsg{
-    position: relative;
-    top: -10%;
-    left: 62%;
+    position: absolute;
+    float: left;
+    top: 41%;
+    left: 65%;
     color: rgb(230, 22, 22);
 }
 
-.register .form #majormsg{
+/* .register .form #majormsg{
     position: relative;
     top: -10%;
     left: 70%;
+    color: rgb(230, 22, 22);
+} */
+.register .form #majormsg{
+    position: absolute;
+    float: left;
+    top: 51.5%;
+    left: 65%;
     color: rgb(230, 22, 22);
 }
 
 /* register button */
 .register .form #register{
     position: relative;
-    top: 32px;
+    top: 80px;
     left:-30px;
     display: inline-block;
     padding: 4px 7px;
@@ -302,7 +346,7 @@
 /* back button */
 .register .form #back{
     position: relative;
-    top: 32px;
+    top: 80px;
     left:36px;
     display: inline-block;
     padding: 4px 7px;
@@ -348,7 +392,7 @@
 .uploadFile #button{
     position: relative;
     top: 78px;
-    left:-201px;
+    left:116px;
     display: inline-block;
     padding: 4px 7px;
     font-size: 16px;
@@ -406,7 +450,9 @@
 .register .form #teacherId{
     
     border:0;
-    width: 60%;
+    /* width: 60%; */
+    width: 30%;
+
     height: 8%;
     font-size: 15px;
     color: rgb(0, 0, 0);
@@ -420,7 +466,8 @@
 .register .form #teacherName{
     
     border:0;
-    width: 60%;
+    /* width: 60%; */
+    width: 30%;
     height: 8%;
     font-size: 15px;
     color: rgb(0, 0, 0);
@@ -429,7 +476,7 @@
     padding: 5px 10px;
     margin-top: 10px;
 }
-.register .form #teacherPwd{
+/* .register .form #teacherPwd{
     
     border:0;
     width: 60%;
@@ -440,11 +487,12 @@
     border-bottom: 2px solid#eacda950;
     padding: 5px 10px;
     margin-top: 10px;
-}
+} */
 .register .form #teacherEmail{
     
     border:0;
-    width: 60%;
+    /* width: 60%; */
+    width: 30%;
     height: 8%;
     font-size: 15px;
     color: rgb(0, 0, 0);
@@ -454,9 +502,10 @@
     margin-top: 10px;
 }
 .register .form #depCode{
-    
+    box-sizing: content-box;     /*box-sizing*/
     border:0;
-    width: 60%;
+    /* width: 60%; */
+    width: 30%;
     height: 8%;
     font-size: 15px;
     color: rgb(0, 0, 0);
@@ -466,9 +515,25 @@
     margin-top: 10px;
 }
 
-.register .form #depmsg{
+/* .register .form #depmsg{
     position: relative;
     top: -10%;
     left: 78%;
     color: rgb(230, 22, 22);
+} */
+.register .form #depmsg{
+    position: absolute;
+
+    float: left;
+    top: 51.5%;
+    left: 65%;
+
+    
+    color: rgb(230, 22, 22);
 }
+
+
+
+
+
+

@@ -11,6 +11,9 @@
     <script src="../../js/admin/adminHome.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/admin/adminStudent.css">
 
+    <link rel="stylesheet" type="text/css" href="../common/AlertComponent/hsycmsAlert.css">
+    <script src="../common/AlertComponent/hsycmsAlert.js"></script>
+
 </head>
 <body>
 
@@ -47,24 +50,57 @@
     <div class="register">
         <div class="form">
             
-            <input type="text" id="teacherId"  name="teacherId" placeholder="UCD ID" required="required">
+            <input type="text" id="teacherId"  name="teacherId" placeholder=" Teacher ID" required="required">
             <div id="idmsg"></div>
             <div id="notInt"></div>
-            
-            <input type="text" id="teacherName" name="teacherName" placeholder="Teacher Name">
+            <br/>
+            <input type="text" id="teacherName" name="teacherName" placeholder=" Teacher Name">
             <div id="namemsg"></div>
-
-            <input type="text" id="teacherEmail" name="teacherEmail" placeholder="Email">
+            <br/>
+            
+            <input type="text" id="teacherEmail" name="teacherEmail" placeholder=" Email">
             <div id="emailmsg"></div>
-
-            <input type="text" id="depCode" name="depCode" placeholder="Department Code">
+            <br/>
+            <!-- <input type="text" id="depCode" name="depCode" placeholder="Department Code"> -->
+            <select id="depCode" name="depCode">
+                <option value="" disabled selected style="display:none;">Select Department</option>
+                <option value ="CS">CS</option>
+                <option value ="EE">EE</option>
+            </select>
             <div id="depmsg"></div>
-
+            <br/>
             <button id="register">Register</button>
             <button id="back" onclick="Back()">Back</button>
         </div>
         
     </div>
+
+
+        <!--提交成功-->
+        <div class="hsycms-model-mask" id="mask-success"></div>
+        <div class="hsycms-model hsycms-model-success" id="success">
+        <div class="hsycms-model-icon">
+        <svg width="50" height="50">
+        <circle class="hsycms-alert-svgcircle"  cx="25" cy="25" r="24" fill="none" stroke="#238af4" stroke-width="2"></circle>   
+        <polyline class="hsycms-alert-svggou" fill="none" stroke="#238af4" stroke-width="2.5" points="14,25 23,34 36,18" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        </div>
+        <div class="hsycms-model-text">Success</div>
+        </div>
+    
+        <!--提交失败-->
+        <div class="hsycms-model-mask" id="mask-error"></div>
+        <div class="hsycms-model hsycms-model-error" id="error">
+        <div class="hsycms-model-icon">
+        <svg width="50" height="50">
+        <circle class="hsycms-alert-svgcircle"  cx="25" cy="25" r="24" fill="none" stroke="#f54655" stroke-width="2"></circle>   
+        <polyline class="hsycms-alert-svgca1" fill="none" stroke="#f54655" stroke-width="2.5" points="18,17 32,35" stroke-linecap="round" stroke-linejoin="round" />
+        <polyline class="hsycms-alert-svgca2" fill="none" stroke="#f54655" stroke-width="2.5" points="18,35 32,17" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        </div>
+        <div class="hsycms-model-text" >Fail</div>
+        </div>
+
 
 
     

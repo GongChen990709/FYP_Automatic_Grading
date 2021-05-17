@@ -43,7 +43,7 @@ $(function(){
                 console.log("data is :" + JSON.stringify(result));
                 if (result.status == "Login Success") {
                     if(result.identity=="student"){
-                        window.location.href = "resources/html/student/studentHome.html";
+                        window.location.href = "resources/html/student/studentHomepage.html";
                     }
                     else if(result.identity=="teacher"){
                         window.location.href = "resources/html/teacher/teacherHomePage.html";

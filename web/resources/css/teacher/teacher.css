@@ -1,0 +1,24 @@
+.layui-layout .layui-nav-item #course_name{
+    font-size: 30px;
+}
+
+.layui-layout .layui-nav-item #user_name{
+    font-size: 15px;
+}
+
+.layui-layout .layui-logo{
+    font-size: 25px;
+    font-family: Verdana;
+}
+
+.addButton{
+    position: absolute;
+    margin-top: 50px;
+    margin-left: 550px;
+}
+.layui-body{
+    position: absolute;
+    margin-top: 50px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
