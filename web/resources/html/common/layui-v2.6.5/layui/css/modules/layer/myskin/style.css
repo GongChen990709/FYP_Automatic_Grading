@@ -1,0 +1,18 @@
+body .layerdemo{
+    border-radius: 20px 20px 20px 20px;
+    color:black;
+}
+body .layerdemo .layui-layer-title{
+    background:rgb(1 150 136);
+    border-radius: 20px 20px 0 0;
+    font-size: 25px;
+    font-family: Arial,Verdana,Sans-serif;
+}
+/*body .layerdemo .layui-layer-btn{
+    border-top:1px solid #E9E7E7}
+body .layerdemo .layui-layer-btn a
+    {background:#333;
+}
+body .layerdemo .layui-layer-btn .layui-layer-btn1{
+    background:#999;
+}*/

@@ -11,17 +11,6 @@
         SELECT * FROM FYP_Automatic_Grading.Student
         WHERE ucd_id = #{ucd_id}
     </select>
-    
-    <select id="getAllModules" resultType="Module">
-        SELECT m.code, m.name, m.teacher_id
-        FROM FYP_Automatic_Grading.Module m, FYP_Automatic_Grading.Module_registration r
-        WHERE r.module_code = m.code AND r.student_id = #{ucd_id}
-    </select>
-
-    <select id="getModuleByName" resultType="Module">
-        SELECT * FROM FYP_Automatic_Grading.Module
-        WHERE name = #{module_name}
-    </select>
 
     <insert id="registerStudent" parameterType="Students">
         INSERT INTO FYP_Automatic_Grading.Student (ucd_id, name, email, major_code)

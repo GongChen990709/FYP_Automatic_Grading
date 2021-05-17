@@ -1,18 +1,28 @@
 package FYP19.Controller;
 
-import FYP19.Resolver.JavaCompile;
+import FYP19.Entities.Students;
+import FYP19.Resolver.AssignmentTester.AssignmentTester;
+import FYP19.Resolver.JSONConverter.utils.JsonFileReader;
+import FYP19.Resolver.ReflectionImp.SelfClassLoader;
+import FYP19.Resolver.ReflectionImp.interfaces.ReflectionCallerErrorException;
+import FYP19.Resolver.executor.JavaCompile;
 import FYP19.Service.AssignmentService;
+import FYP19.util.Constants;
+import FYP19.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -151,13 +161,99 @@ public class FileController {
         return returnMap;
     }
 
-    //download assignment requirements in pdf format
-    @RequestMapping("/teacher/pdfDownload")
+
+    @RequestMapping("/student/javaUpload")
     @ResponseBody
-    public Map<String,String> assignmentPDFDownload(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
+    public Map<String,String> studentJavaUpload(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
         Map<String, String> returnMap = new HashMap<String, String>();
+        int ucd_id = ((Students)request.getSession().getAttribute(Constants.USER_SESSION)).getUcd_id();
+        boolean update_flag;
+        String id = request.getParameter("assignment_id");
+        String absPath = request.getSession().getServletContext().getRealPath("/WEB-INF/studentUpload");
+        File filePath = new File(absPath);
+        if (!filePath.exists()) {
+            filePath.mkdir();
+        }
+        try {
+            File assignmentPath = new File(filePath.getPath()+"/"+id);
+            if(!assignmentPath.exists()){
+                assignmentPath.mkdir();
+            }
+            String realPath = assignmentPath+"/"+file.getOriginalFilename();
+            file.transferTo(new File(realPath));
+            Date submission_date = new Date();
+            update_flag = assignmentService.insertStudentSubmission(ucd_id,id,realPath,submission_date);
+        } catch (Exception e) {
+            e.printStackTrace();
+            returnMap.put("code", "1");
+            return returnMap;
+        }
+        if(update_flag==false){
+            returnMap.put("code", "1");
+            return returnMap;
+        }
+        returnMap.put("code","0");
         return returnMap;
     }
+
+    //download assignment requirements in pdf format
+    @RequestMapping("/teacher/pdfDownload")
+    public String assignmentPDFDownload(HttpServletRequest request, HttpServletResponse resp) {
+        String assignmentID = request.getParameter("id");
+        String pdf_path = assignmentService.getPdfPathById(assignmentID);
+        FileUtils.downloadFileByPath(pdf_path,request,resp);
+        return null;
+    }
+
+    //download correct implementation .java file
+    @RequestMapping("/teacher/JavaDownload")
+    public String assignmentJavaDownload(HttpServletRequest request, HttpServletResponse resp) {
+        String assignmentID = request.getParameter("id");
+        String java_path = assignmentService.getJavaPathById(assignmentID);
+        FileUtils.downloadFileByPath(java_path,request,resp);
+        return null;
+    }
+
+    //download data.json file
+    @RequestMapping("/teacher/dataDownload")
+    public String assignmentDataDownload(HttpServletRequest request, HttpServletResponse resp) {
+        String assignmentID = request.getParameter("id");
+        String data_path = assignmentService.getDataPathById(assignmentID);
+        FileUtils.downloadFileByPath(data_path,request,resp);
+        return null;
+    }
+
+    //download datatype.json file
+    @RequestMapping("/teacher/datatypeDownload")
+    public String assignmentDatatypeDownload(HttpServletRequest request, HttpServletResponse resp) {
+        String assignmentID = request.getParameter("id");
+        String datatype_path = assignmentService.getDataTypePathById(assignmentID);
+        FileUtils.downloadFileByPath(datatype_path,request,resp);
+        return null;
+    }
+
+
+
+    //download student uploaded file
+    @RequestMapping("/teacher/studentDownload")
+    public String downloadStudentFile(HttpServletRequest request, HttpServletResponse resp) {
+        String assignment_id = request.getParameter("assignment_id");
+        int student_id = Integer.parseInt(request.getParameter("student_id"));
+        String source_path = assignmentService.queryStudentSourcePath(student_id,assignment_id);
+        FileUtils.downloadFileByPath(source_path, request, resp);
+        return null;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -165,15 +261,38 @@ public class FileController {
 
     @RequestMapping("/testcompile")
     @ResponseBody
-    public void test(HttpServletRequest request) throws ClassNotFoundException {
-        //String path = request.getSession().getServletContext().getRealPath("WEB-INF/classes/FYP19/Resolver");
-        //FYP_Automatic_Grading.out.artifacts.FYP_Automatic_Grading_war_exploded.WEB-INF.classes.FYP19.Resolver.test_tem
-        String src = "/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/StudentSource/test_tem.java";
-        String dest = "/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/StudentSource";
-        JavaCompile compiler = new JavaCompile();
-        compiler.compile(src,dest);
-        //SelfClassLoader loader = new SelfClassLoader("/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded");
-        //System.out.println(loader.loadClass("test_tem"));
+    public void test(HttpServletRequest request) throws ClassNotFoundException, ReflectionCallerErrorException {
+ //       String dataType = JsonFileReader.readJsonFile("/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/AssPDFUpload/bf3166c974cf4bb281040826a60a39e7/test_tem.json");
+ //       String data = JsonFileReader.readJsonFile("/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/AssPDFUpload/bf3166c974cf4bb281040826a60a39e7/test_temTestData.json");
+//        JSONObject dataTypeObject = JSON.parseObject(dataType);
+//        JSONObject dataObject = JSON.parseObject(data);
+
+//        JSONClassConverter class1 = new JSONClassConverter(dataTypeObject);
+//        Map<String, List<List<Object>>> testData = class1.batchTestDataLoader(dataObject);
+//        Map<String, List<Class<?>>> TestMethodParametersType = class1.batchTestMethodParametersTypeLoader(dataObject);
+//
+//        String compileSource = "/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/teacherUpload/b412c4fc07c84ebca0afba54f39fd529/test_tem.java";
+//        String compileDes = "/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/teacherUpload/b412c4fc07c84ebca0afba54f39fd529/";
+//        JavaCompile javaCompile = new JavaCompile();
+//        javaCompile.compile(compileSource, compileDes);
+//
+
+
+        String compileSource2 = "/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/teacherUpload/b412c4fc07c84ebca0afba54f39fd529/test_tem2.java";
+        String compileDes2 = "/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/teacherUpload/b412c4fc07c84ebca0afba54f39fd529/";
+        JavaCompile javaCompile = new JavaCompile();
+        javaCompile.compile(compileSource2, compileSource2, compileDes2);
+
+//        AssignmentTester assignmentTester = new AssignmentTester(dataType);
+//        assignmentTester.dataUpdate(data);
+//        String classPath = "/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/AssPDFUpload/bf3166c974cf4bb281040826a60a39e7";
+//        String className = "test_tem";
+//        Map<String,List<Object>> teacherResult = assignmentTester.classTest(classPath, className);
+//        System.out.println(teacherResult);
+//        Map<String,List<Object>> studentResult = assignmentTester.classTest(classPath, className);
+//        System.out.println(studentResult);
+//        Map<String,List<Boolean>> judge =  assignmentTester.resultCompare(studentResult, teacherResult);
+//        System.out.println(judge);
     }
 
 }

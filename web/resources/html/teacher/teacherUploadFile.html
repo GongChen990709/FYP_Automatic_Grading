@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">-->
+    <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="../common/layui-v2.6.5/layui/css/layui.css"/>
+    <script type="text/javascript" src="../common/layui-v2.6.5/layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
+    <script type="text/javascript" src="../../js/teacher/teacherCommon.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/teacher/teacher.css"/>
+
+    <title> Teacher Upload Files </title>
+    <script>
+        $(function () {
+            var basepath = "/" + window.location.pathname.split("/")[1];
+            var assignment_id=GetAssignmentID();
+            $.ajax({
+                url:basepath+"/assignment/fileStatus",
+                dataType:'json',
+                data:{"assignment_id":assignment_id},
+                type:'post',
+                success:function (json) {
+                    console.log(json);
+                    if(json.pdf=="true"){
+                        $("#file1").html("(Uploaded)")
+
+                    }if(json.pdf=="false"){
+                        $("#file1").html("(Not Uploaded)")
+
+                    }if(json.java=="true"){
+                        $("#file2").html("(Uploaded)")
+
+                    }if(json.java=="false"){
+                        $("#file2").html("(Not Uploaded)")
+
+                    }if(json.dataType=="true"){
+                        $("#file3").html("(Uploaded)")
+
+                    }if(json.dataType=="false"){
+                        $("#file3").html("(Not Uploaded)")
+
+                    }if(json.data=="true"){
+                        $("#file4").html("(Uploaded)")
+
+                    }if(json.data=="false"){
+                        $("#file4").html("(Not Uploaded)")
+
+                    }
+                }
+            })
+
+        })
+    </script>
+    <script>
+        function update1() {
+            var basepath = "/" + window.location.pathname.split("/")[1];
+            var assignment_id=GetAssignmentID();
+            $.ajax({
+                url:basepath+"/assignment/fileStatus",
+                dataType:'json',
+                data:{"assignment_id":assignment_id},
+                type:'post',
+                success:function (json) {
+                    console.log(json);
+                    if(json.pdf=="true"){
+                        $("#file1").html("(Uploaded)")
+
+                    }if(json.pdf=="false"){
+                        $("#file1").html("(Not Uploaded)")
+
+                    }if(json.java=="true"){
+                        $("#file2").html("(Uploaded)")
+
+                    }if(json.java=="false"){
+                        $("#file2").html("(Not Uploaded)")
+
+                    }if(json.dataType=="true"){
+                        $("#file3").html("(Uploaded)")
+
+                    }if(json.dataType=="false"){
+                        $("#file3").html("(Not Uploaded)")
+
+                    }if(json.data=="true"){
+                        $("#file4").html("(Uploaded)")
+
+                    }if(json.data=="false"){
+                        $("#file4").html("(Not Uploaded)")
+
+                    }
+                }
+            })
+
+        }
+    </script>
+
+    <script>
+        layui.use(['layer','form','upload','element'],function () {
+            var $ = layui.jquery;
+            var layer = layui.layer;
+            var upload = layui.upload;
+            var element = layui.element;
+            var demoListView = $('#demoList1');
+            var assignment_id=GetAssignmentID();
+            var basepath = "/" + window.location.pathname.split("/")[1];
+            console.log("Assignement id:"+assignment_id);
+            var uploadListIns= upload.render({
+                elem: '#fileList1',
+                url:basepath+"/teacher/pdfUpload?assignment_id="+assignment_id,
+                accept:'file',
+                exts:'zip|doc|pdf',
+                //data:{"assignment_id":assignment_id},
+                multiple:true,
+                auto:false,
+                bindAction:'#fileListAction1',
+                progress: function(percent,elem,index){
+                element.progress('demoList1', percent + '%'); //执行进度条。n 即为返回的进度百分比
+                },
+                choose:function (obj) {
+                    var that=this;
+                    var files=this.files=obj.pushFile();
+                    obj.preview(function(index, file, result){
+                    var tr = $(['<tr id="upload-'+ index +'">'
+                                   ,'<td>'+ file.name +'</td>'
+                                   ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+                                   ,'<td><div class="layui-progress layui-progress-big"  lay-filter="progress_'+ index
+                                    +'"><div class="layui-progress-bar" lay-percent=""></div></div></td>'
+                                   ,'<td>waiting for uploading</td>'
+                                   ,'<td>'
+                                   ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">Reupload</button>'
+                                   ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">Delete</button>'
+                                   ,'</td>'
+                                   ,'</tr>'].join(''));
+                                                             //单个重传
+                    tr.find('.demo-reload').on('click', function(){
+                        obj.upload(index, file);
+                    });
+
+                                                             //删除
+                    tr.find('.demo-delete').on('click', function(){
+                        delete files[index]; //删除对应的文件
+                        tr.remove();
+                        uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                    });
+                    demoListView.append(tr);
+                        element.render('progress'); //渲染新加的进度条组件
+                    });
+                }
+                ,done:function (res,index,upload) {
+                    if(res.code==0){
+                        layer.msg("success");
+
+                        var tds=$("#upload-"+index).children();
+                        tds.eq(3).html('<span style="color: #5FB878;">upload successfully</span>');
+                        tds.eq(4).html(''); // 清空操作
+                        return delete this.files[index]; // 删除文件队列已经上传成功的文件
+                    }
+                    this.error(index, upload);
+                }
+                ,allDone: function(obj){ //多文件上传完毕后的状态回调
+                    console.log(obj)
+                }
+
+                ,error: function(index, upload){
+                    var tr = demoListView.find('tr#upload-'+ index)
+                        ,tds = tr.children();
+                    tds.eq(3).html('<span style="color: #FF5722;">fail to upload</span>');
+                    tds.eq(4).find('.demo-reload').removeClass('layui-hide'); // 显示重传
+                }
+
+            })
+
+        });
+    </script>
+
+    <script>
+        layui.use(['layer','form','upload','element'],function () {
+            var $ = layui.jquery;
+            var layer = layui.layer;
+            var upload = layui.upload;
+            var element = layui.element;
+            var demoListView = $('#demoList2');
+            var assignment_id=GetAssignmentID();
+            var basepath = "/" + window.location.pathname.split("/")[1];
+            console.log("Assignement id:"+assignment_id);
+            var uploadListIns= upload.render({
+                elem: '#fileList2',   //。。。。。。。。。
+                url:basepath+"/teacher/JavaUpload?assignment_id="+assignment_id,
+                accept:'file',
+
+                data:{"assignment_id":assignment_id},
+                multiple:true,
+                auto:false,
+                bindAction:'#fileListAction2',    //。。。。。。。。
+                progress: function(percent,elem,index){
+                    element.progress('demoList2', percent + '%'); //执行进度条。n 即为返回的进度百分比 //。。。。。。
+                },
+                choose:function (obj) {
+                    var that=this;
+                    var files=this.files=obj.pushFile();
+                    obj.preview(function(index, file, result){
+                        var tr = $(['<tr id="upload-'+ index +'">'
+                            ,'<td>'+ file.name +'</td>'
+                            ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+                            ,'<td><div class="layui-progress layui-progress-big"  lay-filter="progress_'+ index
+                            +'"><div class="layui-progress-bar" lay-percent=""></div></div></td>'
+                            ,'<td>waiting for uploading</td>'
+                            ,'<td>'
+                            ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">Reupload</button>'
+                            ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">Delete</button>'
+                            ,'</td>'
+                            ,'</tr>'].join(''));
+                        //单个重传
+                        tr.find('.demo-reload').on('click', function(){
+                            obj.upload(index, file);
+                        });
+
+                        //删除
+                        tr.find('.demo-delete').on('click', function(){
+                            delete files[index]; //删除对应的文件
+                            tr.remove();
+                            uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                        });
+                        demoListView.append(tr);
+                        element.render('progress'); //渲染新加的进度条组件
+                    });
+                },done:function (res,index,upload) {
+                    if(res.code==0){
+                        layer.msg("success");
+
+                        var tds=$("#upload-"+index).children();
+                        tds.eq(3).html('<span style="color: #5FB878;">upload successfully</span>');
+                        tds.eq(4).html(''); // 清空操作
+                        return delete this.files[index]; // 删除文件队列已经上传成功的文件
+                    }
+                    this.error(index, upload);
+                },allDone: function(obj){ //多文件上传完毕后的状态回调
+                    console.log(obj)
+                },error: function(index, upload){
+                    var tr = demoListView.find('tr#upload-'+ index)
+                        ,tds = tr.children();
+                    tds.eq(3).html('<span style="color: #FF5722;">fail to upload</span>');
+                    tds.eq(4).find('.demo-reload').removeClass('layui-hide'); // 显示重传
+                }
+            })
+
+        });
+    </script>
+
+    <script>
+        layui.use(['layer','form','upload','element'],function () {
+            var $ = layui.jquery;
+            var layer = layui.layer;
+            var upload = layui.upload;
+            var element = layui.element;
+            var demoListView = $('#demoList3');  //。。。。。。。
+            var assignment_id=GetAssignmentID();
+            var basepath = "/" + window.location.pathname.split("/")[1];
+            console.log("Assignement id:"+assignment_id);
+            var uploadListIns= upload.render({
+                elem: '#fileList3',   //。。。。。。。。。
+                url:basepath+"/teacher/DataTypeUpload?assignment_id="+assignment_id,
+                accept:'file',
+
+                data:{"assignment_id":assignment_id},
+                multiple:true,
+                auto:false,
+                bindAction:'#fileListAction3',    //。。。。。。。。
+                progress: function(percent,elem,index){
+                    element.progress('demoList3', percent + '%'); //执行进度条。n 即为返回的进度百分比 //。。。。。。
+                },
+                choose:function (obj) {
+                    var that=this;
+                    var files=this.files=obj.pushFile();
+                    obj.preview(function(index, file, result){
+                        var tr = $(['<tr id="upload-'+ index +'">'
+                            ,'<td>'+ file.name +'</td>'
+                            ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+                            ,'<td><div class="layui-progress layui-progress-big"  lay-filter="progress_'+ index
+                            +'"><div class="layui-progress-bar" lay-percent=""></div></div></td>'
+                            ,'<td>waiting for uploading</td>'
+                            ,'<td>'
+                            ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">Reupload</button>'
+                            ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">Delete</button>'
+                            ,'</td>'
+                            ,'</tr>'].join(''));
+                        //单个重传
+                        tr.find('.demo-reload').on('click', function(){
+                            obj.upload(index, file);
+                        });
+
+                        //删除
+                        tr.find('.demo-delete').on('click', function(){
+                            delete files[index]; //删除对应的文件
+                            tr.remove();
+                            uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                        });
+                        demoListView.append(tr);
+                        element.render('progress'); //渲染新加的进度条组件
+                    });
+                },done:function (res,index,upload) {
+                    if(res.code==0){
+                        layer.msg("success");
+
+                        var tds=$("#upload-"+index).children();
+                        tds.eq(3).html('<span style="color: #5FB878;">upload successfully</span>');
+                        tds.eq(4).html(''); // 清空操作
+                        return delete this.files[index]; // 删除文件队列已经上传成功的文件
+                    }
+                    this.error(index, upload);
+                },allDone: function(obj){ //多文件上传完毕后的状态回调
+                    console.log(obj)
+                },error: function(index, upload){
+                    var tr = demoListView.find('tr#upload-'+ index)
+                        ,tds = tr.children();
+                    tds.eq(3).html('<span style="color: #FF5722;">fail to upload</span>');
+                    tds.eq(4).find('.demo-reload').removeClass('layui-hide'); // 显示重传
+                }
+            })
+
+        });
+    </script>
+
+    <script>
+        layui.use(['layer','form','upload','element'],function () {
+            var $ = layui.jquery;
+            var layer = layui.layer;
+            var upload = layui.upload;
+            var element = layui.element;
+            var demoListView = $('#demoList4');  //。。。。。。。
+            var assignment_id=GetAssignmentID();
+            var basepath = "/" + window.location.pathname.split("/")[1];
+            console.log("Assignement id:"+assignment_id);
+            var uploadListIns= upload.render({
+                elem: '#fileList4',   //。。。。。。。。。
+                url:basepath+"/teacher/DataUpload?assignment_id="+assignment_id,
+                accept:'file',
+
+                data:{"assignment_id":assignment_id},
+                multiple:true,
+                auto:false,
+                bindAction:'#fileListAction4',    //。。。。。。。。
+                progress: function(percent,elem,index){
+                    element.progress('demoList4', percent + '%'); //执行进度条。n 即为返回的进度百分比 //。。。。。。
+                },
+                choose:function (obj) {
+                    var that=this;
+                    var files=this.files=obj.pushFile();
+                    obj.preview(function(index, file, result){
+                        var tr = $(['<tr id="upload-'+ index +'">'
+                            ,'<td>'+ file.name +'</td>'
+                            ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+                            ,'<td><div class="layui-progress layui-progress-big"  lay-filter="progress_'+ index
+                            +'"><div class="layui-progress-bar" lay-percent=""></div></div></td>'
+                            ,'<td>waiting for uploading</td>'
+                            ,'<td>'
+                            ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">Reupload</button>'
+                            ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">Delete</button>'
+                            ,'</td>'
+                            ,'</tr>'].join(''));
+                        //单个重传
+                        tr.find('.demo-reload').on('click', function(){
+                            obj.upload(index, file);
+                        });
+
+                        //删除
+                        tr.find('.demo-delete').on('click', function(){
+                            delete files[index]; //删除对应的文件
+                            tr.remove();
+                            uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                        });
+                        demoListView.append(tr);
+                        element.render('progress'); //渲染新加的进度条组件
+                    });
+                },done:function (res,index,upload) {
+                    if(res.code==0){
+                        layer.msg("success");
+
+                        var tds=$("#upload-"+index).children();
+                        tds.eq(3).html('<span style="color: #5FB878;">upload successfully</span>');
+                        tds.eq(4).html(''); // 清空操作
+                        return delete this.files[index]; // 删除文件队列已经上传成功的文件
+                    }
+                    this.error(index, upload);
+                },allDone: function(obj){ //多文件上传完毕后的状态回调
+                    console.log(obj)
+                },error: function(index, upload){
+                    var tr = demoListView.find('tr#upload-'+ index)
+                        ,tds = tr.children();
+                    tds.eq(3).html('<span style="color: #FF5722;">fail to upload</span>');
+                    tds.eq(4).find('.demo-reload').removeClass('layui-hide'); // 显示重传
+                }
+            })
+
+        });
+    </script>
+
+
+
+</head>
+
+
+
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-green" >
+        <div class="layui-logo layui-hide-xs layui-bg-black">Teacher</div>
+        <!-- 头部区域（可配合layui 已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left ">
+            <!-- 移动端显示 -->
+            <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+                <i class="layui-icon layui-icon-spread-left"></i>
+            </li>
+
+            <li class="layui-nav-item"><a href="#" id="course_name"> <!--course name--></a></li>
+
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+                <a href="javascript:;">
+
+                    <span id="user_name">   </span><!-- user name-->
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">Settings</a></dd>
+                    <dd><a href="">Sign out</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">Assignment</a>
+                    <dl class="layui-nav-child">
+                        <dd id="addAssignment">           </dd>
+                        <dd id="checkAssignment">       </dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item" id="checkGrade">   </li>
+
+            </ul>
+        </div>
+    </div>
+
+     <div class="layui-body">
+         <div class="file1">
+
+             <div style="font-size: 25px; font-family: 'Verdana'; margin-bottom: 20px">
+                 1. Please upload the Assignement Requirement: <span id="file1" style="color:red;">  </span>
+             </div>
+
+             <div class="layui-upload">
+                 <button type="button" class="layui-btn layui-btn-normal" id="fileList1">Select Files</button>
+                 <div class="layui-upload-list" style="max-width: 1000px;">
+                     <table class="layui-table">
+                         <colgroup>
+                             <col>
+                             <col width="150">
+                             <col width="260">
+                             <col width="260">
+                             <col width="150">
+                         </colgroup>
+                         <thead>
+                         <tr><th>File Name</th>
+                             <th>File Size</th>
+                             <th>Upload Progress</th>
+                             <th>Situation</th>
+                             <th>Operation</th>
+                         </tr></thead>
+                         <!--<tbody id="demoList"></tbody>-->
+                         <tbody class="layui-progress" lay-showpercent="true" lay-filter="demoList1"
+                                id="demoList1"></tbody>
+                     </table>
+                 </div>
+                 <button type="button" class="layui-btn" id="fileListAction1" onclick="update1()">Submit</button>
+             </div>
+         </div>
+
+
+         <div class="file2" style="margin-top: 40px">
+             <div style="font-size: 25px; font-family: 'Verdana'; margin-bottom: 20px">
+                 2. Please upload the Sample Answer: <span id="file2" style="color:red;"> </span>
+             </div>
+
+             <div class="layui-upload">
+                 <button type="button" class="layui-btn layui-btn-normal" id="fileList2">Select Files</button>
+                 <div class="layui-upload-list" style="max-width: 1000px;">
+                     <table class="layui-table">
+                         <colgroup>
+                             <col>
+                             <col width="150">
+                             <col width="260">
+                             <col width="260">
+                             <col width="150">
+                         </colgroup>
+                         <thead>
+                         <tr><th>File Name</th>
+                             <th>File Size</th>
+                             <th>Upload Progress</th>
+                             <th>Situation</th>
+                             <th>Operation</th>
+                         </tr></thead>
+                         <!--<tbody id="demoList"></tbody>-->
+                         <tbody class="layui-progress" lay-showpercent="true" lay-filter="demoList2"
+                                id="demoList2"></tbody>
+                     </table>
+                 </div>
+                 <button type="button" class="layui-btn" id="fileListAction2" onclick="update1()">Submit</button>
+             </div>
+         </div>
+
+
+         <div class="file3" style="margin-top: 40px">
+             <div style="font-size: 25px; font-family: 'Verdana'; margin-bottom: 20px">
+                 3. Please upload the DataType.json: <span id="file3" style="color:red;"> </span>
+             </div>
+
+             <div class="layui-upload">
+                 <button type="button" class="layui-btn layui-btn-normal" id="fileList3">Select Files</button>
+                 <div class="layui-upload-list" style="max-width: 1000px;">
+                     <table class="layui-table">
+                         <colgroup>
+                             <col>
+                             <col width="150">
+                             <col width="260">
+                             <col width="260">
+                             <col width="150">
+                         </colgroup>
+                         <thead>
+                         <tr><th>File Name</th>
+                             <th>File Size</th>
+                             <th>Upload Progress</th>
+                             <th>Situation</th>
+                             <th>Operation</th>
+                         </tr></thead>
+                         <!--<tbody id="demoList"></tbody>-->
+                         <tbody class="layui-progress" lay-showpercent="true" lay-filter="demoList3"
+                                id="demoList3"></tbody>
+                     </table>
+                 </div>
+                 <button type="button" class="layui-btn" id="fileListAction3" onclick="update1()">Submit</button>
+             </div>
+         </div>
+
+         <div class="file4" style="margin-top: 40px">
+             <div style="font-size: 25px; font-family: 'Verdana'; margin-bottom: 20px">
+                 4. Please upload the Data.json: <span id="file4" style="color:red;"> </span>
+             </div>
+
+             <div class="layui-upload">
+                 <button type="button" class="layui-btn layui-btn-normal" id="fileList4">Select Files</button>
+                 <div class="layui-upload-list" style="max-width: 1000px;">
+                     <table class="layui-table">
+                         <colgroup>
+                             <col>
+                             <col width="150">
+                             <col width="260">
+                             <col width="260">
+                             <col width="150">
+                         </colgroup>
+                         <thead>
+                         <tr><th>File Name</th>
+                             <th>File Size</th>
+                             <th>Upload Progress</th>
+                             <th>Situation</th>
+                             <th>Operation</th>
+                         </tr></thead>
+                         <!--<tbody id="demoList"></tbody>-->
+                         <tbody class="layui-progress" lay-showpercent="true" lay-filter="demoList4"
+                                id="demoList4"></tbody>
+                     </table>
+                 </div>
+                 <button type="button" class="layui-btn" id="fileListAction4" onclick="update1()">Submit</button>
+             </div>
+         </div>
+
+     </div>
+
+    <!--   <div class="layui-footer">
+           &lt;!&ndash; 底部固定区域 &ndash;&gt;
+           底部固定区域
+       </div>-->
+</div>
+
+
+</body>
+</html>

@@ -2,6 +2,7 @@ package FYP19.Controller;
 
 import FYP19.Entities.Module;
 import FYP19.Entities.Students;
+import FYP19.Entities.Teacher;
 import FYP19.Service.StudentsService;
 import FYP19.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,22 +23,17 @@ public class StudentController{
     @Autowired
     @Qualifier("StudentsServiceImpl")
     private StudentsService studentService;
+
     @RequestMapping("/allModules")
     @ResponseBody
-    public List<Module> queryAllModules(HttpServletRequest request){
-        Students student  = (Students) request.getSession().getAttribute(Constants.USER_SESSION);
-        List<Module> modules = studentService.getAllModules(student.getUcd_id());
-        return modules;
+    public List<Object> allModules(HttpServletRequest request){
+        List<Object> resultList = new ArrayList<Object>();
+        Students student = (Students) request.getSession().getAttribute(Constants.USER_SESSION);
+        resultList.add(student);
+        List<Module> moduleList= studentService.queryAllModules(student.getUcd_id());
+        resultList.addAll(moduleList);
+        return resultList;
     }
-
-    @RequestMapping("/oneModule")
-    @ResponseBody
-    public Module queryOneModule(@RequestBody Map<String,String> map, HttpServletRequest request){
-        String moduleName = map.get("moduleName");
-        Module module = studentService.getModuleByName(moduleName);
-        return module;
-    }
-
 
 
 }

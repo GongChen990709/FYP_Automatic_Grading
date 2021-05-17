@@ -14,4 +14,16 @@
         WHERE id = #{admin_id}
     </select>
 
+    <insert id="insertStudentHistory" parameterType="Registration_History">
+        INSERT INTO FYP_Automatic_Grading.Registration_history (history_id, registration_date, id, name, major_code, depart_code, email, type, status)
+        VALUES (#{history_id},#{registration_date},#{id},#{name},#{major_code},#{depart_code},#{email},#{type},#{status})
+    </insert>
+
+    <select id="queryStudentHistoryByTimeAndStatus" resultType="Registration_History">
+        SELECT * FROM FYP_Automatic_Grading.Registration_history
+        WHERE registration_date = #{time}
+        AND status like '${status}%'
+        AND type = 'student'
+    </select>
+
 </mapper>

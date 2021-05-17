@@ -18,6 +18,8 @@
     <bean id="StudentsServiceImpl" class="FYP19.Service.StudentsServiceImpl">
         <property name="studentsMapper" ref="studentsMapper"/>
         <property name="userMapper" ref="userMapper"/>
+        <property name="adminMapper" ref="adminMapper"/>
+        <property name="moduleMapper" ref="moduleMapper"/>
     </bean>
 
     <bean id="TeacherServiceImpl" class="FYP19.Service.TeacherServiceImpl">

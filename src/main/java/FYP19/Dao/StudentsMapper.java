@@ -12,8 +12,6 @@ public interface StudentsMapper {
     //All parameters in SQLs in Mapper.xml file are the same as the name specified within @Param
     //for primitive types paras(int string..)
     Students queryStudentById(@Param("ucd_id") int ucd_id);
-    List<Module> getAllModules(@Param("ucd_id") int ucd_id);
-    Module getModuleByName(@Param("module_name") String module_name);
     int registerStudent(Students stu);
     int insertMajor(Major major);
     Major queryMajorByCode(@Param("code") String code);

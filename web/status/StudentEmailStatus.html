@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    
+
+    <style>
+        *{
+            padding:0;
+            margin:0;
+        }
+        table{
+            width:500px;
+            margin:100px auto;
+            border-collapse:collapse;/*边框合并模式*/
+            text-align:center;
+        }
+        td,th{
+            border:1px solid #333;
+        }
+        thead tr{
+            height:40px;
+            background-color: #cccccc;
+        }
+    </style>
+    <script src="../jquery-3.6.0.js"></script>
+   
+</head>
+<body>
+
+    <div style="position: relative; left: 200px;top: 100px;">
+        Email sending success table
+    </div>
+<table>
+
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email Address</th>
+            <th>Major</th>
+            <th>Status</th>
+            
+        </tr>
+    </thead>
+
+    <tbody id="successBody">
+
+    </tbody>
+
+</table>
+
+<div style="position: relative; left: 200px;top: 100px;">
+    Email sending fail table
+</div>
+<table>
+
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email Address</th>
+            <th>Major</th>
+            <th>Status</th>
+            
+        </tr>
+    </thead>
+
+    <tbody id="failBody">
+
+    </tbody>
+    
+</table>
+
+</body>
+
+<script src="getEmailStatus.js"></script>
+</html>

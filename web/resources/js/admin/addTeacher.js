@@ -12,27 +12,27 @@ $(function(){
         var depCode = $("#depCode").val();
 
         if(!id){
-            $("#idmsg").html("id cannot be null");
+            $("#idmsg").html("Id cannot be empty");
             $("#teacherId").focus();
             setTimeout("$('#idmsg').html('')",2400);
             return false;
         }else if(!(/(^[1-9]\d*$)/.test(id))){
-            $("#notInt").html("id should only be a positive integer");
+            $("#notInt").html("Id should only be a positive integer");
             $("#teacherId").focus();
             setTimeout("$('#notInt').html('')",2400);
             return false;
         }else if(!name){
-            $("#namemsg").html("name cannot be null");
+            $("#namemsg").html("Name cannot be empty");
             $("#teacherName").focus();
             setTimeout("$('#namemsg').html('')",2400);
             return false;
         }else if(!email){
-            $("#emailmsg").html("email cannot be null");
+            $("#emailmsg").html("Email cannot be empty");
             $("#teacherEmail").focus();
             setTimeout("$('#emailmsg').html('')",2400);
             return false;
         }else if(!depCode){
-            $("#depmsg").html("department code cannot be null");
+            $("#depmsg").html("Please choose a department");
             $("#depCode").focus();
             setTimeout("$('#depmsg').html('')",2400);
             return false;
@@ -43,10 +43,12 @@ $(function(){
             $("#depmsg").html("");
         }
 
-        var obj = { "id":id, "name":name,"email":email,"department_code":depCode};
+        var obj = { "id":id, "name":name, "email":email,"department_code":depCode};
         var myJson = JSON.stringify(obj);
 
-        alert(myJson)
+        // alert(myJson)
+        // success();
+        // error();
 
         $.ajax({
             type: "POST",
@@ -57,10 +59,13 @@ $(function(){
             success: function (result) {
                 //console.log("data is :" + JSON.stringify(result));
                 if (result.status == "true") {
-                    window.location.href="../../html/admin/adminHome.html";
+                    success();
+                    setTimeout("window.location.href='../../html/admin/addTeacher.html'", 3200 )
                 }
                 else {
-                    alert(result.status+" Please check again");
+                    error();
+                    setTimeout("window.location.href='../../html/admin/addTeacher.html'",3200)
+                    
                 }
             }
         });
@@ -69,3 +74,15 @@ $(function(){
     })
 
 })
+
+
+
+//操作成功调用 
+function success(){
+    hsycms.success('success','Registration Completed',function(){  console.log('操作成功关闭后');  },3200)
+}
+
+//操作失败调用
+function error(){
+    hsycms.error('error','Registration Failed',function(){  console.log('操作失败关闭后');  },3200)
+}

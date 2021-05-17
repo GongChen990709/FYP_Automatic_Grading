@@ -1,51 +1,50 @@
 package FYP19.Service;
 
+import FYP19.Dao.AdminMapper;
+import FYP19.Dao.ModuleMapper;
 import FYP19.Dao.StudentsMapper;
 import FYP19.Dao.UserMapper;
 import FYP19.Entities.Major;
 import FYP19.Entities.Module;
+import FYP19.Entities.Registration_History;
 import FYP19.Entities.Students;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
 public class StudentsServiceImpl implements StudentsService{
     private StudentsMapper studentsMapper;
     private UserMapper userMapper;
+    private AdminMapper adminMapper;
+    private ModuleMapper moduleMapper;
     public void setStudentsMapper(StudentsMapper studentsMapper) {
         this.studentsMapper = studentsMapper;
     }
     public void setUserMapper(UserMapper userMapper){this.userMapper = userMapper;}
+    public void setAdminMapper(AdminMapper adminMapper) {
+        this.adminMapper = adminMapper;
+    }
+    public void setModuleMapper(ModuleMapper moduleMapper){this.moduleMapper = moduleMapper;}
+
 
     public Students queryStudentById(int ucd_id) {
         return studentsMapper.queryStudentById(ucd_id);
     }
-    public List<Module> getAllModules(int ucd_id) {
-        return studentsMapper.getAllModules(ucd_id);
-    }
-    public Module getModuleByName(String module_name) {
-        return studentsMapper.getModuleByName(module_name);
-    }
-    public void batchRegStudents(List<Students> studentList) {
-        for(Students stu : studentList){
-            System.out.println(stu);
-            Major major = studentsMapper.queryMajorByCode(stu.getMajor_code());
-            if(major==null){
-                String title = "";
-                if(stu.getMajor_code().equals("EEEN")){
-                    title = "Electronic Engineer";
-                }
-                else if(stu.getMajor_code().equals("COMP")){
-                    title = "Internet Of Things";
-                }
-                studentsMapper.insertMajor(new Major(stu.getMajor_code(),title));
-            }
-            studentsMapper.registerStudent(stu);
-        }
+
+
+    public int countStudentNumByCode(String module_code){
+        return moduleMapper.countStudentNumByCode(module_code);
     }
 
-///////////////////////////////
+
+    public List<Module> queryAllModules(int ucd_id) {
+        return moduleMapper.queryModulesBySid(ucd_id);
+    }
+
+
+    ///////////////////////////////
 //Registration Service
     public boolean updateIsActivatedById(int ucd_id, boolean isActivated) {
         if(studentsMapper.updateIsActivatedById(ucd_id, isActivated)==1){
@@ -122,6 +121,13 @@ public class StudentsServiceImpl implements StudentsService{
         return pwd_flag&&code_flag&&activate_flag;
     }
 //////////////////////////////
-
+//Registration History
+    public void insertStudentHistory(Registration_History history) {
+        adminMapper.insertStudentHistory(history);
+    }
+    public List<Registration_History> queryStudentHistoryByTimeAndStatus(String time, String status) {
+        return adminMapper.queryStudentHistoryByTimeAndStatus(time,status);
+    }
+//////////////////////////////
 
 }
