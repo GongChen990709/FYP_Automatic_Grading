@@ -1,18 +1,14 @@
 package FYP19.Controller;
 
 import FYP19.Entities.Students;
-import FYP19.Resolver.AssignmentTester.AssignmentTester;
-import FYP19.Resolver.JSONConverter.utils.JsonFileReader;
-import FYP19.Resolver.ReflectionImp.SelfClassLoader;
-import FYP19.Resolver.ReflectionImp.interfaces.ReflectionCallerErrorException;
-import FYP19.Resolver.executor.JavaCompile;
+import FYP19.AutoGrading.ReflectionImp.interfaces.ReflectionCallerErrorException;
+import FYP19.AutoGrading.executor.JavaCompile;
 import FYP19.Service.AssignmentService;
 import FYP19.util.Constants;
 import FYP19.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -32,6 +27,9 @@ public class FileController {
     @Qualifier("AssignmentService")
     private AssignmentService assignmentService;
 
+///////////////////////////////////////////////
+//Teacher Functions Unit
+    //1. Adding an assignment, uploading 4 files
     //Upload assignment requirements in pdf format
     @RequestMapping("/teacher/pdfUpload")
     @ResponseBody
@@ -96,7 +94,7 @@ public class FileController {
         returnMap.put("code","0");
         return returnMap;
     }
-    //Upload data.json for specifying test data for assignments
+    //Upload data.json for specifying test data for the assignment
     @RequestMapping("/teacher/DataUpload")
     @ResponseBody
     public Map<String,String> DataUpload(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
@@ -128,7 +126,7 @@ public class FileController {
         returnMap.put("code","0");
         return returnMap;
     }
-    //Upload datatype.json for specifying  assignment requirements
+    //Upload datatype.json for specifying assignment requirements
     @RequestMapping("/teacher/DataTypeUpload")
     @ResponseBody
     public Map<String,String> DataTypeUpload(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
@@ -161,7 +159,53 @@ public class FileController {
         return returnMap;
     }
 
+    //2. Downloading 4 files
+    @RequestMapping("/teacher/pdfDownload")
+    public String assignmentPDFDownload(HttpServletRequest request, HttpServletResponse resp) {
+        String assignmentID = request.getParameter("id");
+        String pdf_path = assignmentService.getPdfPathById(assignmentID);
+        FileUtils.downloadFileByPath(pdf_path,request,resp);
+        return null;
+    }
+    //Download correct implementation .java file
+    @RequestMapping("/teacher/JavaDownload")
+    public String assignmentJavaDownload(HttpServletRequest request, HttpServletResponse resp) {
+        String assignmentID = request.getParameter("id");
+        String java_path = assignmentService.getJavaPathById(assignmentID);
+        FileUtils.downloadFileByPath(java_path,request,resp);
+        return null;
+    }
+    //Download data.json file
+    @RequestMapping("/teacher/dataDownload")
+    public String assignmentDataDownload(HttpServletRequest request, HttpServletResponse resp) {
+        String assignmentID = request.getParameter("id");
+        String data_path = assignmentService.getDataPathById(assignmentID);
+        FileUtils.downloadFileByPath(data_path,request,resp);
+        return null;
+    }
+    //Download datatype.json file
+    @RequestMapping("/teacher/datatypeDownload")
+    public String assignmentDatatypeDownload(HttpServletRequest request, HttpServletResponse resp) {
+        String assignmentID = request.getParameter("id");
+        String datatype_path = assignmentService.getDataTypePathById(assignmentID);
+        FileUtils.downloadFileByPath(datatype_path,request,resp);
+        return null;
+    }
 
+    //3. Downloading student source file
+    //Download student uploaded source code .java file
+    @RequestMapping("/teacher/studentDownload")
+    public String downloadStudentFile(HttpServletRequest request, HttpServletResponse resp) {
+        String assignment_id = request.getParameter("assignment_id");
+        int student_id = Integer.parseInt(request.getParameter("student_id"));
+        String source_path = assignmentService.queryStudentSourcePath(student_id,assignment_id);
+        FileUtils.downloadFileByPath(source_path, request, resp);
+        return null;
+    }
+
+////////////////////////////////////////////////////
+//Student Function Unit
+    //1. Submit assignment source .java file
     @RequestMapping("/student/javaUpload")
     @ResponseBody
     public Map<String,String> studentJavaUpload(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
@@ -196,49 +240,11 @@ public class FileController {
         return returnMap;
     }
 
-    //download assignment requirements in pdf format
-    @RequestMapping("/teacher/pdfDownload")
-    public String assignmentPDFDownload(HttpServletRequest request, HttpServletResponse resp) {
-        String assignmentID = request.getParameter("id");
-        String pdf_path = assignmentService.getPdfPathById(assignmentID);
-        FileUtils.downloadFileByPath(pdf_path,request,resp);
-        return null;
-    }
-
-    //download correct implementation .java file
-    @RequestMapping("/teacher/JavaDownload")
-    public String assignmentJavaDownload(HttpServletRequest request, HttpServletResponse resp) {
-        String assignmentID = request.getParameter("id");
-        String java_path = assignmentService.getJavaPathById(assignmentID);
-        FileUtils.downloadFileByPath(java_path,request,resp);
-        return null;
-    }
-
-    //download data.json file
-    @RequestMapping("/teacher/dataDownload")
-    public String assignmentDataDownload(HttpServletRequest request, HttpServletResponse resp) {
-        String assignmentID = request.getParameter("id");
-        String data_path = assignmentService.getDataPathById(assignmentID);
-        FileUtils.downloadFileByPath(data_path,request,resp);
-        return null;
-    }
-
-    //download datatype.json file
-    @RequestMapping("/teacher/datatypeDownload")
-    public String assignmentDatatypeDownload(HttpServletRequest request, HttpServletResponse resp) {
-        String assignmentID = request.getParameter("id");
-        String datatype_path = assignmentService.getDataTypePathById(assignmentID);
-        FileUtils.downloadFileByPath(datatype_path,request,resp);
-        return null;
-    }
-
-
-
-    //download student uploaded file
-    @RequestMapping("/teacher/studentDownload")
-    public String downloadStudentFile(HttpServletRequest request, HttpServletResponse resp) {
-        String assignment_id = request.getParameter("assignment_id");
-        int student_id = Integer.parseInt(request.getParameter("student_id"));
+    //2. Download the submitted file
+    @RequestMapping("/student/javaDownload")
+    public String studentJavaDownload(HttpServletRequest request, HttpServletResponse resp) {
+        String assignment_id = request.getParameter("id");
+        int student_id = ((Students)request.getSession().getAttribute(Constants.USER_SESSION)).getUcd_id();
         String source_path = assignmentService.queryStudentSourcePath(student_id,assignment_id);
         FileUtils.downloadFileByPath(source_path, request, resp);
         return null;
@@ -246,8 +252,7 @@ public class FileController {
 
 
 
-
-
+////////////////////////////////////////////////////
 
 
 

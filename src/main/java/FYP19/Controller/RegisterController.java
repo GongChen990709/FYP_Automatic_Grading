@@ -132,10 +132,10 @@ public class RegisterController {
         int successNum=0;
         int failNum=0;
         if(request.getSession().getAttribute(Constants.SUCCESS_EMAIL_COUNT)!=null){
-             successNum = (int)request.getSession().getAttribute(Constants.SUCCESS_EMAIL_COUNT);
+             successNum = (Integer) request.getSession().getAttribute(Constants.SUCCESS_EMAIL_COUNT);
         }
         if(request.getSession().getAttribute(Constants.FAILED_EMAIL_COUNT)!=null){
-             failNum = (int)request.getSession().getAttribute(Constants.FAILED_EMAIL_COUNT);
+             failNum = (Integer) request.getSession().getAttribute(Constants.FAILED_EMAIL_COUNT);
         }
         resultMap.put("successNum",successNum);
         resultMap.put("failNum",failNum);

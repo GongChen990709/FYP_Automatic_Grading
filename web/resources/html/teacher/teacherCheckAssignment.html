@@ -53,6 +53,26 @@
                 }
 
             });
+            $(document).on('click','#searchBtn',function () {
+                //获取搜索文本框的值
+                var search = $("#demoReload");
+
+                //调用数据表格的重载方法
+                table.reload('demo',{
+                    url:basepath+"/assignment/query",
+
+                    where:{  //设定需要传递的参数
+                        title: search.val(),
+                        module_code: module_code,
+                        isPublished:"published"
+                    },
+                    method:'post',
+                    /* page:{
+                         //表示让条件查询从第一页开始 如果未设置 从当前页开始查询 前面不管了
+                         curr:1
+                     }*/
+                });
+            })
 
         })
     </script>

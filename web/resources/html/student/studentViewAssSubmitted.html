@@ -86,9 +86,10 @@
     <script>
         var assignment_id=GetAssignmentID();
         var basepath = "/" + window.location.pathname.split("/")[1];
+
         var download=function(d) {
             var html= " <a href=' " + basepath +
-                      "/teacher/pdfDownload?id="+assignment_id+  " ' download=''> " +
+                      "/student/javaDownload?id="+assignment_id+  " ' download='' style='color: #1E9FFF'> " +
                       d.fileName + "</a >";
             return html;
 

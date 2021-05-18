@@ -33,7 +33,10 @@ public class AssignmentController {
     @Qualifier("StudentsServiceImpl")
     private StudentsService studentsService;
 
-    //Upload assignment requirements in pdf format
+//////////////////////////////////////////////////////////////////
+//Teacher Functions Unit
+    //1. Adding an assignment
+    //Basic information of the assignment
     @RequestMapping("/assignment/form")
     @ResponseBody
     public Map<String,String> assignmentFormUpload(@RequestBody Map<String,String> map, HttpServletRequest request) throws ParseException {
@@ -53,7 +56,7 @@ public class AssignmentController {
         return returnMap;
     }
 
-
+    //2. Showing the assignments the teacher uploaded
     @RequestMapping("/teacher/allAssignments")
     @ResponseBody
     public String allTeacherAssignments(HttpServletRequest request) {
@@ -72,19 +75,7 @@ public class AssignmentController {
         return resultJSON;
     }
 
-
-
-    @RequestMapping("/student/allAssignments")
-    @ResponseBody
-    public String allStudentAssignments(HttpServletRequest request) {
-        String module_code = request.getParameter("module_code");
-        List<Assignment> assignmentList = assignmentService.queryAssignmentByModule(module_code);
-        int ucd_id = ((Students)request.getSession().getAttribute(Constants.USER_SESSION)).getUcd_id();
-        String resultJSON = studentFormatConverter(assignmentList, ucd_id);
-        return resultJSON;
-    }
-
-
+    //3. Modifying due date of published assignments
     @RequestMapping("/assignment/edit")
     @ResponseBody
     public Map<String,String> editAssignmentDueDate(@RequestBody Map<String,String> map){
@@ -106,77 +97,13 @@ public class AssignmentController {
         return returnMap;
     }
 
-
-    @RequestMapping("/assignment/query")
-    @ResponseBody
-    public String fuzzyQueryAssignments(HttpServletRequest request){
-        String title = request.getParameter("title");
-        String module_code = request.getParameter("module_code");
-        String json_result="";
-        Object user = request.getSession().getAttribute(Constants.USER_SESSION);
-        if(user instanceof Teacher){
-            int teacher_id = ((Teacher) user).getId();
-            List<Assignment> assignmentList = assignmentService.fuzzyQueryByTitle(title,teacher_id,module_code);
-            json_result = teacherFormatConverter(assignmentList,"all");
-        }
-        if(user instanceof Students){
-            int ucd_id = ((Students) user).getUcd_id();
-            List<Assignment> assignmentList = assignmentService.fuzzyQueryByTitle(title,ucd_id,module_code);
-            json_result = teacherFormatConverter(assignmentList,"all");
-        }
-        return json_result;
-    }
-
-    @RequestMapping("teacher/deleteAssignment")
-    @ResponseBody
-    public Map<String,String> deleteAssignment(@RequestBody Map<String,String> map, HttpServletRequest request) {
-        Map<String, String> returnMap = new HashMap<>();
-        String id = map.get("id");
-        try {
-            assignmentService.deleteAssignmentById(id, request);
-        } catch (Exception e) {
-            returnMap.put("code", "1");
-            return returnMap;
-        }
-        returnMap.put("code", "0");
-        return returnMap;
-    }
-
-    //Show which files are not submitted
-    @RequestMapping("/assignment/fileStatus")
-    @ResponseBody
-    public Map<String,String> fileStatus(HttpServletRequest request) {
-        Map<String, String> returnMap = new HashMap<>();
-        String id = request.getParameter("assignment_id");
-        System.out.println(id);
-        returnMap.put("pdf","false");
-        returnMap.put("java","false");
-        returnMap.put("data","false");
-        returnMap.put("dataType","false");
-        if(assignmentService.getPdfPathById(id)!=null){
-            returnMap.put("pdf","true");
-        }
-        if(assignmentService.getJavaPathById(id)!=null){
-            returnMap.put("java","true");
-        }
-        if(assignmentService.getDataPathById(id)!=null){
-            returnMap.put("data","true");
-        }
-        if(assignmentService.getDataTypePathById(id)!=null){
-            returnMap.put("dataType","true");
-        }
-        return returnMap;
-    }
-
-
-    //Used in download area to show all assignment files uploaded
+    //4. Show all files teacher uploaded used in download area
     @RequestMapping("/assignment/allUploadedFiles")
     @ResponseBody
     public List<Map<String,String>> allUploadedFiles(HttpServletRequest request){
         String assignmentId = request.getParameter("id");
         List<Map<String,String>> resultList = new ArrayList<>();
         Map<String,String> filePaths = assignmentService.getFilePathsById(assignmentId);
-        System.out.println("MAP=============== "+filePaths);
         if(filePaths!=null){
             if(filePaths.get("pdf_path")!=null){
                 Map<String,String> map = new HashMap<>();
@@ -213,47 +140,75 @@ public class AssignmentController {
         return resultList;
     }
 
-
-    //name description due_date fileName
-    @RequestMapping("/student/viewAssignment")
+    //5. If teacher is not completed publishing the assignment, it returns which files are not submitted and which are submitted
+    @RequestMapping("/assignment/fileStatus")
     @ResponseBody
-    public Map<String,String> studentViewAssignment(HttpServletRequest request){
+    public Map<String,String> fileStatus(HttpServletRequest request) {
         Map<String, String> returnMap = new HashMap<>();
-        String assignment_id =  request.getParameter("assignment_id");
-        Map<String, Object> viewAss = assignmentService.studentViewAssignment(assignment_id);
-        Date due_date = (Date) viewAss.get("due_date");
-        String due_datetime  = dateConverter(due_date);
-        String pdf_path = (String)viewAss.get("pdf_path");
-        returnMap.put("due_date", due_datetime);
-        returnMap.put("name",(String) viewAss.get("title"));
-        returnMap.put("description",(String) viewAss.get("description"));
-        returnMap.put("fileName", pdf_path.substring(pdf_path.lastIndexOf("/")+1));
+        String id = request.getParameter("assignment_id");
+        System.out.println(id);
+        returnMap.put("pdf","false");
+        returnMap.put("java","false");
+        returnMap.put("data","false");
+        returnMap.put("dataType","false");
+        if(assignmentService.getPdfPathById(id)!=null){
+            returnMap.put("pdf","true");
+        }
+        if(assignmentService.getJavaPathById(id)!=null){
+            returnMap.put("java","true");
+        }
+        if(assignmentService.getDataPathById(id)!=null){
+            returnMap.put("data","true");
+        }
+        if(assignmentService.getDataTypePathById(id)!=null){
+            returnMap.put("dataType","true");
+        }
         return returnMap;
     }
 
-
-    @RequestMapping("/student/submissionHistory")
+    //6. Delete the assignment and all corresponding directory and files
+    @RequestMapping("teacher/deleteAssignment")
     @ResponseBody
-    //fileName submission_date
-    public String submissionHistory(HttpServletRequest request){
-        List<Map<String, String>> returnList = new ArrayList<>();
+    public Map<String,String> deleteAssignment(@RequestBody Map<String,String> map, HttpServletRequest request) {
         Map<String, String> returnMap = new HashMap<>();
-        int ucd_id = ((Students)request.getSession().getAttribute(Constants.USER_SESSION)).getUcd_id();
-        String assignment_id =  request.getParameter("assignment_id");
-        Map<String, Object> assHistory = assignmentService.studentSubmissionHistory(ucd_id, assignment_id);
-        Date submission_date = (Date) assHistory.get("submission_date");
-        String submission_datetime  = dateConverter(submission_date);
-        String source_path = (String)assHistory.get("source_path");
-        returnMap.put("submission_date",submission_datetime);
-        returnMap.put("fileName", source_path.substring(source_path.lastIndexOf("/")+1));
-        returnList.add(returnMap);
-        String submission_json= JSON.toJSONString(returnList);
-        String result_json = "{\"code\":0,\"msg\":\"\",\"count\":"+1+",\"data\":"+submission_json+"}";
-        return result_json;
+        String id = map.get("id");
+        try {
+            assignmentService.deleteAssignmentById(id, request);
+        } catch (Exception e) {
+            returnMap.put("code", "1");
+            return returnMap;
+        }
+        returnMap.put("code", "0");
+        return returnMap;
     }
 
+    //7. Find assignments by matching patterns of the assignment name
+    @RequestMapping("/assignment/query")
+    @ResponseBody
+    public String fuzzyQueryAssignments(HttpServletRequest request){
+        String title = request.getParameter("title");
+        String module_code = request.getParameter("module_code");
+        String isPublished = request.getParameter("isPublished");
+        String option = "all";
+        if(isPublished!=null){
+            option = "part";
+        }
+        String json_result="";
+        Object user = request.getSession().getAttribute(Constants.USER_SESSION);
+        if(user instanceof Teacher){
+            int teacher_id = ((Teacher) user).getId();
+            List<Assignment> assignmentList = assignmentService.fuzzyQueryByTitle(title,teacher_id,module_code);
+            json_result = teacherFormatConverter(assignmentList,option);
+        }
+        if(user instanceof Students){
+            int ucd_id = ((Students) user).getUcd_id();
+            List<Assignment> assignmentList = assignmentService.fuzzyQueryByTitle(title,ucd_id,module_code);
+            json_result = teacherFormatConverter(assignmentList,option);
+        }
+        return json_result;
+    }
 
-
+    //8. Show student No who registered the module and No of student submitted the assignment and No of student is not graded
     @RequestMapping("/assignment/summary")
     @ResponseBody
     public Map<String,Object> summaryInfo(HttpServletRequest request) {
@@ -275,7 +230,7 @@ public class AssignmentController {
         return returnMap;
     }
 
-
+    //9. View all students information and their submission status
     @RequestMapping("/assignment/viewSubmissions")
     @ResponseBody
     public String teacherViewSubmissions(HttpServletRequest request) {
@@ -308,9 +263,73 @@ public class AssignmentController {
         String result_json = "{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+assignment_json+"}";
         return result_json;
     }
+//////////////////////////////////////////////////////////////////
+//Student Functions Unit
+    //1. view all assignments for a module the student registered
+    @RequestMapping("/student/allAssignments")
+    @ResponseBody
+    public String allStudentAssignments(HttpServletRequest request) {
+        String module_code = request.getParameter("module_code");
+        List<Assignment> assignmentList = assignmentService.queryAssignmentByModule(module_code);
+        int ucd_id = ((Students)request.getSession().getAttribute(Constants.USER_SESSION)).getUcd_id();
+        String resultJSON = studentFormatConverter(assignmentList, ucd_id);
+        return resultJSON;
+    }
+
+    //2. View detailed information of the assignment
+    @RequestMapping("/student/viewAssignment")
+    @ResponseBody
+    public Map<String,String> studentViewAssignment(HttpServletRequest request){
+        Map<String, String> returnMap = new HashMap<>();
+        String assignment_id =  request.getParameter("assignment_id");
+        Map<String, Object> viewAss = assignmentService.studentViewAssignment(assignment_id);
+        Date due_date = (Date) viewAss.get("due_date");
+        String due_datetime  = dateConverter(due_date);
+        String pdf_path = (String)viewAss.get("pdf_path");
+        returnMap.put("due_date", due_datetime);
+        returnMap.put("name",(String) viewAss.get("title"));
+        returnMap.put("description",(String) viewAss.get("description"));
+        returnMap.put("fileName", pdf_path.substring(pdf_path.lastIndexOf("/")+1));
+        return returnMap;
+    }
+
+    //3. View the file student uploaded and its uploaded date
+    @RequestMapping("/student/submissionHistory")
+    @ResponseBody
+    public String submissionHistory(HttpServletRequest request){
+        List<Map<String, String>> returnList = new ArrayList<>();
+        Map<String, String> returnMap = new HashMap<>();
+        int ucd_id = ((Students)request.getSession().getAttribute(Constants.USER_SESSION)).getUcd_id();
+        String assignment_id =  request.getParameter("assignment_id");
+        Map<String, Object> assHistory = assignmentService.studentSubmissionHistory(ucd_id, assignment_id);
+        Date submission_date = (Date) assHistory.get("submission_date");
+        String submission_datetime  = dateConverter(submission_date);
+        String source_path = (String)assHistory.get("source_path");
+        returnMap.put("submission_date",submission_datetime);
+        returnMap.put("fileName", source_path.substring(source_path.lastIndexOf("/")+1));
+        returnList.add(returnMap);
+        String submission_json= JSON.toJSONString(returnList);
+        String result_json = "{\"code\":0,\"msg\":\"\",\"count\":"+1+",\"data\":"+submission_json+"}";
+        return result_json;
+    }
+
+
+//////////////////////////////////////////////////////////////////
 
 
 
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////
+//Utils and common functions
+    //Query Assignment name
     @RequestMapping("/assignment/assignmentName")
     @ResponseBody
     public Map<String,String> getAssignmentName(HttpServletRequest request){
@@ -320,15 +339,7 @@ public class AssignmentController {
         returnMap.put("name",name);
         return returnMap;
     }
-
-
-
-
-
-
-
-
-    //Convert assignment list to the frontend format
+    //Convert assignment list to the frontend format in teacher pages
     public String teacherFormatConverter(List<Assignment> assignmentList, String option){
         List<Map<String,String>> resultList = new ArrayList<>();
         for(Assignment ass : assignmentList){
@@ -355,8 +366,7 @@ public class AssignmentController {
         String result_json = "{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+assignment_json+"}";
         return result_json;
     }
-
-
+    //Convert assignment list to the frontend format in student pages
     public String studentFormatConverter(List<Assignment> assignmentList, int ucd_id){
         List<Map<String,String>> resultList = new ArrayList<>();
         for(Assignment ass : assignmentList){
@@ -388,11 +398,12 @@ public class AssignmentController {
         String result_json = "{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+assignment_json+"}";
         return result_json;
     }
-
+    //Convert Java.util.date to String
     public String dateConverter(Date date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(date);
     }
+//////////////////////////////////////////////////////////////////////
 
 
 
