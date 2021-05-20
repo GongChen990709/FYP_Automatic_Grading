@@ -6,6 +6,7 @@ import FYP19.Entities.Students;
 import FYP19.Entities.Teacher;
 import FYP19.util.Constants;
 import FYP19.util.FileUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -193,6 +194,24 @@ public class AssignmentService {
 
     public Map<String, Object> studentSubmissionHistory(int ucd_id, String assignment_id){
         return assignmentMapper.studentSubmissionHistory(ucd_id, assignment_id);
+    }
+
+
+    public boolean insertAssignmentAssessment(int ucd_id, String assignment_id, String grade, String grade_details_path){
+        if(assignmentMapper.insertAssignmentAssessment(ucd_id,assignment_id,grade,grade_details_path)==1){
+            return true;
+        }
+        return  false;
+    }
+
+
+    public List<Map<String, Object>> teacherViewAllGrades(String assignment_id){
+        return assignmentMapper.teacherViewAllGrades(assignment_id);
+    }
+
+
+    public String queryStuReportPath(int ucd_id, String assignment_id){
+        return assignmentMapper.queryStuReportPath(ucd_id,assignment_id);
     }
 
 

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="../common/layui-v2.6.5/layui/css/layui.css"/>
+    <script type="text/javascript" src="../common/layui-v2.6.5/layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
+   <!-- <script type="text/javascript" src="../../js/student/studentCommon.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/student/student.css"/>-->
+
+    <title>Student Report</title>
+</head>
+<body>
+
+<div>
+    <table id="demo" lay-filter="test">
+
+    </table>
+</div>
+
+<script type="text/javascript">
+
+        layui.use('table',function () {
+            var table = layui.table;
+            var $ = layui.jquery;
+            var assignment_id=GetAssignmentID();
+            var student_id=GetStudentID();
+            var basepath = "/" + window.location.pathname.split("/")[1];
+
+            table.render({
+                elem: "#demo",
+                url: basepath+"/teacher/viewStudentReport",
+                where: {assignment_id:assignment_id,
+                    student_id:student_id},
+
+                cols: [[
+                    {field: "number", type: "numbers"},
+                    {field: 'FunctionName', title: 'Function Name', align: "center"},
+                    {field: 'InputData', title: 'Input Data', align: "center"},
+                    {field: 'YourOutput', title: 'Your Output', align: "center"},
+                    {field: 'TeacherOutput', title: 'Expected Output', align: "center"},
+                    {field: 'Result', title: 'Result', align: "center",templet:result},
+
+
+                    /*{field: "operation", title: 'Operation', toolbar: "#barDemo", align: "center"}*/
+                ]],
+                page: false,
+                size: "lg",
+                even: true,
+            });
+        })
+
+
+</script>
+<script>
+
+
+        var result=function(d) {
+           // alert(d.Result);
+
+            if(d.Result==true){
+                //alert("aaa");
+                var html1='<span style="color: #1E9FFF" > ' + d.Result + "</span > ";
+                return html1;
+            }else {
+                var html2='<span style="color: red" > ' + d.Result + "</span > ";
+                return html2;
+
+            }
+
+        }
+
+
+
+</script>
+
+</body>
+
+</html>

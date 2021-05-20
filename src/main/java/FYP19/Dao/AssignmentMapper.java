@@ -43,6 +43,9 @@ public interface AssignmentMapper {
     int countNotGradedById(@Param("id") String id);
     String queryGrade(@Param("ucd_id") int ucd_id, @Param("assignment_id") String assignment_id);
     List<Map<String, Object>> teacherViewSubmissions(@Param("assignment_id") String assignment_id);
+    int insertAssignmentAssessment(@Param("ucd_id")int ucd_id, @Param("assignment_id") String assignment_id, @Param("grade") String grade, @Param("grade_details_path") String grade_details_path);
+    List<Map<String,Object>> teacherViewAllGrades(@Param("assignment_id") String assignment_id);
+    String queryStuReportPath(@Param("ucd_id") int ucd_id, @Param("assignment_id")String assignment_id);
 
 
 }

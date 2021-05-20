@@ -29,32 +29,32 @@
                 <i class="layui-icon layui-icon-spread-left"></i>
             </li>
 
-            <li class="layui-nav-item"><a href="#" id="course_name"> <!--course name--></a></li>
+            <li class="layui-nav-item"><a href=" " id="course_name"> <!--course name--></a ></li>
 
             <!--  <li class="layui-nav-item">
-                  <a href="javascript:;">nav groups</a>
+                  <a href="javascript:;">nav groups</a >
                   <dl class="layui-nav-child">
-                      <dd><a href="">menu 11</a></dd>
-                      <dd><a href="">menu 22</a></dd>
-                      <dd><a href="">menu 33</a></dd>
+                      <dd><a href="">menu 11</a ></dd>
+                      <dd><a href="">menu 22</a ></dd>
+                      <dd><a href="">menu 33</a ></dd>
                   </dl>
               </li>-->
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item layui-hide layui-show-md-inline-block">
                 <a href="javascript:;">
-                    <!-- <img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img">-->
+                    <!-- < img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img">-->
                     <span id="user_name"></span><!-- user name-->
-                </a>
+                </a >
                 <dl class="layui-nav-child">
-                    <dd><a href="">Settings</a></dd>
-                    <dd><a href="">Sign out</a></dd>
+                    <dd><a href="">Settings</a ></dd>
+                    <dd><a href="">Sign out</a ></dd>
                 </dl>
             </li>
 
             <!--<li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
                 <a href="javascript:;">
-                </a>
+                </a >
             </li>-->
 
         </ul>
@@ -65,7 +65,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">Assignment</a>
+                    <a class="" href="javascript:;">Assignment</a >
                     <dl class="layui-nav-child">
                         <dd id="addAssignment">           </dd>
                         <dd id="checkAssignment">       </dd>
@@ -79,6 +79,14 @@
     </div>
 
     <div class="layui-body">
+
+
+        <div id="assignment_name"
+             style="font-size: 40px; font-family: Arial,Verdana,Sans-serif; font-weight: 500;
+             margin-bottom: 50px">
+
+
+        </div>
 
 
         <div class="searchone" style="margin-bottom: 20px">
@@ -102,33 +110,74 @@
         </table>
 
         <script type="text/html" id="barDemo">
-            <a class="layui-btn layui-btn-xs" lay-event="edit"> Check Grades</a>
-            <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">Delete</a>-->
+            <a class="layui-btn layui-btn layui-btn-xs" lay-event="check">Check</a >
+        </script>
+
+        <script>
+            $(function () {
+                var assignment_id=GetAssignmentID();
+                var basepath = "/" + window.location.pathname.split("/")[1];
+
+                $.ajax({
+                    url:basepath+"/assignment/assignmentName",
+                    data:{"assignment_id":assignment_id},
+                    dataType:'json',
+                    type:'post',
+                    success:function (json) {
+                        var assignment_name=json.name;
+                        $("#assignment_name").html(assignment_name);
+                    }
+                })
+            })
         </script>
 
         <script type="text/javascript">
             layui.use('table', function() {
                 var table = layui.table;
                 var $ = layui.jquery;
+                var basepath = "/" + window.location.pathname.split("/")[1];
                 //var assignment_name=GetAssignmentName();
 
                 table.render({
-                                 elem: "#demo",
-                                 /*url: "/ReturnGradeServlet?assignment_name="+assignment_name,*/
-                                 url: "/ReturnGradeServlet",
-                                 height:500,
-                                 cols: [[
-                                     {field: "number", type: "numbers"},
-                                     /*{field: 'assignment_Name', title: 'Assignment Name', align: "center"},*/
-                                     {field: 'student_ID', title: 'Student Number', align: "center"},
-                                     {field: 'student_Name', title: 'Student Name', align: "center"},
-                                     {field: 'score', title: 'Score', sort: true, align: "center"},
-                                     {filed:'report',title:'Report',toolbar:"#barDemo",align:"center"}
-                                 ]],
-                                 page: false,
-                                 size: "lg",
-                                 even: true,
-                             });
+                    elem: "#demo",
+                    /*url: "/ReturnGradeServlet?assignment_name="+assignment_name,*/
+                    url: basepath+"/teacher/viewGrades",
+                    where:{"assignment_id":GetAssignmentID()},
+                    height:500,
+                    cols: [[
+                        {field: "number", type: "numbers"},
+                        /*{field: 'assignment_Name', title: 'Assignment Name', align: "center"},*/
+                        {field: 'ucd_id', title: 'Student Number', align: "center"},
+                        {field: 'name', title: 'Student Name', align: "center"},
+                        {field: 'grade', title: 'Score', sort: true, align: "center"},
+                        {filed:'report',title:'Report',toolbar:"#barDemo",align:"center"}
+                    ]],
+                    page: false,
+                    size: "lg",
+                    even: true,
+                });
+
+                table.on('tool(test)',function (obj) {
+                    var tr= obj.data;
+                    console.log(tr);
+                    //得到事件名
+                    var eventname=obj.event;
+                    var student_id=tr.ucd_id;
+                    if(eventname=='check'){
+                        var ass_id= GetAssignmentID();
+                        var course=GetCourse();
+                        var username=GetUserName();
+
+                        /* var link =document.createElement('a');
+                         link.href="teacherDisplayAllAssSubmitted.html?"+course+"&"+username+"&"+id;
+                         link.click();*/
+
+                        window.location.href="../common/report.html?"+course+"&"+username+"&"+ass_id+"&"+student_id;
+                    }
+
+                });
+
+
 
                 $(document).on('click','#searchBtn1',function () {
                     //获取搜索文本框的值

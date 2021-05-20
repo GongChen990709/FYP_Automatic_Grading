@@ -2,6 +2,8 @@ import FYP19.Entities.Assignment;
 import FYP19.Entities.Module;
 import FYP19.Entities.Students;
 import FYP19.Service.*;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.junit.Test;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.context.ApplicationContext;
@@ -12,9 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class StudentServiceTest {
 
@@ -38,6 +38,69 @@ public class StudentServiceTest {
        Students stu = studentsServiceIImp.queryStudentById(172059141);
         System.out.println(stu);
     }
+
+    @Test
+    public void testtttt(){
+        Map<String, List<Object>> map = new HashMap<>();
+        Object o = new int[]{1,2,3,4};
+        Object o2 = "gc is clever";
+        List<Object> a = new LinkedList<>();
+        a.add(o);
+        a.add(o2);
+        Map<String,String> m =new HashMap<>();
+        m.put("data","gc is very clever");
+        a.add(m);
+        map.put("method1", a);
+
+        List<Object> d = new LinkedList<>();
+        List<Integer> value = new LinkedList<>();
+        value.add(99);
+        value.add(98);
+        value.add(97);
+        d.add(value);
+
+        Map<String, Float> map2 = new HashMap<>();
+        map2.put("gc", (float) 2.5);
+        map2.put("fulan", (float)2.51);
+        d.add(map2);
+
+        map.put("method2",d);
+
+
+        JSONObject object = JSONObject.fromObject(map);
+        System.out.println(object);
+
+
+//        Iterator iter = object.entrySet().iterator();
+
+//        while(iter.hasNext()){
+//            Map.Entry entry = (Map.Entry) iter.next();
+//            System.out.println(entry.getKey());
+//            System.out.println(entry.getValue());
+//            JSONArray array = (JSONArray) entry.getValue();
+//            for(int i=0;i<array.size();i++){
+//                Object jsonObject = array.get(i);
+//                System.out.println(jsonObject.toString());
+//            }
+//        }
+
+        //System.out.println(object);
+    }
+
+    @Test
+    public void abcde(){
+        JSONObject object = new JSONObject();
+
+        JSONArray array = new JSONArray();
+        array.add(1);
+        array.add(2);
+        array.add(3);
+        String a = array.toString();
+
+        object.put("test",":"+a);
+        System.out.println(object);
+    }
+
 
 
 

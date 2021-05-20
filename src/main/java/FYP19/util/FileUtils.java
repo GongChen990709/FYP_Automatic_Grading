@@ -1,8 +1,13 @@
 package FYP19.util;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import net.sf.json.JSONArray;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class FileUtils {
     public static void deleteFilesByDirectory(String directoryPath){
@@ -38,6 +43,15 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static void writeToJsonFile(JSONArray object, String destination) throws IOException {
+        String content = JSON.toJSONString(object);
+        FileOutputStream out = new FileOutputStream(destination);
+        File file = new File(destination);
+        if (!file.exists()) file.createNewFile();
+        out.write(content.getBytes(StandardCharsets.UTF_8));
     }
 
 }
