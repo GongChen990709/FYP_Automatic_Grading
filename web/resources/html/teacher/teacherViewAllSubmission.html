@@ -219,11 +219,11 @@
                     var json = JSON.stringify(data);
 
                     $.ajax({
-                        url: '/ss',
+                        url: basepath + '/assignment/grading',
                         data: json,
                         dataType: 'json',
                         type: 'post',
-                        contentType: 'applicaiton/json',
+                        contentType: 'application/json',
                         success: function (data) {
                             if (data.code == 0) {
                                 layer.msg("the sytem have successfully upload the students' assignmnents, " +
