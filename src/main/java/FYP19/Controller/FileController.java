@@ -73,6 +73,7 @@ public class FileController {
         File filePath = new File(absPath);
         if (!filePath.exists()) {
             filePath.mkdir();
+            System.out.println("Teacher file path "+filePath);
         }
         try {
             File assignmentPath = new File(filePath.getPath()+"/"+id);
@@ -213,21 +214,26 @@ public class FileController {
         int ucd_id = ((Students)request.getSession().getAttribute(Constants.USER_SESSION)).getUcd_id();
         boolean update_flag;
         String id = request.getParameter("assignment_id");
-        String absPath = request.getSession().getServletContext().getRealPath("/WEB-INF/studentUpload");
-        File filePath = new File(absPath);
-        if (!filePath.exists()) {
-            filePath.mkdir();
+        String uploadPah = request.getSession().getServletContext().getRealPath("/WEB-INF/studentUpload");
+        File upload = new File(uploadPah);
+        if(!upload.exists()){
+            upload.mkdir();
         }
-        try {
-            File assignmentPath = new File(filePath.getPath()+"/"+id);
-            if(!assignmentPath.exists()){
-                assignmentPath.mkdir();
-            }
-            String realPath = assignmentPath+"/"+file.getOriginalFilename();
+        File assignment = new File(upload.getPath()+"/"+id);
+        if(!assignment.exists()){
+            assignment.mkdir();
+        }
+        File student = new File(assignment.getPath()+"/"+ucd_id);
+        if(!student.exists()){
+            student.mkdir();
+        }
+        try{
+            String realPath = student.getPath()+"/"+file.getOriginalFilename();
             file.transferTo(new File(realPath));
             Date submission_date = new Date();
             update_flag = assignmentService.insertStudentSubmission(ucd_id,id,realPath,submission_date);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             returnMap.put("code", "1");
             return returnMap;

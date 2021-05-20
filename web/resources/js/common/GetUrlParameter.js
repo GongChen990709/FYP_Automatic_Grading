@@ -57,3 +57,11 @@ function GetAssignmentID(){
     }
     return assignment_id;
 }
+
+
+function GetStudentID(){
+    if(parameter[3]!=null){
+        var student_id = parameter[3];
+    }
+    return student_id;
+}

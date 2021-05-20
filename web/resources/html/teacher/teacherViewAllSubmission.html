@@ -6,9 +6,12 @@
     <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
     <link rel="stylesheet" type="text/css" href="../common/layui-v2.6.5/layui/css/layui.css"/>
     <script type="text/javascript" src="../common/layui-v2.6.5/layui/layui.js"></script>
+
     <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
     <script type="text/javascript" src="../../js/teacher/teacherCommon.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/teacher/teacher.css"/>
+
+
 
     <title> View All Submissions </title>
 
@@ -29,32 +32,32 @@
                 <i class="layui-icon layui-icon-spread-left"></i>
             </li>
 
-            <li class="layui-nav-item"><a href="#" id="course_name"> <!--course name--></a></li>
+            <li class="layui-nav-item"><a href=" " id="course_name"> <!--course name--></a ></li>
 
             <!--  <li class="layui-nav-item">
-                  <a href="javascript:;">nav groups</a>
+                  <a href="javascript:;">nav groups</a >
                   <dl class="layui-nav-child">
-                      <dd><a href="">menu 11</a></dd>
-                      <dd><a href="">menu 22</a></dd>
-                      <dd><a href="">menu 33</a></dd>
+                      <dd><a href="">menu 11</a ></dd>
+                      <dd><a href="">menu 22</a ></dd>
+                      <dd><a href="">menu 33</a ></dd>
                   </dl>
               </li>-->
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item layui-hide layui-show-md-inline-block">
                 <a href="javascript:;">
-                    <!-- <img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img">-->
+                    <!-- < img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img">-->
                     <span id="user_name"></span><!-- user name-->
-                </a>
+                </a >
                 <dl class="layui-nav-child">
-                    <dd><a href="">Settings</a></dd>
-                    <dd><a href="">Sign out</a></dd>
+                    <dd><a href="">Settings</a ></dd>
+                    <dd><a href="">Sign out</a ></dd>
                 </dl>
             </li>
 
             <!--<li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
                 <a href="javascript:;">
-                </a>
+                </a >
             </li>-->
 
         </ul>
@@ -65,7 +68,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">Assignment</a>
+                    <a class="" href="javascript:;">Assignment</a >
                     <dl class="layui-nav-child">
                         <dd id="addAssignment">           </dd>
                         <dd id="checkAssignment">       </dd>
@@ -78,44 +81,64 @@
         </div>
     </div>
 
-     <div class="layui-body">
+    <div class="layui-body">
 
 
-         <div id="assignment_name"
-              style="font-size: 40px; font-family: Arial,Verdana,Sans-serif; font-weight: 500;
+        <div id="assignment_name"
+             style="font-size: 40px; font-family: Arial,Verdana,Sans-serif; font-weight: 500;
              margin-bottom: 50px">
 
 
-         </div>
+        </div>
 
-         <div class="searchone" style="margin-bottom: 20px">
-             Search Student Number：
-             <div class="layui-inline">
-                 <input class="layui-input" name="id" id="demoReload1" autocomplete="off">
-             </div>
-             <button class="layui-btn" id="searchBtn1" datatype="reload" style="margin-right: 40px">Search</button>
+        <div class="searchone" style="margin-bottom: 20px">
+            Search Student Number：
+            <div class="layui-inline">
+                <input class="layui-input" name="id" id="demoReload1" autocomplete="off">
+            </div>
+            <button class="layui-btn" id="searchBtn1" datatype="reload" style="margin-right: 40px">Search</button>
 
-             Search Student Name：
-             <div class="layui-inline">
-                 <input class="layui-input" name="id" id="demoReload2" autocomplete="off">
-             </div>
-             <button class="layui-btn" id="searchBtn2" datatype="reload">Search</button>
+            Search Student Name：
+            <div class="layui-inline">
+                <input class="layui-input" name="id" id="demoReload2" autocomplete="off">
+            </div>
+            <button class="layui-btn" id="searchBtn2" datatype="reload">Search</button>
 
-         </div>
+        </div>
 
-         <!--<div class="searchone">
-             Search Student Name：
-             <div class="layui-inline">
-                 <input class="layui-input" name="id" id="demoReload2" autocomplete="off">
-             </div>
-             <button class="layui-btn" id="searchBtn2" datatype="reload">Search</button>
+        <!--<div class="searchone">
+            Search Student Name：
+            <div class="layui-inline">
+                <input class="layui-input" name="id" id="demoReload2" autocomplete="off">
+            </div>
+            <button class="layui-btn" id="searchBtn2" datatype="reload">Search</button>
 
-         </div>-->
+        </div>-->
 
-         <table id="demo" lay-filter="test">
+        <table id="demo" lay-filter="test">
 
-         </table>
-     </div>
+        </table>
+
+
+        <div id="show" style="display: none">
+
+            <div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="demo" style="width:80%;">
+                <div id="percentdiv" class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
+            </div>
+
+
+        </div>
+
+        <script type="text/html" id="toolbar">
+            <!--<div class="layui-btn-container">-->
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckData" id="judge">Judge</button>
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">The number of items selected</button>
+            <button class="layui-btn layui-btn-sm" lay-event="isAll">Verify select all</button>
+            <!--</div>-->
+        </script>
+
+
+    </div>
 
     <!--   <div class="layui-footer">
            &lt;!&ndash; 底部固定区域 &ndash;&gt;
@@ -123,17 +146,12 @@
        </div>-->
 </div>
 
-<script type="text/html" id="toolbar">
-    <!--<div class="layui-btn-container">-->
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">Judge</button>
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">The number of items selected</button>
-        <button class="layui-btn layui-btn-sm" lay-event="isAll">Verify select all</button>
-    <!--</div>-->
-</script>
+
+
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit"> Download </a>
-    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">Delete</a>-->
+    <a class="layui-btn layui-btn-xs" lay-event="edit"> Download </a >
+    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">Delete</a >-->
 </script>
 
 <script>
@@ -142,28 +160,115 @@
         var basepath = "/" + window.location.pathname.split("/")[1];
 
         $.ajax({
-                   url:basepath+"/assignment/assignmentName",
-                   data:{"assignment_id":assignment_id},
-                   dataType:'json',
-                   type:'post',
-                   success:function (json) {
-                       var assignment_name=json.name;
-                       $("#assignment_name").html(assignment_name);
-                   }
-               })
+            url:basepath+"/assignment/assignmentName",
+            data:{"assignment_id":assignment_id},
+            dataType:'json',
+            type:'post',
+            success:function (json) {
+                var assignment_name=json.name;
+                $("#assignment_name").html(assignment_name);
+            }
+        })
     })
 </script>
+
+<!--<script>
+    $(function () {
+        layui.use(['layer', 'element', 'table'], function () {
+            var layer = layui.layer,
+                element = layui.element,
+                table = layer.table;
+            var $ = layui.jquery;
+
+            var basepath = "/" + window.location.pathname.split("/")[1];
+
+            $("#judge").click(function () {
+                layer.alert("aaaa");
+                var timer;
+                var t=1;
+                var confirm = layer.confirm("Start grading the selected students' assignments?' ",
+                    {btn: ['OK', 'Cancle'], title: "Grading"}, function () {
+                        layer.close(confirm);
+                        layer.config({
+                            extend:'myskin/style.css',
+
+                        });
+                        var show = layer.open({
+                            type: 1,
+                            content: $("#show"),
+                            area:['500px','100px'],
+                            title:"Grading",
+                            skin:'layerdemo',
+                            shade:0,
+
+                            success: function (layero, index) {
+                                element.progress('demo', '0%');
+                                timer = setInterval(function () {
+
+                                    $.ajax({
+                                        url: basepath+ "/grading/progress",
+                                        //data: '',
+                                        type: 'post',
+                                        success: function (data) {
+
+                                            if (data.precentage >= 100) {
+                                                clearInterval(timer);
+                                                layer.close(show);
+                                            } else {
+                                                element.progress('demo', data.percentage + '%');
+                                            }
+                                        }
+                                    });
+                                }, 1000);
+
+                                /*timer = setInterval(function () {
+                                    element.progress('demo', t+"%");
+                                    if(t>=100){
+                                        clearInterval(timer);
+                                        layer.close(show);
+
+                                    }else {
+                                        t++;
+                                    }
+
+
+                                }, 100);*/
+
+                            },
+                            end: function () {
+                                clearInterval(timer);
+                                table.reload('demo', {
+                                    url: basepath+ "/assignment/viewSubmissions",
+                                    where: {assignment_id:id},
+                                    method: 'post',
+                                });
+
+                            }
+                        });
+
+                    });
+
+            });
+
+        });
+    })
+</script>-->
+
+
 
 
 
 <script type="text/javascript">
-    layui.use('table', function() {
-        var table = layui.table;
+    layui.use(['layer', 'element', 'table'], function() {
+        var layer = layui.layer,
+            element = layui.element,
+            table = layui.table;
         var $ = layui.jquery;
         var id=GetAssignmentID();
         //var module_code=GetCourseID();
         var basepath = "/" + window.location.pathname.split("/")[1];
-                           //var assignment_name = GetAssignmentName();
+        //var assignment_name = GetAssignmentName();
+
 
         table.render({
             elem: "#demo",
@@ -218,24 +323,108 @@
 
                     var json = JSON.stringify(data);
 
-                    $.ajax({
-                        url: basepath + '/assignment/grading',
-                        data: json,
-                        dataType: 'json',
-                        type: 'post',
-                        contentType: 'application/json',
-                        success: function (data) {
-                            if (data.code == 0) {
-                                layer.msg("the sytem have successfully upload the students' assignmnents, " +
-                                    "the back end is automatically grading their assignments, " +
-                                    "please refresh the page to check the grading status.", {icon: 6})
-                            } else {
-                                layer.msg("upload failed", {icon: 5})
-                            }
-                        }
+                    /*     $.ajax({
+                             url: '',
+                             data: json,
+                             dataType: 'json',
+                             type: 'post',
+                             contentType: 'applicaiton/json',
+
+                             success: function (data) {
+
+                                /!* if (data.code == 0) {
+                                     layer.msg("the sytem have successfully upload the students' assignmnents, " +
+                                         "the back end is automatically grading their assignments, " +
+                                         "please refresh the page to check the grading status.", {icon: 6})
+                                 } else {
+                                     layer.msg("upload failed", {icon: 5})
+                                 }*!/
+                             }
 
 
-                    })
+                         })*/
+
+                    var timer;
+                    //var t=1;
+                    var confirm = layer.confirm("Start grading the selected students' assignments?' ",
+                        {btn: ['OK', 'Cancle'], title: "Grading"}, function () {
+                            layer.close(confirm);
+
+                            $.ajax({
+                                url: basepath+ "/assignment/grading",
+                                data: json,
+                                dataType: 'json',
+                                type: 'post',
+                                contentType: 'application/json',
+
+                                success: function (data) {
+
+                                    /* if (data.code == 0) {
+                                         layer.msg("the sytem have successfully upload the students' assignmnents, " +
+                                             "the back end is automatically grading their assignments, " +
+                                             "please refresh the page to check the grading status.", {icon: 6})
+                                     } else {
+                                         layer.msg("upload failed", {icon: 5})
+                                     }*/
+                                }
+                            });
+                            layer.config({
+                                extend:'myskin/style.css',
+
+                            });
+                            var show = layer.open({
+                                type: 1,
+                                content: $("#show"),
+                                area:['500px','100px'],
+                                title:"Grading",
+                                skin:'layerdemo',
+                                shade:0,
+
+                                success: function (layero, index) {
+                                    element.progress('demo', '0%');
+                                    timer = setInterval(function () {
+
+                                        $.ajax({
+                                            url: basepath+ "/grading/progress",
+                                            //data: '',
+                                            type: 'post',
+                                            success: function (data) {
+                                                if (data.percentage == 100.0) {
+                                                    //layer.alert("aaaaa");
+                                                    clearInterval(timer);
+                                                    layer.close(show);
+                                                    layer.msg("Students assignments have been graded automatically", {icon: 6})
+                                                } else {
+                                                    element.progress('demo', data.percentage + '%');
+                                                }
+                                            }
+                                        });
+                                    }, 1000);
+                                    /*timer = setInterval(function () {
+                                        element.progress('demo', t+"%");
+                                        if(t>=100){
+                                            clearInterval(timer);
+                                            layer.close(show);
+
+                                        }else {
+                                            t++;
+                                        }
+
+
+                                    }, 100);*/
+                                },
+                                end: function () {
+                                    clearInterval(timer);
+                                    table.reload('demo', {
+                                        url: basepath+ "/assignment/viewSubmissions",
+                                        where: {assignment_id:id},
+                                        method: 'post',
+                                    });
+
+                                }
+                            });
+
+                        });
                     break
                 case "getCheckLength":
                     var arr = checkStatus.data;
@@ -326,8 +515,19 @@
             return '<a style="color: #1E9FFF" href="javascript:;" lay-event="download" > ' +
                 d.fileName + "</a > ";
         }
-        }
+    }
 </script>
+
+<!--<script>
+    $(function () {
+        $("#judge").click(function () {
+            alert("aaa");
+        })
+    })
+
+
+
+</script>-->
 
 
 </body>

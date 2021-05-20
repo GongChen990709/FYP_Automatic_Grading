@@ -47,7 +47,8 @@ function uploadStudentXLSX(){      //上传XLSX文件
               }
             });
 
-              setTimeout(function () { getEmailData(totalNum); },5*1000);    //5秒后第一次请求email success fail 数据
+
+            setTimeout(function () { getEmailData(totalNum); },5*1000);    //5秒后第一次请求email success fail 数据
 
 
             if (XL_row_object.length > 0) {

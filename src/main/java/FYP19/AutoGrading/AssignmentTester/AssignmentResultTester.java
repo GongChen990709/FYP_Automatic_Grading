@@ -71,6 +71,8 @@ public class AssignmentResultTester {
         return this.testMethodName;
     }
 
-
+    public String getConstructorName(){
+        return this.constructorName;
+    }
 
 }

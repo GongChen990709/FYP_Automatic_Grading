@@ -175,6 +175,24 @@
         WHERE id = #{id}
     </select>
 
+    <insert id="insertAssignmentAssessment">
+        INSERT INTO FYP_Automatic_Grading.Assignment_assessment (student_id, assignment_id, grade, grade_details_path)
+        VALUES (#{ucd_id},#{assignment_id},#{grade},#{grade_details_path})
+    </insert>
+
+    <select id="teacherViewAllGrades" resultType="map">
+        SELECT * FROM FYP_Automatic_Grading.Student AS S, FYP_Automatic_Grading.Assignment_assessment AS A
+        WHERE S.ucd_id=A.student_id AND A.assignment_id = #{assignment_id}
+    </select>
+
+    <select id="queryStuReportPath" resultType="string">
+        SELECT grade_details_path FROM FYP_Automatic_Grading.Assignment_assessment
+        WHERE student_id = #{ucd_id} AND assignment_id = #{assignment_id}
+    </select>
+
+
+
+
 
 
 </mapper>

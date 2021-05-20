@@ -139,7 +139,6 @@ public class RegisterController {
         }
         resultMap.put("successNum",successNum);
         resultMap.put("failNum",failNum);
-        System.out.println("resultMap=============================="+resultMap);
         return resultMap;
     }
 
