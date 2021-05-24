@@ -39,7 +39,7 @@ public class AssignmentController {
     //Basic information of the assignment
     @RequestMapping("/assignment/form")
     @ResponseBody
-    public Map<String,String> assignmentFormUpload(@RequestBody Map<String,String> map, HttpServletRequest request) throws ParseException {
+    public Map<String,String> assignmentFormUpload(@RequestBody Map<String,String> map) throws ParseException {
         Map<String, String> returnMap = new HashMap<String, String>();
         String id = UUID.randomUUID().toString().replace("-","");
         returnMap.put("code","1");  //failed
@@ -47,7 +47,7 @@ public class AssignmentController {
         String description = map.get("description");
         String module_code = map.get("module_code");
         String due_date = map.get("due_date");
-        boolean flag = assignmentService.insertAssignmentForms(id, title,description,module_code,due_date,request);
+        boolean flag = assignmentService.insertAssignmentForms(id, title,description,module_code,due_date);
         if(flag==true){
             returnMap.put("code", "0"); //success
             returnMap.put("id", id);
@@ -61,7 +61,7 @@ public class AssignmentController {
     @ResponseBody
     public String allTeacherAssignments(HttpServletRequest request) {
         String module_code = request.getParameter("module_code");
-        List<Assignment> assignmentList = assignmentService.queryAssignmentsByCreatorIdAndModule(module_code,request);
+        List<Assignment> assignmentList = assignmentService.queryAssignmentsByModule(module_code);
         String resultJSON = teacherFormatConverter(assignmentList,"all");
         return resultJSON;
     }
@@ -70,7 +70,7 @@ public class AssignmentController {
     @ResponseBody
     public String allTeacherPublishedAssignments(HttpServletRequest request) {
         String module_code = request.getParameter("module_code");
-        List<Assignment> assignmentList = assignmentService.queryAssignmentsByCreatorIdAndModule(module_code,request);
+        List<Assignment> assignmentList = assignmentService.queryAssignmentByModule(module_code);
         String resultJSON = teacherFormatConverter(assignmentList,"part");
         return resultJSON;
     }
@@ -175,6 +175,7 @@ public class AssignmentController {
         try {
             assignmentService.deleteAssignmentById(id, request);
         } catch (Exception e) {
+            e.printStackTrace();
             returnMap.put("code", "1");
             return returnMap;
         }
@@ -193,18 +194,8 @@ public class AssignmentController {
         if(isPublished!=null){
             option = "part";
         }
-        String json_result="";
-        Object user = request.getSession().getAttribute(Constants.USER_SESSION);
-        if(user instanceof Teacher){
-            int teacher_id = ((Teacher) user).getId();
-            List<Assignment> assignmentList = assignmentService.fuzzyQueryByTitle(title,teacher_id,module_code);
-            json_result = teacherFormatConverter(assignmentList,option);
-        }
-        if(user instanceof Students){
-            int ucd_id = ((Students) user).getUcd_id();
-            List<Assignment> assignmentList = assignmentService.fuzzyQueryByTitle(title,ucd_id,module_code);
-            json_result = teacherFormatConverter(assignmentList,option);
-        }
+        List<Assignment> assignmentList = assignmentService.fuzzyQueryByTitle(title,module_code);
+        String json_result = teacherFormatConverter(assignmentList,option);
         return json_result;
     }
 
@@ -253,7 +244,7 @@ public class AssignmentController {
                 returnMap.put("fileName", source_path.substring(source_path.lastIndexOf("/")+1));
                 returnMap.put("status","Submitted");
             }
-            if(assignmentService.queryGrade(student_id,assignment_id)!=null){
+            if(assignmentService.queryStuReportPath(student_id,assignment_id)!=null){
                 returnMap.put("grading_status", "Graded");
             }
             returnList.add(returnMap);
@@ -283,8 +274,8 @@ public class AssignmentController {
         Map<String, String> returnMap = new HashMap<>();
         String assignment_id =  request.getParameter("assignment_id");
         Map<String, Object> viewAss = assignmentService.studentViewAssignment(assignment_id);
-        Date due_date = (Date) viewAss.get("due_date");
-        String due_datetime  = dateConverter(due_date);
+        String due_datetime = (String) viewAss.get("due_date");
+//        String due_datetime  = dateConverter(due_date);
         String pdf_path = (String)viewAss.get("pdf_path");
         returnMap.put("due_date", due_datetime);
         returnMap.put("name",(String) viewAss.get("title"));

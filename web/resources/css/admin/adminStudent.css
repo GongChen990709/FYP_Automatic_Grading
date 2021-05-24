@@ -82,14 +82,17 @@
 
 .buttonArea{
     position: relative;
-    top: 87px;
-    height: 130px;
+    /* top: 87px;
+    height: 130px; */
+    top: 70px;
+    height: 100px;
 }
 
 /* button1 */
 .buttonArea .button1{
     position: relative;
-    top: 42px;
+    /* top: 42px; */
+    top:12px;
     left:92px;
     display: inline-block;
     padding: 15px 25px;
@@ -116,7 +119,9 @@
 /* button2 */
 .buttonArea .button2{
     position: relative;
-    top: 42px;
+    /* top: 42px; */
+    top:12px;
+
     left:300px;
     display: inline-block;
     padding: 15px 25px;
@@ -343,6 +348,32 @@
   transform: translateY(4px);
 }
 
+.backBtnArea #back{
+    position: relative;
+    top: 18px;
+    left:601px;
+    display: inline-block;
+    padding: 4px 7px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;   
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color:rgb(35, 129, 236);
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px #999;
+}
+
+.backBtnArea #back:hover {background-color: rgb(123, 18, 194)}
+
+.backBtnArea #back:active {
+  background-color: rgb(123, 18, 194);
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
 /* back button */
 .register .form #back{
     position: relative;
@@ -533,7 +564,126 @@
 }
 
 
+/* ------------------------------------------------------------------------------------------------------- */
+
+
+.showInfoArea{
+    position: relative;
+    top: 157px;
+}
+.showStudentInfoById{
+    position: relative;
+    top: 157px;
+}
+
+.searchArea{
+    position: relative;
+    top: 65px;
+    height: 20px;
+}
+
+.searchArea .searchById{
+    position:relative;
+    top: 40px;
+    left: 218px;
+    height: 60px;
+
+    width: 350px;
+}
+
+.searchArea .searchByMajor{
+    position:relative;
+    top: -20px;
+    left: 745px;
+    height: 60px;
+    
+    width: 350px;
+}
+
+.searchArea .backToShowAll{
+    position:relative;
+    top: 51px;
+    left: 610px;
+    height: 60px;
+    width: 350px;
+}
+
+.searchArea .backToAdminHome{
+    position:relative;
+    top: -80px;
+    left: 1223px;
+    height: 60px;
+    width: 350px;
+}
+
+.searchArea .backToPreviousPage{
+    position:relative;
+    top: -20px;
+    /* left: 893px; */
+    left: 1223px;
+    height: 60px;
+    width: 350px;
+}
+table{
+    text-align: center;
+
+}
+
+
+.showCourseInfoArea{
+    position: relative;
+    top: 157px;
+}
+.showCourseInfoByID{
+    position: relative;
+    top: 157px;
+}
 
 
 
+.showStudentModuleArea{
+    position: relative;
+    top: 157px;
+}
+/* ------------------------------------------------------------------------------- */
 
+.register .form #moduleCode{
+    
+    border:0;
+    /* width: 60%; */
+    width: 30%;
+
+    height: 8%;
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+    background: #00000000;
+    border-bottom: 2px solid#eacda950;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+.register .form #moduleName{
+    
+    border:0;
+    /* width: 60%; */
+    width: 30%;
+    height: 8%;
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+    background: #00000000;
+    border-bottom: 2px solid#eacda950;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+.register .form #teacherID{
+    
+    border:0;
+    /* width: 60%; */
+    width: 30%;
+    height: 8%;
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+    background: #00000000;
+    border-bottom: 2px solid#eacda950;
+    padding: 5px 10px;
+    margin-top: 10px;
+}

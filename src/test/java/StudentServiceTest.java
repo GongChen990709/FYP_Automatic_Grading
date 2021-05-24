@@ -11,6 +11,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import sun.jvm.hotspot.tools.jcore.ByteCodeRewriter;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -30,7 +31,7 @@ public class StudentServiceTest {
 
     @Test
     public void test(){
-        System.out.println(12345);
+        System.out.println("aaa".equals(null));
     }
 
     @Test
@@ -132,10 +133,14 @@ public class StudentServiceTest {
 
     @Test
     public void aaa(){
-        String salt = BCrypt.gensalt();
-        System.out.println(salt);
-        String pwd = BCrypt.hashpw("gc",salt);
-        System.out.println(pwd);
+//        String salt = BCrypt.gensalt();
+//        System.out.println(salt);
+//        String pwd = BCrypt.hashpw("gc",salt);
+//        System.out.println(pwd);
+
+        float a =(float) 3.231213;
+        System.out.println(Float.toString(a));
+        System.out.println(a>3);
     }
 
     @Test
@@ -154,13 +159,12 @@ public class StudentServiceTest {
     //获取当前时间并转换为String
     @Test
     public void tes111(){
-        //Date currentTime = new Date();
-        //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //Date dateString = formatter.format(currentTime);
+        String grade = "44111.23113";
 
-        //ParsePosition pos = new ParsePosition(8);
-        //Date currentTime_2 = formatter.parse(dateString, pos);
-        //System.out.println(currentTime_2.toString());
+
+
+        System.out.println(Long.parseLong(grade.substring(0,grade.lastIndexOf("."))));
+
     }
 
     @Test

@@ -11,8 +11,6 @@ public interface AdminMapper {
     Administrator queryAdminById(@Param("id") int id);
     String querySaltById(@Param("admin_id") int id);
     int insertStudentHistory(Registration_History history);
-    List<Registration_History> queryStudentHistoryByTimeAndStatus(@Param("time") String time, @Param("status") String status);
-
-
-
+    List<Registration_History> queryStudentHistoryByTimeAndStatus(@Param("time") String time, @Param("status") String status, @Param("type") String type);
+    List<String> queryAllHistoryDates();
 }

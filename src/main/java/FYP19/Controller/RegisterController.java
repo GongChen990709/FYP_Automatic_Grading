@@ -54,7 +54,6 @@ public class RegisterController {
 
         }
         catch (MailSendException e){
-            System.out.println("=================Email Address failed");
             resultMap.put("status","err2");
             return resultMap;
         }
@@ -142,21 +141,6 @@ public class RegisterController {
         return resultMap;
     }
 
-    @RequestMapping("/successStudents")
-    @ResponseBody
-    public List<Registration_History> successStudentsList(HttpServletRequest request){
-        String reg_datetime = (String) request.getSession().getAttribute(Constants.REGISTRATION_TIME);
-        return studentService.queryStudentHistoryByTimeAndStatus(reg_datetime,"SUCCESS");
-    }
-
-    @RequestMapping("/failedStudents")
-    @ResponseBody
-    public List<Registration_History> failedStudentsList(HttpServletRequest request){
-        String reg_datetime = (String) request.getSession().getAttribute(Constants.REGISTRATION_TIME);
-        return studentService.queryStudentHistoryByTimeAndStatus(reg_datetime,"FAILED");
-    }
-
-
     @RequestMapping("/doStudentActivation")
     public void studentActivation(HttpServletRequest request, HttpServletResponse resp) throws IOException, ServletException {
         String activationCode = request.getParameter("code");
@@ -195,12 +179,23 @@ public class RegisterController {
         boolean email_flag = false;
         try {
             email_flag = mailService.sendEmailToTeacher(teacher,uuid);
-        } catch (MessagingException e) {
-            e.printStackTrace();
+        }
+        catch (MessagingException e) {
+
+        }
+        catch (MailSendException e){
+            resultMap.put("status","err2");
+            return resultMap;
         }
         boolean teacher_flag = false;
         if(email_flag==true) {
-            teacher_flag = teacherService.initialRegisterTeacher(teacher, uuid);
+            try{
+                teacher_flag = teacherService.initialRegisterTeacher(teacher, uuid);
+            }
+            catch (DuplicateKeyException e){
+                resultMap.put("status","err1");
+                return resultMap;
+            }
         }
         if(teacher_flag&&email_flag){
             resultMap.put("status","true");
@@ -269,16 +264,42 @@ public class RegisterController {
         }
         return resultMap;
     }
+
+    @RequestMapping("/successStudents")
+    @ResponseBody
+    public List<Registration_History> successStudentsList(HttpServletRequest request){
+        String reg_datetime = (String) request.getSession().getAttribute(Constants.REGISTRATION_TIME);
+        return studentService.queryStudentHistoryByTimeAndStatus(reg_datetime,"SUCCESS","student");
+    }
+
+    @RequestMapping("/failedStudents")
+    @ResponseBody
+    public List<Registration_History> failedStudentsList(HttpServletRequest request){
+        String reg_datetime = (String) request.getSession().getAttribute(Constants.REGISTRATION_TIME);
+        return studentService.queryStudentHistoryByTimeAndStatus(reg_datetime,"FAILED", "student");
+    }
 //////////////////////////////////////////////////////////////////////////
+    @RequestMapping("/student/allHistoryDates")
+    @ResponseBody
+    public Map<String,List<String>> allStuHistoryDates() {
+        List<String> history_dates = studentService.queryAllHistoryDates();
+        Map<String,List<String>> returnMap = new HashMap<>();
+        returnMap.put("history_dates",history_dates);
+        return returnMap;
+    }
 
+    @RequestMapping("/history/successStudents")
+    @ResponseBody
+    public List<Registration_History>  successStuHistoryByDate(@RequestBody Map<String,String> map) {
+        String history_date = map.get("history_date");
+        return studentService.queryStudentHistoryByTimeAndStatus(history_date,"SUCCESS", "student");
+    }
 
-
-
-
-
-
-
-
-
+    @RequestMapping("/history/failedStudents")
+    @ResponseBody
+    public List<Registration_History> failedStuHistoryByDate(@RequestBody Map<String,String> map) {
+        String history_date = map.get("history_date");
+        return studentService.queryStudentHistoryByTimeAndStatus(history_date,"FAILED", "student");
+    }
 
 }

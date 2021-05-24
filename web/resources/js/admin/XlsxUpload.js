@@ -39,7 +39,7 @@ function uploadStudentXLSX(){      //上传XLSX文件
                       
                     setTimeout("window.location.href='../../../status/StudentEmailStatus.html'", 5000);     //收到success后停留5秒钟后  跳到邮件发送status页面
                     // getEmailData(totalNum);
-
+                    
                   }
                   else {
                       // alert(result.status+" Please check again");
@@ -47,8 +47,7 @@ function uploadStudentXLSX(){      //上传XLSX文件
               }
             });
 
-
-            setTimeout(function () { getEmailData(totalNum); },5*1000);    //5秒后第一次请求email success fail 数据
+              setTimeout(function () { getEmailData(totalNum); },5*1000);    //5秒后第一次请求email success fail 数据
 
 
             if (XL_row_object.length > 0) {
@@ -98,17 +97,31 @@ function getEmailData(totalNum){       //向后端请求email的发送数据
 
 
 function showProgressBar(successNum,failNum,totalNum){
-        document.getElementById("progress-wrapper").style.visibility="visible";//显示
 
+        document.getElementById("XlsxTemplate").style.visibility="hidden";
+        document.getElementById("hr1").style.visibility="hidden";
+        document.getElementById("uploadFile").style.visibility="hidden";
+        document.getElementById("hr2").style.visibility="hidden";
+        document.getElementById("historyArea").style.visibility="hidden";
+        document.getElementById("backBtnArea").style.visibility="hidden";
+
+
+
+        document.getElementById("progress-wrapper").style.visibility="visible";//显示
+        document.getElementById("waitAlert").style.visibility="visible";
         
         var success = (successNum/totalNum)*100*4;
         var total = 100*4;
-        var tipV = success- 30;
+        // var tipV = success- 30;
+
+        var fail = (failNum/totalNum)*100*4;
+        var successfail = success+fail;
+        var tipV = successfail-30;
 
         var tip = document.querySelector(".percent-tip");        //百分比框
         var tip_val = document.getElementById("successNum");       //已发送成功数元素
         //input.value填写已发送成功邮件的个数
-        document.styleSheets[0].addRule(".progress-wrapper .fill::before","width:"+success+"px");
+        document.styleSheets[0].addRule(".progress-wrapper .fill::before","width:"+successfail+"px");
         // tip.style.left = successNum*4 -30+"px";
         tip.style.left = tipV+"px";
         tip_val.innerHTML = successNum;
@@ -122,4 +135,9 @@ function showProgressBar(successNum,failNum,totalNum){
         var tip_val2 = document.getElementById("totalNum");     //总数元素
         document.styleSheets[0].addRule(".container .progress-wrapper div","width:"+total+"px");
         tip_val2.innerHTML = totalNum;
+}
+
+
+function BackToAdminStudent(){
+  window.location.href = "../../html/admin/adminStudent.html";
 }

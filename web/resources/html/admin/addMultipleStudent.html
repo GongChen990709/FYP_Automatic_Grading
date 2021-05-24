@@ -10,13 +10,20 @@
     <script src="../../js/common/Back.js"></script>
     <script src="../../js/admin/adminHome.js"></script>
 
+    
+    
    <link rel="stylesheet" type="text/css" href="../../css/admin/progressBar.css">
     <link rel="stylesheet" type="text/css" href="../../css/admin/adminStudent.css">
     <script type="text/javascript" src="http://cdn.bootcdn.net/ajax/libs/xlsx/0.16.6/xlsx.full.min.js"></script>
     <script src="../../js/admin/XlsxUpload.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../resources/css/layui/css/layui.css">
     
     <!-- choose file button css -->
     <style>
+        
+        /* .popOutBg{ width:100%; height:100%; position: fixed; left:0; top:0; background:rgba(0,0,0,.6); display: none;} */
+
+
         .file {
             position: relative;
             display: inline-block;
@@ -41,6 +48,8 @@
             opacity: 0;
         }
         
+       
+
         .file:hover {
             
             opacity: 0.7;
@@ -55,8 +64,6 @@
             display: inline-block;
             
         }
-
-
         
 
     </style>
@@ -64,6 +71,9 @@
 
 </head>
 <body>
+    <!-- <div class="popOutBg" id="popOutBg"></div> -->
+
+
     <div class="header">
 
         <div class="logo" onclick="Back()">
@@ -90,11 +100,37 @@
 
     </div>
 
-    <div class="uploadFile">
-        <!-- <input type="file" id="getfile" >  -->
 
-        <!-- div block is choose file button  -->
-        <div class="chooseFile">      
+
+
+
+    <!-- --------------------------------------------------------------------------------------------------------- -->
+    
+    
+
+    
+        <!-- template area -->
+    <div class="XlsxTemplate" id="XlsxTemplate" style="position: relative;top: 85px;left: 0px; height: 102px;">
+        <div class="tempalteTitle" style="font-size:26px;position: relative;left: 222px;width: 735px;">
+            Click to download students registration template file
+        </div>
+        <button onclick="window.open('../../fileTemplate/Student Registration Template.xlsx')" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);position: relative; top: 21px; left: 570px;">Download</button>
+        <!-- <button class="TemplateBtn" onclick="window.open('../../fileTemplate/Student Registration Template.xlsx')">Click here to get the registration template!</button> -->
+    </div>
+    
+    <!-- <hr class="hr1" /> -->
+    <div class="hr1" id="hr1" style="position: relative;top: 97px;height: 20px;">
+        <hr style="height:5px;/*border-width:0px;*/color:black;background-color:rgba(157, 169, 184, 0.644);" />
+    </div>
+
+    
+    
+    <!-- style="position: relative;top: 85px;left: 0px; height: 173px;" -->
+    <div class="uploadFile" id="uploadFile" style="position: relative;top: 85px;left: 0px; height: 173px;">
+        <div class="uploadTitle" style="font-size:26px;position: relative;top:15px; left: 280px;width: 824px;">
+            Select and upload template file filled with students information
+        </div>
+        <div class="chooseFile" style="position: relative;top: 33px;left: 565px;">      
             <a href="javascript:;" class="file">Choose File
                 <input type="file" name="" id="fileupload" multiple onchange="showFileName()">
                 
@@ -104,52 +140,63 @@
 
         </div>
 
-
-        <div class="XlsxTemplate">
-            <button class="TemplateBtn" onclick="window.open('../../fileTemplate/Student Registration Template.xlsx')">Click here to get the registration template!</button>
+        <div class="submitBTN" style="position: relative; top: -23px; left: 477px;width: 500px;">
+            <button id="button" onclick="uploadStudentXLSX()" >Submit</button>
         </div>
-
-
-        <button id="button" onclick="uploadStudentXLSX()">Submit</button>
-        <button id="back" onclick="Back()">Back</button>
-
-
-        <div id="wait" style="position: relative;left: 550px;top: 148px; font-size:x-large;">
-            
-        </div>
-
-        <!-- progress bar -->
         
-        <div class="container">
-            <div class="progress-wrapper" id="progress-wrapper">
-                
-                <div class="fill" id="fill"></div>
-                
-                <div class="percent-tip" id="percent-tip">
-    
-                    <!-- <span>75</span> / <span>100</span> -->
-                    Email sent successfully:
-                    <span id="successNum"></span>
-                    <br/>
-                    Failed to send Email:
-                    <span id="failNum"></span>
-                    <br/>
-                    Total Email for sending:  
-                    <span id="totalNum"></span> 
-                    <br/>
-                    <!-- <div id="successNum"></div>
-                    <div id="failNum"></div>
-                    <div id="totalNum"></div> -->
-                </div>
+        
+    </div>
+    <!-- <div style="position: relative;top: -200px;">
+        <button onclick="window.location.href='../../../resources/html/admin/addMultipleStudent.html'">heheheehe</button>
+        <button onclick="showProgressBar(2,1,5)">click</button>
+        <button onclick="showProgressBar(3,2,5)">click22222</button>
+    </div> -->
+    <div class="container" style="position: relative; top: -213px;">
+        <div class="waitAlert" id="waitAlert" style="font-size:xx-large;position: relative;top:-70px; left: -196px;width: 824px;">
+            The system is sending email to the registered students. Please wait a moment...
+        </div>
+        <div class="progress-wrapper" id="progress-wrapper" style="left: -36px;">
+            
+            <div class="fill" id="fill"></div>
+            
+            <div class="percent-tip" id="percent-tip">
+
+              
+                Email sent successfully:
+                <span id="successNum"></span>
+                <br/>
+                Email sent failed: 
+                <span id="failNum"></span>
+                <br/>
+                Total Email for sending:  
+                <span id="totalNum"></span> 
+                <br/>
+               
             </div>
-    
         </div>
 
-
-        <!-- <button onclick="showProgressBar(20,0,70)">click</button> -->
-
-        <button onclick="showProgressBar(66,18,240)">click</button>
     </div>
+        
+    
+
+
+    <div class="hr2" id="hr2" style="position: relative;top: -215px;height: 20px;">
+        <hr style="height:5px;background-color:rgba(157, 169, 184, 0.644);" />
+    </div>
+
+
+    
+
+    <div class="historyArea" id="historyArea" style="position: relative; top: -215px; height: 75px;">
+        <button onclick="window.location.href='../../html/admin/showRegisterDate.html'" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);position: relative; top: 21px; left: 533px;">View registration history</button>
+    </div>
+
+    <div class="backBtnArea" id="backBtnArea" style="position: relative; top: -215px;height: 50px;">
+        <button id="back" onclick="BackToAdminStudent()">Back</button>
+    </div>
+    
+
+    
 </body>
 
 
@@ -162,6 +209,9 @@
             console.log(res);
             $("#filename").html(res[res.length-1]+"waiting for uploading");
     }
+
+
+
 </script>
 
 </html>

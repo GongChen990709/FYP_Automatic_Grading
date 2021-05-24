@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StudentsMapper {
     //All parameters in SQLs in Mapper.xml file are the same as the name specified within @Param
@@ -22,6 +23,10 @@ public interface StudentsMapper {
     boolean queryIsActivatedById(@Param("ucd_id") int ucd_id);
     int updateSaltById(@Param("ucd_id") int ucd_id, @Param("salt") String salt);
     String querySaltById(@Param("ucd_id") int ucd_id);
+    List<Students> allActivatedStudents();
+    int deleteStudentById(@Param("ucd_id") int ucd_id);
+    List<Map<String,Object>> allActivatedStudentsAndMajor();
+    List<Map<String,Object>> studentsUnderOneModule(@Param("module_code") String module_code);
 
 
 

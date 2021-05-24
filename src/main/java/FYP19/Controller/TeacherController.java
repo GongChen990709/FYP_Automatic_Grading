@@ -8,6 +8,7 @@ import FYP19.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -36,5 +37,46 @@ public class TeacherController {
     }
 
 
+    @RequestMapping("/associatedModule")
+    @ResponseBody
+    public List<Map<String,Object>> associatedModule(){
+        return teacherService.associatedModule();
+    }
+
+
+    @RequestMapping("/allTeacherInfo")
+    @ResponseBody
+    public List<Map<String,Object>> allTeacherInfo(){
+        return teacherService.allTeacherInfo();
+    }
+
+    @RequestMapping("/registerModule")
+    @ResponseBody
+    public Map<String,String> registerModule(@RequestBody Module module){
+        Map<String,String> returnMap = new HashMap<>();
+        try{
+            teacherService.registerModule(module);
+            returnMap.put("status","success");
+        }
+        catch (Exception e){
+            returnMap.put("status","failed");
+        }
+        return returnMap;
+    }
+
+    @RequestMapping("/deleteModule")
+    @ResponseBody
+    public Map<String,String> deleteModule(@RequestBody Map<String, String> req, HttpServletRequest request){
+        Map<String,String> returnMap = new HashMap<>();
+        String module_code = req.get("module_code");
+        try{
+            teacherService.deleteModule(module_code, request);
+            returnMap.put("status","success");
+        }
+        catch (Exception e){
+            returnMap.put("status","failed");
+        }
+        return returnMap;
+    }
 
 }

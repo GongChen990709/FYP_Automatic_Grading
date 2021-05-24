@@ -1,8 +1,9 @@
 package FYP19.util;
 
+
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import net.sf.json.JSONArray;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +47,7 @@ public class FileUtils {
     }
 
 
-    public static void writeToJsonFile(JSONArray object, String destination) throws IOException {
+    public static void writeToJsonFile(JSONObject object, String destination) throws IOException {
         String content = JSON.toJSONString(object);
         FileOutputStream out = new FileOutputStream(destination);
         File file = new File(destination);

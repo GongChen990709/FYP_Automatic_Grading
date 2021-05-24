@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../../../jquery-3.6.0.js"></script>
+    <script src="../../../resources/css/layui/layui.js"></script>
+
+    <script src="../../js/admin/selectTeacher.js"></script>
+    <script src="../../js/common/Back.js"></script>
+    <script src="../../js/admin/adminHome.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/admin/adminStudent.css">
+    <link rel="stylesheet" type="text/css" href="../../../resources/css/layui/css/layui.css">
+    
+
+    <link rel="stylesheet" type="text/css" href="../common/AlertComponent/hsycmsAlert.css">
+    <script src="../common/AlertComponent/hsycmsAlert.js"></script>
+</head>
+<body>
+    <div class="header">
+
+        <div class="logo" onclick="Back()">
+            <img src="../../images/admin/UCD_Logo.png" title="back" alt="">
+        </div>
+
+        <div class="admin" onmouseleave="set1()">
+            <div id="name" onclick="set()">
+                <a href="#">admin</a>
+            </div>
+            <div id="setting">
+                <a href="../common/userSetting.html">Reset Password</a>  <br/>
+                <a href="../../../login.html">Log Out</a>
+            </div>
+
+        </div>
+
+        
+        <div class="adminLogo">
+            Select A Teacher
+        </div>
+
+
+    </div>
+
+    <div id="splitArea">    
+
+    </div>
+
+    <!-- <div>
+        <button onclick="">全选</button>
+    </div> -->
+
+  
+    <!-- -------------------------------------------------------------------------------------------------------------- -->
+
+    <div class="buttonArea">
+        <button class="button1" id="addTeacherForModule" style="left: 372px;">Confirm Selection</button>
+    </div>
+
+
+    <div class="searchArea">
+        <div class="searchById" id="searchByModuleCode" style="left: 502px;">
+           
+            <div class="layui-form-item">
+                
+                <div class="layui-input-inline">
+                  <input type="text" id="teacherSearchById" name="username" lay-verify="required" placeholder="Search A Teacher By Id" autocomplete="off" class="layui-input">
+                </div>
+        
+                <button onclick="searchTeacherById()" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);">Search</button>
+            </div>
+            
+        </div>
+
+        <div class="backToPreviousPage" id="backToPreviousPage" style="display: block; width: 109px;">
+            <button onclick="backToPreviousPage()" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);">Back</button>
+        </div>
+
+
+        <div class="backToShowAll" id="backToShowAll" style="display: none;">
+            <button onclick="backToShowAll()" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);">Back</button>
+        </div>
+
+    </div>
+
+
+
+    <div class="showStudentModuleArea" id="showStudentModuleArea" style="display: block;">
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th class="title" style="text-align: center; font-weight: bold;color: rgb(123, 18, 194);">Select</th>
+
+                    <th class="title" style="text-align: center; font-weight: bold;">Teacher Id</th>
+                    <th class="title" style="text-align: center; font-weight: bold;">Teacher Name</th>
+                    <th class="title" style="text-align: center; font-weight: bold;">Teacher Email</th>
+                    <th class="title" style="text-align: center; font-weight: bold;">Department Code</th>
+                    <th class="title" style="text-align: center; font-weight: bold;">Department Name</th>
+
+                </tr>
+            </thead>
+        
+            <tbody>
+        
+            </tbody>
+        </table>
+    </div>
+
+
+    <div id="layerDemo" style="margin-bottom: 0; position: relative; left: -1000px; top: -100px;">
+  
+        <div class="layui-btn-container">
+          <button id="target" data-method="offset" data-type="auto" class="layui-btn layui-btn-normal">居中弹出</button>
+        </div>
+        
+        
+    </div>
+
+
+
+
+
+
+    <script>
+
+        function callAlert(){
+          document.getElementById("target").click();
+    
+        }
+    
+    
+      var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+      
+      //触发事件
+      var active = {
+        
+        offset: function(othis){
+          var type = othis.data('type')
+          ,text = othis.text();
+          
+          layer.open({ title:false,
+            type: 1
+            ,offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+            ,id: 'layerDemo'+type //防止重复弹出
+            ,content: '<div style="padding: 20px 100px;">'+ 'Please select a teacher' +'</div>'
+            ,btn: 'Close'
+            ,btnAlign: 'c' //按钮居中
+            ,shade: 0 //不显示遮罩
+            ,yes: function(){
+              layer.closeAll();
+            }
+          });
+        }
+      };
+      
+      $('#layerDemo .layui-btn').on('click', function(){
+        var othis = $(this), method = othis.data('method');
+        active[method] ? active[method].call(this, othis) : '';
+      });
+      
+      
+    
+    </script>
+
+</body>
+</html>

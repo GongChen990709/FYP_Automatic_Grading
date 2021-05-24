@@ -15,8 +15,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Warmup(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 1, batchSize = 10000)
-@State(Scope.Thread)
-@Fork(2)
+@State(Scope.Benchmark)
 public class AssignmentTimeTester {
     @Param({"default"})
     public String dataType;

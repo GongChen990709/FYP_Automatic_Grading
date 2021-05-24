@@ -86,14 +86,16 @@
     width: 1200px;
     margin: 25px auto;
 }
-
+/* -------------------------------------Student------------------------------------------------- */
 .content .studentContent{
     
     float: left;
-    margin-left: 30px;
+    margin-left: -35px;
     margin-top: 30px;
     border-radius: 16px;
-    height: 400px;
+    /* height: 400px; */
+    height: 320px;
+
     /* box-shadow: 0 0 5px 3px #cccccc; */
     background-color: rgba(139, 196, 243, 0.925);
 }
@@ -104,16 +106,20 @@
     border-radius: 16px;
     border: 1px solid #ddd;
     padding: 5px;
-    width: 400px;
-    height: 300px;
+    /* width: 400px;
+    height: 300px; */
+    width: 320px;
+    height: 240px;
 }
 
 .content .studentContent .info h3 {
 
     position: relative;
     float: left;
-    margin-top: 4px;
-    margin-left: 122px;
+    margin-top: 10px;
+    /* margin-left: 122px; */
+    margin-left: 90px;
+
 }
 
 
@@ -123,17 +129,24 @@
     font-style: normal;
     position: relative;
     float: left;
-    margin-top: 15px;
-    margin-bottom: 20px;
+    /* margin-top: 15px;
+    margin-bottom: 20px; */
+    /* margin-top: px;
+    margin-bottom: 91px; */
 }
+
+
+
+/* -------------------------------------Teacher------------------------------------------------- */
 
 .content .teacherContent{
     
     float: left;
-    margin-left: 170px;
+    margin-left: 68px;
     margin-top: 30px;
     border-radius: 16px;
-    height: 400px;
+    /* height: 400px; */
+    height: 320px;
     /* box-shadow: 0 0 5px 3px #cccccc; */
     background-color: rgba(139, 196, 243, 0.925);
 }
@@ -144,16 +157,16 @@
     border-radius: 16px;
     border: 1px solid #ddd;
     padding: 5px;
-    width: 400px;
-    height: 300px;
+    width: 320px;
+    height: 240px;
 }
 
 .content .teacherContent .info h3 {
 
     position: relative;
     float: left;
-    margin-top: 4px;
-    margin-left: 122px;
+    margin-top: 10px;
+    margin-left: 90px;
 }
 
 
@@ -163,6 +176,51 @@
     font-style: normal;
     position: relative;
     float: left;
-    margin-top: 15px;
-    margin-bottom: 20px;
+    /* margin-top: 15px;
+    margin-bottom: 20px; */
+}
+
+
+
+
+/* -------------------------------------Module------------------------------------------------- */
+
+.content .moduleContent{
+    
+    float: left;
+    margin-left: 75px;
+    margin-top: 30px;
+    border-radius: 16px;
+    height: 320px;
+    /* box-shadow: 0 0 5px 3px #cccccc; */
+    background-color: rgba(139, 196, 243, 0.925);
+}
+
+.content .moduleContent:hover img{filter:alpha(Opacity=20);-moz-opacity:0.8;opacity: 0.8} 
+
+.content .moduleContent .moduleImage{
+    border-radius: 16px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    width: 320px;
+    height: 240px;
+}
+
+.content .moduleContent .info h3 {
+
+    position: relative;
+    float: left;
+    margin-top: 10px;
+    margin-left: 95px;
+}
+
+
+.content .moduleContent .info h3 a{
+    text-decoration: none;
+    font-size: 30px;
+    font-style: normal;
+    position: relative;
+    float: left;
+    /* margin-top: 15px;
+    margin-bottom: 20px; */
 }

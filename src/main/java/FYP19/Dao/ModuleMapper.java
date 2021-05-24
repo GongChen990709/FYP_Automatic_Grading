@@ -10,5 +10,8 @@ public interface ModuleMapper {
     List<Module> queryModulesByTid(@Param("teacher_id") int teacher_id);
     List<Module> queryModulesBySid(@Param("ucd_id") int ucd_id);
     int countStudentNumByCode(@Param("module_code") String module_code);
+    int deregisterModule(@Param("module_code") String module_code, @Param("ucd_id") int ucd_id);
+    int registerModule(@Param("module_code") String module_code, @Param("ucd_id") int ucd_id);
+    int deleteModule(@Param("module_code") String module_code);
 
 }

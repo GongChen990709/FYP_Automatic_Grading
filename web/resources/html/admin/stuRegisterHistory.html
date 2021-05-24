@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="../../../jquery-3.6.0.js"></script>
+    <script src="../../js/admin/addStudent.js"></script>
+    <script src="../../js/common/Back.js"></script>
+    <script src="../../js/admin/adminHome.js"></script>
+    <script src="../../js/admin/stuRegisterHistory.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/admin/adminStudent.css">
+    <link rel="stylesheet" type="text/css" href="../../../resources/css/layui/css/layui.css">
+</head>
+<body>
+
+    <div class="backBtnArea" id="backBtnArea" style="position: relative; top: 10px;height: 50px;">
+        <button id="back" onclick="BackToShowRegisterDate()">Back</button>
+    </div>
+
+    <div id="registerDate" style="text-align: center;font-size: 26px;position: relative;top: 25px;">
+
+    </div>
+
+
+    <div class="showStudentRegisterSuccess" id="showStudentRegisterSuccess" style="display: block;position: relative;top: 61px;">
+        <div style="text-align: center; font-size: 20px;">
+            Students who have been successfully registered
+        </div>
+        
+        <table class="layui-table">
+            <thead>
+                <tr>
+
+                    <th class="title" style="text-align: center; font-weight: bold;">Student Id</th>
+                    <th class="title" style="text-align: center; font-weight: bold;">Student Name</th>
+                    <th class="title" style="text-align: center; font-weight: bold;">Student Email</th>
+                    <th class="title" style="text-align: center; font-weight: bold;">Major Code</th>
+                    <th class="title" style="text-align: center; font-weight: bold;color: green;">Registration Status</th>
+                    
+                </tr>
+            </thead>
+        
+            <tbody id="successBody">
+        
+            </tbody>
+        </table>
+    </div>
+
+    <div class="showStudentRegisterFail" id="showStudentRegisterFail" style="display: block;position: relative;top: 94px;">
+
+        <div style="text-align: center; font-size: 20px;">
+            Students who failed to be registered
+        </div>
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th class="title" style="text-align: center; font-weight: bold;">Student Id</th>
+                    <th class="title" style="text-align: center; font-weight: bold;">Student Name</th>
+                    <th class="title" style="text-align: center; font-weight: bold;">Student Email</th>
+                    <th class="title" style="text-align: center; font-weight: bold;">Major Code</th>
+                    <th class="title" style="text-align: center; font-weight: bold; color: red;">Registration Status</th>
+                    
+                </tr>
+            </thead>
+        
+            <tbody id="failBody">
+        
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
