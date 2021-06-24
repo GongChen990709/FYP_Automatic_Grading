@@ -63,9 +63,14 @@ $(function(){
                     setTimeout("window.location.href='../../html/admin/addTeacher.html'", 3200 )
                 }
                 else {
-                    error();
-                    setTimeout("window.location.href='../../html/admin/addTeacher.html'",3200)
-                    
+                    if(result.status=="err1"){
+                        error_1();
+                        setTimeout("window.location.href='../../html/admin/addTeacher.html'",3200)
+                    }
+                    if(result.status=="err2"){
+                        error_2();
+                        setTimeout("window.location.href='../../html/admin/addTeacher.html'",3200)
+                    }
                 }
             }
         });
@@ -83,6 +88,10 @@ function success(){
 }
 
 //操作失败调用
-function error(){
-    hsycms.error('error','Registration Failed',function(){  console.log('操作失败关闭后');  },3200)
+function error_1(){
+    hsycms.error('error','Registration Failed: Duplicate Teacher ID',function(){  console.log('操作失败关闭后');  },6000)
+}
+
+function error_2(){
+    hsycms.error('error','Registration Failed: Email Sending Error',function(){  console.log('操作失败关闭后');  },6000)
 }

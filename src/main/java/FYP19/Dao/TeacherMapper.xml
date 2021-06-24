@@ -72,4 +72,23 @@
         WHERE id = #{t_id}
     </select>
 
+    <select id="associatedModule" resultType="map">
+        SELECT m.code, m.name, t.id, t.name as teacher_name, t.email FROM FYP_Automatic_Grading.Teacher AS t, FYP_Automatic_Grading.Module AS m
+        WHERE t.id = m.teacher_id
+    </select>
+
+    <select id="allTeacherInfo" resultType="map">
+        SELECT t.department_code, d.name as department_name, t.id, t.name, t.email FROM FYP_Automatic_Grading.Teacher AS t, FYP_Automatic_Grading.Department AS d
+        WHERE t.department_code = d.code AND t.is_activated = 1
+    </select>
+
+    <delete id="deleteTeacherById">
+        DELETE FROM FYP_Automatic_Grading.Role
+        WHERE id = #{id}
+    </delete>
+
+    <select id="allTeachers" resultType="Teacher">
+        SELECT * FROM FYP_Automatic_Grading.Teacher
+    </select>
+
 </mapper>

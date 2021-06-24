@@ -25,6 +25,9 @@ function jumpToAdminStudent(){
 function jumpToAdminTeacher(){
     window.location.href="../../html/admin/adminTeacher.html";
 }
+function jumpToAdminModule(){
+    window.location.href="../../html/admin/adminModule.html";
+}
 
 
 

@@ -10,6 +10,7 @@
     <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
     <script type="text/javascript" src="../../js/teacher/teacherCommon.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/teacher/teacher.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
 
 
 
@@ -50,8 +51,8 @@
                     <span id="user_name"></span><!-- user name-->
                 </a >
                 <dl class="layui-nav-child">
-                    <dd><a href="">Settings</a ></dd>
-                    <dd><a href="">Sign out</a ></dd>
+                     <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
                 </dl>
             </li>
 
@@ -122,6 +123,10 @@
 
         <div id="show" style="display: none">
 
+            <div style="font-size: 15px; font-family: Arial; margin-bottom: 20px" >
+                The back end is automatically grading assignments, please wait patiently
+            </div>
+
             <div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="demo" style="width:80%;">
                 <div id="percentdiv" class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
             </div>
@@ -130,20 +135,21 @@
         </div>
 
         <script type="text/html" id="toolbar">
-            <!--<div class="layui-btn-container">-->
-            <button class="layui-btn layui-btn-sm" lay-event="getCheckData" id="judge">Judge</button>
-            <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">The number of items selected</button>
-            <button class="layui-btn layui-btn-sm" lay-event="isAll">Verify select all</button>
-            <!--</div>-->
+            <div class="layui-btn-container">
+            <button class="layui-btn " lay-event="getCheckData" id="judge">Grade</button>
+            <button class="layui-btn " lay-event="getCheckLength">The number of items selected</button>
+            <button class="layui-btn " lay-event="isAll">Verify select all</button>
+            <button class="layui-btn layui-btn-warm " lay-event="releaseReport">Release Report</button>
+
+            </div>
         </script>
 
 
     </div>
 
-    <!--   <div class="layui-footer">
-           &lt;!&ndash; 底部固定区域 &ndash;&gt;
-           底部固定区域
-       </div>-->
+    <div class="layui-footer" style="text-align: center; color: #007DDB">
+        Automatic Programming Assignment Grading System
+    </div>
 </div>
 
 
@@ -171,91 +177,6 @@
         })
     })
 </script>
-
-<!--<script>
-    $(function () {
-        layui.use(['layer', 'element', 'table'], function () {
-            var layer = layui.layer,
-                element = layui.element,
-                table = layer.table;
-            var $ = layui.jquery;
-
-            var basepath = "/" + window.location.pathname.split("/")[1];
-
-            $("#judge").click(function () {
-                layer.alert("aaaa");
-                var timer;
-                var t=1;
-                var confirm = layer.confirm("Start grading the selected students' assignments?' ",
-                    {btn: ['OK', 'Cancle'], title: "Grading"}, function () {
-                        layer.close(confirm);
-                        layer.config({
-                            extend:'myskin/style.css',
-
-                        });
-                        var show = layer.open({
-                            type: 1,
-                            content: $("#show"),
-                            area:['500px','100px'],
-                            title:"Grading",
-                            skin:'layerdemo',
-                            shade:0,
-
-                            success: function (layero, index) {
-                                element.progress('demo', '0%');
-                                timer = setInterval(function () {
-
-                                    $.ajax({
-                                        url: basepath+ "/grading/progress",
-                                        //data: '',
-                                        type: 'post',
-                                        success: function (data) {
-
-                                            if (data.precentage >= 100) {
-                                                clearInterval(timer);
-                                                layer.close(show);
-                                            } else {
-                                                element.progress('demo', data.percentage + '%');
-                                            }
-                                        }
-                                    });
-                                }, 1000);
-
-                                /*timer = setInterval(function () {
-                                    element.progress('demo', t+"%");
-                                    if(t>=100){
-                                        clearInterval(timer);
-                                        layer.close(show);
-
-                                    }else {
-                                        t++;
-                                    }
-
-
-                                }, 100);*/
-
-                            },
-                            end: function () {
-                                clearInterval(timer);
-                                table.reload('demo', {
-                                    url: basepath+ "/assignment/viewSubmissions",
-                                    where: {assignment_id:id},
-                                    method: 'post',
-                                });
-
-                            }
-                        });
-
-                    });
-
-            });
-
-        });
-    })
-</script>-->
-
-
-
 
 
 <script type="text/javascript">
@@ -289,7 +210,8 @@
             page: false,
             size: "lg",
             even: true,
-            toolbar:"#toolbar"
+            toolbar:"#toolbar",
+            defaultToolbar: false
         });
         table.on('toolbar(test)',function (obj) {
             console.log(obj);
@@ -375,7 +297,7 @@
                             var show = layer.open({
                                 type: 1,
                                 content: $("#show"),
-                                area:['500px','100px'],
+                                area:['500px','200px'],
                                 title:"Grading",
                                 skin:'layerdemo',
                                 shade:0,
@@ -436,6 +358,24 @@
                     var str = flag ? "Select All" : 'Not Select All';
                     layer.msg(str);
                     break
+
+                case "releaseReport":
+
+                    $.ajax({
+                        url: basepath + '/releaseGrade',
+                        data: {"assignment_id":assignment_id},
+                        dataType: 'json',
+                        type: 'post',
+
+                       /* contentType: 'applicaiton/json',*/
+                        success: function (data) {
+                            if(data.status=="success"){
+                                layer.msg("success");
+                            }
+                        }
+                    });
+
+                    break
             }
         });
 
@@ -465,7 +405,7 @@
 
             //调用数据表格的重载方法
             table.reload('demo',{
-                url:"",
+                url:basepath+"/teacher/viewGradeById",
 
                 where:{  //设定需要传递的参数
                     student_ID: search.val(),
@@ -486,7 +426,7 @@
 
             //调用数据表格的重载方法
             table.reload('demo',{
-                url:"",
+                url:basepath+"/teacher/viewGradeByName",
 
                 where:{  //设定需要传递的参数
                     student_name: search.val(),

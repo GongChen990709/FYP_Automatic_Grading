@@ -6,7 +6,6 @@ $(function(){
         var identity = $("#identity").val();
         var id = $("#id").val();
         var pwd = $("#pwd").val();
-        alert("aaaa");
 
         if(!id){
             $("#idmsg").html("id cannot be null");
@@ -31,7 +30,6 @@ $(function(){
         var obj = {"id":id, "pwd":pwd};
         var myJson = JSON.stringify(obj);
 
-       alert(myJson)
 
         $.ajax({
             type: "POST",

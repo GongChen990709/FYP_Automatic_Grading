@@ -23,7 +23,12 @@
         SELECT * FROM FYP_Automatic_Grading.Registration_history
         WHERE registration_date = #{time}
         AND status like '${status}%'
-        AND type = 'student'
+        AND type = #{type}
     </select>
+
+    <select id="queryAllHistoryDates" resultType="string">
+        SELECT DISTINCT registration_date FROM FYP_Automatic_Grading.Registration_history
+    </select>
+
 
 </mapper>

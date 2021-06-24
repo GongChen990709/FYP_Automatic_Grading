@@ -25,4 +25,19 @@
         WHERE module_code = #{module_code}
     </select>
 
+    <delete id="deregisterModule">
+        DELETE FROM FYP_Automatic_Grading.Module_registration
+        WHERE student_id = #{ucd_id} AND module_code = #{module_code}
+    </delete>
+
+    <insert id="registerModule">
+        INSERT INTO FYP_Automatic_Grading.Module_registration (student_id, module_code)
+        VALUES (#{ucd_id},#{module_code})
+    </insert>
+
+    <delete id="deleteModule">
+        DELETE FROM FYP_Automatic_Grading.Module
+        WHERE code = #{module_code}
+    </delete>
+
 </mapper>

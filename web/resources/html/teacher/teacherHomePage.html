@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home Page</title>
+    <title>Teacher Home Page</title>
     <link rel="stylesheet" type="text/css" href="../../css/common/homepage.css">
     <script type="text/javascript" src="../../js/common/username.js"></script>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
     <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
 
     <script type="text/javascript">
         var basepath = "/" + window.location.pathname.split("/")[1];
@@ -106,8 +108,8 @@
         </div>
 
         <ul id="menu2">
-            <li><a href="../../html/common/userSetting.html">Reset Password</a> </li>
-            <li><a href="../../../login.html">Log Out</a> </li>
+            <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+            <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
         </ul>
     </div>
 
@@ -157,36 +159,14 @@
     </script>-->
 
 
-    <div class="page-nav">
-        <ul>
-            <li><a href="#">first page</a></li>
-            <li><a href="#">previou page</a></li>
-            <li><span class="first-page">1</span></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">...</a></li>
-            <li><a href="#">10</a></li>
-            <li><a href="#">11</a></li>
-            <li><a href="#">next page</a></li>
-            <li><a href="#">last page</a></li>
-
-
-        </ul>
-    </div>
-
 
 </div>
 
 <div class="footer">
     <p>
-        <span>CS Moodle</span>@2021 POWERED BY UCD
-    <div id="lu">
-
-    </div>
-
+        <span>Automatic Programming Assignment Grading System</span>
     </p>
+
 </div>
 
 </body>

@@ -20,12 +20,15 @@
         <property name="userMapper" ref="userMapper"/>
         <property name="adminMapper" ref="adminMapper"/>
         <property name="moduleMapper" ref="moduleMapper"/>
+        <property name="assignmentMapper" ref="assignmentMapper"/>
     </bean>
 
     <bean id="TeacherServiceImpl" class="FYP19.Service.TeacherServiceImpl">
         <property name="teacherMapper" ref="teacherMapper"/>
         <property name="moduleMapper" ref="moduleMapper"/>
         <property name="userMapper" ref="userMapper"/>
+        <property name="assignmentMapper" ref="assignmentMapper"/>
+        <property name="studentsMapper" ref="studentsMapper"/>
     </bean>
 
     <bean id="UserServiceImpl" class="FYP19.Service.UserServiceImpl">
@@ -46,6 +49,7 @@
 
     <bean id="AssignmentService" class="FYP19.Service.AssignmentService">
         <property name="assignmentMapper" ref="assignmentMapper"/>
+        <property name="studentsMapper" ref="studentsMapper"/>
     </bean>
 
 <!--Declarative transaction supports for database operations-->

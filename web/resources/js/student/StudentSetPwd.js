@@ -42,8 +42,7 @@ $(function(){
 
         var obj = { "id":stuId, "newPWD":newPwd, "confirmPWD":confirmPwd};
         var myJson = JSON.stringify(obj);
-        
-        alert(myJson)
+
         var basepath = "/" + window.location.pathname.split("/")[1];
         $.ajax({
             type: "POST",

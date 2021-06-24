@@ -20,6 +20,9 @@
         <props>
             <prop key="mail.auth">${email.auth}</prop>
             <prop key="mail.smtp.timeout">${email.timout}</prop>
+            <prop key="mail.smtp.socketFactory.class">${email.sslFactory}></prop>
+            <prop key="mail.smtp.ssl.enable">${email.enable}</prop>
+            <prop key="mail.smtp.socketFactory.port">${email.sshPort}</prop>
         </props>
     </property>
     </bean>

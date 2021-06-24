@@ -4,14 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="FYP19.Dao.UserMapper">
-    <select id="queryRoleById" resultType="string">
-        SELECT role FROM FYP_Automatic_Grading.Role
-        WHERE id = #{user_id}
-    </select>
+<select id="queryRoleById" resultType="string">
+    SELECT role FROM FYP_Automatic_Grading.Role
+    WHERE id = #{user_id}
+</select>
 
-    <insert id="insertRole">
-        INSERT INTO FYP_Automatic_Grading.Role (id,role)
-        VALUES (#{user_id},#{role})
-    </insert>
+<insert id="insertRole">
+    INSERT INTO FYP_Automatic_Grading.Role (id,role)
+    VALUES (#{user_id},#{role})
+</insert>
 
 </mapper>

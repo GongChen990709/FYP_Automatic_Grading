@@ -6,9 +6,11 @@ import FYP19.AutoGrading.executor.JavaCompile;
 import FYP19.Service.AssignmentService;
 import FYP19.util.Constants;
 import FYP19.util.FileUtils;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -159,6 +161,42 @@ public class FileController {
         returnMap.put("code","0");
         return returnMap;
     }
+    //Upload From frontend user interface
+    @RequestMapping("/teacher/UI/DataTypeUpload")
+    @ResponseBody
+    public Map<String,String> DataTypeUIUpload(@RequestBody JSONObject requestObject, HttpServletRequest request) {
+        Map<String, String> returnMap = new HashMap<String, String>();
+        String assignment_id = requestObject.getString("assignment_id");
+        JSONObject dataType = requestObject.getJSONObject("dataType");
+        boolean update_flag;
+        String absPath = request.getSession().getServletContext().getRealPath("/WEB-INF/teacherUpload");
+        File filePath = new File(absPath);
+        if (!filePath.exists()) {
+            filePath.mkdir();
+        }
+        try {
+            File assignmentPath = new File(filePath.getPath()+"/"+assignment_id);
+            if(!assignmentPath.exists()){
+                assignmentPath.mkdir();
+            }
+            String realPath = assignmentPath+"/"+"datatype.json";
+            FileUtils.writeToJsonFile(dataType, realPath);
+            update_flag = assignmentService.updateDataTypePath(assignment_id,realPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            returnMap.put("status", "failed");
+            return returnMap;
+        }
+        if(update_flag==false){
+            returnMap.put("status", "failed");
+            return returnMap;
+        }
+
+        returnMap.put("status","success");
+        return returnMap;
+    }
+
+
 
     //2. Downloading 4 files
     @RequestMapping("/teacher/pdfDownload")
@@ -255,55 +293,6 @@ public class FileController {
         FileUtils.downloadFileByPath(source_path, request, resp);
         return null;
     }
-
-
-
 ////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-    @RequestMapping("/testcompile")
-    @ResponseBody
-    public void test(HttpServletRequest request) throws ClassNotFoundException, ReflectionCallerErrorException {
- //       String dataType = JsonFileReader.readJsonFile("/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/AssPDFUpload/bf3166c974cf4bb281040826a60a39e7/test_tem.json");
- //       String data = JsonFileReader.readJsonFile("/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/AssPDFUpload/bf3166c974cf4bb281040826a60a39e7/test_temTestData.json");
-//        JSONObject dataTypeObject = JSON.parseObject(dataType);
-//        JSONObject dataObject = JSON.parseObject(data);
-
-//        JSONClassConverter class1 = new JSONClassConverter(dataTypeObject);
-//        Map<String, List<List<Object>>> testData = class1.batchTestDataLoader(dataObject);
-//        Map<String, List<Class<?>>> TestMethodParametersType = class1.batchTestMethodParametersTypeLoader(dataObject);
-//
-//        String compileSource = "/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/teacherUpload/b412c4fc07c84ebca0afba54f39fd529/test_tem.java";
-//        String compileDes = "/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/teacherUpload/b412c4fc07c84ebca0afba54f39fd529/";
-//        JavaCompile javaCompile = new JavaCompile();
-//        javaCompile.compile(compileSource, compileDes);
-//
-
-
-        String compileSource2 = "/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/teacherUpload/b412c4fc07c84ebca0afba54f39fd529/test_tem2.java";
-        String compileDes2 = "/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/teacherUpload/b412c4fc07c84ebca0afba54f39fd529/";
-        JavaCompile javaCompile = new JavaCompile();
-        javaCompile.compile(compileSource2, compileSource2, compileDes2);
-
-//        AssignmentTester assignmentTester = new AssignmentTester(dataType);
-//        assignmentTester.dataUpdate(data);
-//        String classPath = "/Users/gongchen/Documents/StageFour/Degree Project/FYP_Automatic_Grading/out/artifacts/FYP_Automatic_Grading_war_exploded/WEB-INF/AssPDFUpload/bf3166c974cf4bb281040826a60a39e7";
-//        String className = "test_tem";
-//        Map<String,List<Object>> teacherResult = assignmentTester.classTest(classPath, className);
-//        System.out.println(teacherResult);
-//        Map<String,List<Object>> studentResult = assignmentTester.classTest(classPath, className);
-//        System.out.println(studentResult);
-//        Map<String,List<Boolean>> judge =  assignmentTester.resultCompare(studentResult, teacherResult);
-//        System.out.println(judge);
-    }
 
 }

@@ -1,29 +1,44 @@
 package FYP19.Service;
 
-import FYP19.Dao.ModuleMapper;
-import FYP19.Dao.TeacherMapper;
-import FYP19.Dao.UserMapper;
+import FYP19.Dao.*;
 import FYP19.Entities.*;
+import FYP19.util.FileUtils;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 
 public class TeacherServiceImpl implements TeacherService{
     private TeacherMapper teacherMapper;
     private ModuleMapper moduleMapper;
     private UserMapper userMapper;
+    private AssignmentMapper assignmentMapper;
+    private StudentsMapper studentsMapper;
+
     public void setTeacherMapper(TeacherMapper teacherMapper) {
         this.teacherMapper = teacherMapper;
     }
     public void setModuleMapper(ModuleMapper moduleMapper){this.moduleMapper = moduleMapper;}
     public void setUserMapper(UserMapper userMapper){this.userMapper = userMapper;}
-
-
+    public void setAssignmentMapper(AssignmentMapper assignmentMapper) {
+        this.assignmentMapper = assignmentMapper;
+    }
+    public void setStudentsMapper(StudentsMapper studentsMapper) {
+        this.studentsMapper = studentsMapper;
+    }
 
     public Teacher queryTeacherById(int id) {
         return teacherMapper.queryTeacherById(id);
     }
+
+    @Override
+    public List<Teacher> allTeachers() {
+        return teacherMapper.allTeachers();
+    }
+
     public int registerModule(Module module) {
         return moduleMapper.insertModule(module);
     }
@@ -31,10 +46,51 @@ public class TeacherServiceImpl implements TeacherService{
         return moduleMapper.queryModulesByTid(teacher_id);
     }
 
+    public List<Map<String, Object>> associatedModule() {
+        return teacherMapper.associatedModule();
+    }
+    public List<Map<String, Object>> allTeacherInfo() {
+        return teacherMapper.allTeacherInfo();
+    }
+
+    public void deleteTeacherById(int id, HttpServletRequest request) {
+        List<Map<String,Object>> modules = teacherMapper.associatedModule();
+        for(Map<String,Object> module : modules){
+            String module_code = (String) module.get("code");
+            deleteModule(module_code, request);
+        }
+        teacherMapper.deleteTeacherById(id);
+    }
+
+    public int deleteModule(String module_code, HttpServletRequest request){
+        List<Assignment> assignmentList = assignmentMapper.queryAssignmentByModule(module_code);
+        for(Assignment assignment : assignmentList){
+            String assignmentId = assignment.getId();
+            String status = assignmentMapper.queryStatusById(assignmentId);
+            String teacherBasePath = request.getSession().getServletContext().getRealPath("/WEB-INF/teacherUpload/"+assignmentId);
+            File teacherFiles = new File(teacherBasePath);
+            if(teacherFiles.exists()) {
+                FileUtils.deleteFilesByDirectory(teacherBasePath);
+            }
+            if(status.equals("Completed")){
+                String studentBasePath = request.getSession().getServletContext().getRealPath("/WEB-INF/studentUpload/"+assignmentId);
+                List<Map<String,Object>> allStudents = studentsMapper.studentsUnderOneModule(module_code);
+                for(Map<String, Object> stu : allStudents){
+                    int ucd_id = (int) stu.get("ucd_id");
+                    File studentFiles = new File(studentBasePath+"/"+ucd_id);
+                    if(studentFiles.exists()){
+                        FileUtils.deleteFilesByDirectory(studentFiles.getPath());
+                    }
+                }
+                FileUtils.deleteFilesByDirectory(studentBasePath);
+            }
+        }
+        return moduleMapper.deleteModule(module_code);
+    }
 
 
-/////////////////////////////
-//Register Service Assist
+
+    //Register Service Assist
     public boolean insertDepart(String code, String name){
         if(teacherMapper.insertDepartment(new Department(code,name))==1){
             return true;

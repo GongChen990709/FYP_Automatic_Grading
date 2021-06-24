@@ -1,5 +1,6 @@
 package FYP19.AutoGrading.AssignmentTester;
 
+import FYP19.AutoGrading.JSONConverter.utils.JsonFileReader;
 import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
@@ -9,18 +10,22 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 public class BenchmarkStarter {
 
     private void main(String[] args) throws RunnerException {
+        String dataType = JsonFileReader.readJsonFile(args[0]);
+        String data = JsonFileReader.readJsonFile(args[1]);
+        String classPath=args[2];
+        String className=args[3];
         Options opt = new OptionsBuilder()
                 .include(AssignmentTimeTester.class.getSimpleName())
                 .forks(1)
-                .param("dataType",args[0])
-                .param("data",args[1])
-                .param("classPath",args[2])
-                .param("className",args[3])
+                .param("dataType",dataType)
+                .param("data",data)
+                .param("classPath",classPath)
+                .param("className",className)
                 .threads(1)
-                .jvmArgs("-server")
+//                .jvmArgs("-server")
 
-//                .resultFormat(ResultFormatType.JSON)
-//                    .output("AssignmentResultTester.sampleLog")
+                .resultFormat(ResultFormatType.JSON)
+                .output("AssignmentTimeTester.sampleLog")
                 .build();
         new Runner(opt).run();
     }

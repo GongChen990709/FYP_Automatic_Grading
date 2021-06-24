@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="../../js/admin/adminHome.js"></script>
+    <script src="../../../jquery-3.6.0.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/admin/adminHome.css">
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
+
 </head>
 <body>
 
@@ -21,8 +24,8 @@
                 <a href="#">admin</a>
             </div>
             <div id="setting">
-                <a href="../../html/common/userSetting.html">Reset Password</a>  <br/>
-                <a href="../../../login.html">Log Out</a>
+                <a href="../../html/common/userSetting.html">Reset Password</a>
+                <a href="#" onclick="logout()">Log Out</a>
             </div>
         </div>
 
@@ -59,20 +62,18 @@
         </div>
 
 
+
+        <div class="moduleContent" onclick="jumpToAdminModule()">
+            <img src="../../images/admin/module.png" class="moduleImage">
+            <div class="info">
+                <h3 > <a href="#">MODULE</a> </h3>
+            </div>
+
+        </div>
     </div>
 
+    
 
-
-    <form action="/autoGrading/test" enctype="multipart/form-data" method="post">
-        <input type="file" name="file"/>
-        <input type="submit" name="submit"/>
-    </form>
-
-
-    <form action="/autoGrading/testcompile" enctype="text/plain" method="post">
-        <input type="text" name="lala">
-        <input type="submit">
-    </form>
 
     <!-- <h2>Student Information</h2>  
     <input type="button" value="register an account for a new student" onclick="javascrtpt:jumpToStudentRegister()" />

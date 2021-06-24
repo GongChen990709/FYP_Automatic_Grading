@@ -9,8 +9,9 @@
     <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
     <script type="text/javascript" src="../../js/student/studentCommon.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/student/student.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
 
-    <title> Student Assignment Submitted </title>
+    <title> Student View Assignments Submitted </title>
 
     <script>
 
@@ -43,8 +44,8 @@
                     <span id="user_name"></span><!-- user name-->
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">Settings</a></dd>
-                    <dd><a href="">Sign out</a></dd>
+                    <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
                 </dl>
             </li>
 
@@ -82,6 +83,9 @@
 
 
      </div>
+    <div class="layui-footer" style="text-align: center; color: #007DDB">
+        Automatic Programming Assignment Grading System
+    </div>
 
     <script>
         var assignment_id=GetAssignmentID();

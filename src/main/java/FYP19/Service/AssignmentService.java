@@ -1,6 +1,7 @@
 package FYP19.Service;
 
 import FYP19.Dao.AssignmentMapper;
+import FYP19.Dao.StudentsMapper;
 import FYP19.Entities.Assignment;
 import FYP19.Entities.Students;
 import FYP19.Entities.Teacher;
@@ -10,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -18,32 +20,22 @@ import java.util.*;
 public class AssignmentService {
 
     private AssignmentMapper assignmentMapper;
+    private StudentsMapper studentsMapper;
 
     public void setAssignmentMapper(AssignmentMapper assignmentMapper) {
         this.assignmentMapper = assignmentMapper;
     }
+    public void setStudentsMapper(StudentsMapper studentsMapper) {
+        this.studentsMapper = studentsMapper;
+    }
 
-    public boolean insertAssignmentForms(String id, String title, String description, String module_code, String due_date, HttpServletRequest request) throws ParseException {
+    public boolean insertAssignmentForms(String id, String title, String description, String module_code, String due_date) throws ParseException {
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date due_datetime = formatter.parse(due_date);
         Date creation_datetime = new Date();
-        Object user = request.getSession().getAttribute(Constants.USER_SESSION);
-
-        if(user instanceof Teacher){
-            int teacher_id = ((Teacher) user).getId();
-            if(assignmentMapper.insertAssignmentForm(new Assignment(id,title,description,module_code,due_datetime,creation_datetime,teacher_id))==1){
-                if(assignmentMapper.initFilesPathById(id)==1){
-                    return true;
-                }
-            }
-        }
-        if(user instanceof Students){
-            int ucd_id = ((Students) user).getUcd_id();
-            if(assignmentMapper.insertAssignmentForm(new Assignment(id,title,description,module_code,due_datetime,creation_datetime, ucd_id))==1) {
-                if(assignmentMapper.initFilesPathById(id)==1){
-                    return true;
-                }
-            }
+        if(assignmentMapper.insertAssignmentForm(new Assignment(id,title,description,module_code,due_datetime,creation_datetime))==1){
+            assignmentMapper.initFilesPathById(id);
+            return true;
         }
         return false;
     }
@@ -105,18 +97,8 @@ public class AssignmentService {
         return assignmentMapper.queryAssignmentByModule(module_code);
     }
 
-    public List<Assignment> queryAssignmentsByCreatorIdAndModule(String module_code, HttpServletRequest request){
-        List<Assignment> assignmentList = null;
-        Object user = request.getSession().getAttribute(Constants.USER_SESSION);
-        if(user instanceof Teacher){
-            int teacher_id = ((Teacher) user).getId();
-            assignmentList = assignmentMapper.queryAssignmentsByCreatorIdAndModule(teacher_id, module_code);
-        }
-        if(user instanceof Students){
-            int ucd_id = ((Students) user).getUcd_id();
-            assignmentList = assignmentMapper.queryAssignmentsByCreatorIdAndModule(ucd_id, module_code);
-        }
-        return assignmentList;
+    public List<Assignment> queryAssignmentsByModule(String module_code){
+        return assignmentMapper.queryAssignmentByModule(module_code);
     }
 
     public String queryDescriptionById(String id){
@@ -135,8 +117,12 @@ public class AssignmentService {
         return assignmentMapper.queryStudentSourcePath(ucd_id, assignment_id);
     }
 
-    public String queryGrade(int ucd_id, String assignment_id){
+    public Float queryGrade(int ucd_id, String assignment_id){
         return assignmentMapper.queryGrade(ucd_id, assignment_id);
+    }
+
+    public Float[] queryAllGrades(String assignment_id){
+        return assignmentMapper.queryAllGrades(assignment_id);
     }
 
     public List<Map<String, Object>> teacherViewSubmissions(String assignment_id){
@@ -163,14 +149,32 @@ public class AssignmentService {
 
 
     public void deleteAssignmentById(String id, HttpServletRequest request){
-        String directoryPath = request.getSession().getServletContext().getRealPath("/WEB-INF/teacherUpload/"+id);
-        FileUtils.deleteFilesByDirectory(directoryPath);
-        assignmentMapper.deleteAssignmentFilesById(id);
+        String status = assignmentMapper.queryStatusById(id);
+        String teacherBasePath = request.getSession().getServletContext().getRealPath("/WEB-INF/teacherUpload/"+id);
+        File teacherFiles = new File(teacherBasePath);
+        if(teacherFiles.exists()) {
+            FileUtils.deleteFilesByDirectory(teacherBasePath);
+        }
+        if(status.equals("Completed")){
+            String module_code = queryModuleCode(id);
+            String studentBasePath = request.getSession().getServletContext().getRealPath("/WEB-INF/studentUpload/"+id);
+            List<Map<String,Object>> allStudents = studentsMapper.studentsUnderOneModule(module_code);
+            for(Map<String, Object> stu : allStudents){
+                int ucd_id = (int) stu.get("ucd_id");
+                File studentFiles = new File(studentBasePath+"/"+ucd_id);
+                if(studentFiles.exists()){
+                    FileUtils.deleteFilesByDirectory(studentFiles.getPath());
+                }
+            }
+            FileUtils.deleteFilesByDirectory(studentBasePath);
+        }
         assignmentMapper.deleteAssignmentFormById(id);
+        assignmentMapper.deleteAssignmentFilesById(id);
     }
 
-    public List<Assignment> fuzzyQueryByTitle(String title, int creator_id, String module_code){
-        return assignmentMapper.fuzzyQueryByTitle(title,creator_id,module_code);
+
+    public List<Assignment> fuzzyQueryByTitle(String title, String module_code){
+        return assignmentMapper.fuzzyQueryByTitle(title,module_code);
     }
 
     public Map<String,String> getFilePathsById(String id){
@@ -197,8 +201,8 @@ public class AssignmentService {
     }
 
 
-    public boolean insertAssignmentAssessment(int ucd_id, String assignment_id, String grade, String grade_details_path){
-        if(assignmentMapper.insertAssignmentAssessment(ucd_id,assignment_id,grade,grade_details_path)==1){
+    public boolean insertAssignmentAssessment(int ucd_id, String assignment_id, String grade_details_path){
+        if(assignmentMapper.insertAssignmentAssessment(ucd_id,assignment_id,grade_details_path)==1){
             return true;
         }
         return  false;
@@ -212,6 +216,30 @@ public class AssignmentService {
 
     public String queryStuReportPath(int ucd_id, String assignment_id){
         return assignmentMapper.queryStuReportPath(ucd_id,assignment_id);
+    }
+
+    public List<Map<String, Object>> queryAllAssessment(String assignment_id){
+        return assignmentMapper.queryAllAssessment(assignment_id);
+    }
+
+    public List<String> queryAllGradeDetailPaths(String assignment_id){
+        return assignmentMapper.queryAllGradeDetailPaths(assignment_id);
+    }
+
+    public int updateAssignmentGrade(float grade, int ucd_id, String assignment_id){
+        return assignmentMapper.updateAssignmentGrade(grade, ucd_id, assignment_id);
+    }
+
+    public String queryModuleCode(String assignment_id) {
+        return assignmentMapper.queryModuleCode(assignment_id);
+    }
+
+    public List<Map<String,Object>> teacherViewGradeById(String assignment_id, int ucd_id){
+        return assignmentMapper.teacherViewGradeById(assignment_id,ucd_id);
+    }
+
+    public List<Map<String,Object>>  teacherViewGradeByName(String assignment_id, String name){
+        return assignmentMapper.teacherViewGradeByName(assignment_id, name);
     }
 
 

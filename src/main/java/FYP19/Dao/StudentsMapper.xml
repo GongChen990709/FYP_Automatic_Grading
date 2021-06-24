@@ -66,4 +66,29 @@
         WHERE ucd_id = #{ucd_id}
     </select>
 
+    <select id="allActivatedStudents" resultType="Students">
+        SELECT * FROM FYP_Automatic_Grading.Student
+        WHERE is_activated = 1
+    </select>
+
+    <delete id="deleteStudentById">
+        DELETE FROM FYP_Automatic_Grading.Role
+        WHERE id = #{ucd_id}
+    </delete>
+
+    <select id="studentsUnderOneModule" resultType="map">
+        SELECT s.ucd_id, s.name, s.email, maj.code, maj.title FROM FYP_Automatic_Grading.Module_registration as reg, FYP_Automatic_Grading.Student as s, FYP_Automatic_Grading.Major as maj
+        WHERE reg.student_id = s.ucd_id AND s.major_code = maj.code AND s.is_activated = 1
+        AND reg.module_code = #{module_code}
+    </select>
+
+    <select id="allActivatedStudentsAndMajor" resultType="map">
+        SELECT s.ucd_id, s.name, s.email, maj.code, maj.title FROM FYP_Automatic_Grading.Student as s, FYP_Automatic_Grading.Major as maj
+        WHERE s.major_code = maj.code AND s.is_activated = 1
+    </select>
+
+
+
+
+
 </mapper>

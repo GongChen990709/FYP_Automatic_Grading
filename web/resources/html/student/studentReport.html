@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="../common/layui-v2.6.5/layui/css/layui.css"/>
+    <script type="text/javascript" src="../common/layui-v2.6.5/layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
+    <script type="text/javascript" src="../../js/common/echarts.min.js"></script>
+
+    <!-- <script type="text/javascript" src="../../js/student/studentCommon.js"></script>
+     <link rel="stylesheet" type="text/css" href="../../css/student/student.css"/>-->
+
+    <title>Student Report</title>
+</head>
+<body>
+
+<div>
+
+    <div id="assignment_name"
+         style="font-size: 40px; font-family: Arial,Verdana,Sans-serif; font-weight: 500;
+             margin-bottom: 50px">
+
+
+    </div>
+
+    <div style="margin-bottom: 50px">
+        <table id="demo" lay-filter="test">
+
+        </table>
+    </div>
+
+    <div style="margin-bottom: 40px; margin-left: 30px">
+        <div style=" box-sizing: content-box; background-color: #E9E7E7; font-size: 20px;
+             font-family:Arial, Helvetica,sans-serif;  width: 1000px; height: 50px;
+             line-height: 50px">
+            <span><b> Batch Size</b> </span>
+            <span style="position:absolute; left: 500px" id="banchSize"></span>
+
+        </div>
+
+        <div style=" box-sizing: content-box; font-size: 20px;
+             font-family:Arial, Helvetica,sans-serif;  width: 1000px; height: 50px;
+             line-height: 50px">
+            <span > <b> Time(ns) </b></span>
+            <span style="position:absolute;left: 500px" id="time"></span>
+
+        </div>
+
+        <!-- <div style=" box-sizing: content-box; background-color: #E9E7E7; font-size: 20px;
+              font-family:Arial, Helvetica,sans-serif;  width: 1000px; height: 50px;
+              line-height: 50px">
+             <span > <b>Constructor Method </b></span>
+             <span style="position:absolute;left: 500px" id="constructorMethod"> </span>
+
+         </div>-->
+
+        <div style=" box-sizing: content-box; background-color: #E9E7E7;  font-size: 20px;
+             font-family:Arial, Helvetica,sans-serif;  width: 1000px; height: 50px;
+             line-height: 50px">
+            <span > <b>Accuracy Rate </b></span>
+            <span style="position:absolute;left: 500px" id="accuracyRate"></span>
+        </div>
+
+        <div style=" box-sizing: content-box;  font-size: 20px;
+             font-family:Arial, Helvetica,sans-serif;  width: 1000px; height: 50px;
+             line-height: 50px">
+            <span > <b> Grade </b></span>
+            <span style="position:absolute;left: 500px" id="grade"> </span>
+
+        </div>
+
+        <div style=" box-sizing: content-box;background-color: #E9E7E7;  font-size: 20px;
+             font-family:Arial, Helvetica,sans-serif;  width: 1000px; height: 50px;
+             line-height: 50px">
+            <span > <b> Average Grade</b></span>
+            <span style="position:absolute;left: 500px" id="averageGrade"> </span>
+
+        </div>
+
+
+    </div>
+
+    <div style="width: 800px;height: 400px" id="gradeChart">
+
+    </div>
+
+    <div style="margin-left: 400px">
+        <button type="button" class="layui-btn" id="button" onclick="PDF()">Generate PDF</button>
+    </div>
+
+
+</div>
+
+<script>
+    $(function () {
+        var assignment_id=GetAssignmentID();
+        var basepath = "/" + window.location.pathname.split("/")[1];
+
+        $.ajax({
+            url:basepath+"/assignment/assignmentName",
+            data:{"assignment_id":assignment_id},
+            dataType:'json',
+            type:'post',
+            success:function (json) {
+                var assignment_name=json.name;
+                $("#assignment_name").html(assignment_name);
+            }
+        })
+    })
+</script>
+
+<script type="text/javascript">
+
+    layui.use('table',function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var assignment_id=GetAssignmentID();
+        var student_id=GetStudentID();
+        var basepath = "/" + window.location.pathname.split("/")[1];
+
+        table.render({
+            elem: "#demo",
+            url: basepath+"/student/report/accuracy",
+            where: {assignment_id:assignment_id},
+
+            cols: [[
+                {field: "number", type: "numbers"},
+                {field: 'FunctionName', title: 'Function Name', align: "center"},
+                {field: 'InputData', title: 'Input Data', align: "center"},
+                {field: 'YourOutput', title: 'Your Output', align: "center"},
+                {field: 'TeacherOutput', title: 'Expected Output', align: "center"},
+                {field: 'Result', title: 'Result', align: "center",templet:result},
+
+
+                /*{field: "operation", title: 'Operation', toolbar: "#barDemo", align: "center"}*/
+            ]],
+            page: false,
+            size: "lg",
+            even: true,
+        });
+    })
+
+
+</script>
+<script>
+
+
+    var result=function(d) {
+        // alert(d.Result);
+
+        if(d.Result==true){
+            //alert("aaa");
+            var html1='<span style="color: #1E9FFF" > ' + d.Result + "</span > ";
+            return html1;
+        }else {
+            var html2='<span style="color: red" > ' + d.Result + "</span > ";
+            return html2;
+
+        }
+
+    }
+
+</script>
+
+<script>
+    $(function () {
+
+        var assignment_id=GetAssignmentID();
+        var student_id=GetStudentID();
+        var basepath = "/" + window.location.pathname.split("/")[1];
+
+        var mCharts= echarts.init(document.getElementById("gradeChart"));
+
+
+
+        $.ajax({
+            url:basepath+ "/student/report/data",
+            data:{"assignment_id":assignment_id},
+            dataType:'json',
+            type:'post',
+            success:function (json) {
+
+                var batchSize=json.batchSize;
+                var time=json.time_ns;
+                // var constructorMethod=json.constructor_method;
+                var accuracyRate=json.accuracy_rate;
+                var grade=json.grade;
+                var avergeGrade=json.averaged_grade
+
+
+                var allGrades= json.allGrades;
+
+
+                console.log(allGrades);
+
+
+                $("#banchSize").html(batchSize);
+                $("#time").html(time);
+                //$("#constructorMethod").html(constructorMethod);
+                $("#accuracyRate").html(accuracyRate+"%");
+                $("#grade").html(grade);
+                $("#averageGrade").html(avergeGrade);
+
+
+                var xDataArr=['0-10','10-20','20-30','30-40','40-50','50-60','60-70','70-80','80-90','90-100'];
+                var yDataArr1=json.allGrades;
+                //配置项
+                var option={
+                    grid:{
+                        show:true
+                    },
+                    title:{
+                        text:'Grade Distribution',
+                        /*textStyle:{
+                            color:'blue'
+                        },*/
+                        //borderWidth:5,
+                        left:70,
+                        top:10,
+
+                    },
+                    tooltip:{
+                        //触发类型
+                        //trigger:'item',
+                        trigger:'axis',
+
+                        //触发时机
+                        triggerOn:'click',
+                        formatter: function (arg) {
+                            return "The number of " + arg[0].name+' is '+arg[0].data
+                        }
+                    },
+
+                    toolbox:{
+                        feature:{
+                            saveAsImage:{},
+                            dataView:{},
+                            restore:{}, //重置
+                            dataZoom:{},
+                            magicType:{
+                                type:['bar','line'],
+                            }
+                        }
+
+                    },
+                    xAxis:{
+
+                        type:'category',
+                        data:xDataArr
+
+                    },
+                    yAxis:{
+                        type:'value'
+
+                    },
+
+                    /*legend:{
+                        data:['assignment1','assignment2']
+                    },*/
+
+                    series:[
+                        {
+                            type:'bar',
+                            markPoint:{
+                                data:[
+                                    {
+                                        type:'max',name:'maximum value'
+                                    },{
+                                        type:'min',name:'minimum value'
+                                    }
+                                ]
+                            },
+                            /* markLine:{
+                                 data:[
+                                     {
+                                         type:'average',name:'average value'
+                                     }
+                                 ]
+                             },*/
+                            label:{
+                                show:true,
+                                /* rotate:50,*/
+                            },
+
+                            data:yDataArr1
+                        },
+                        /* {
+                             name: 'assignment1',
+                             type:'bar',
+                             label:{
+                                 show:true,
+                                 rotate:50,
+                             },
+                         }*/
+                    ]
+                }
+                //将配置项设置给echarts的实例对象
+                mCharts.setOption(option);
+
+            }
+        })
+    })
+</script>
+
+<script>
+    function PDF() {
+        window.print();
+    }
+</script>
+
+</body>
+
+</html>

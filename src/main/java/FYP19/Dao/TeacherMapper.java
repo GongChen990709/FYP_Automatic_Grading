@@ -4,6 +4,9 @@ import FYP19.Entities.Department;
 import FYP19.Entities.Teacher;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+import java.util.Map;
+
 public interface TeacherMapper {
 
     ////////////////////////////////
@@ -16,6 +19,8 @@ public interface TeacherMapper {
     int insertDepartment(Department department);
     Department queryDepartmentByCode(@Param("code") String code);
     int registerTeacher(Teacher teacher);
+    int deleteTeacherById(@Param("id") int teacher_id);
+    List<Teacher> allTeachers();
     ////////////////////////////////
 
     ////////////////////////////////
@@ -24,4 +29,6 @@ public interface TeacherMapper {
     String querySaltById(@Param("t_id") int id);
     // //////////////////////////////
     Teacher queryTeacherById(@Param("teacher_id") int id);
+    List<Map<String,Object>> associatedModule();
+    List<Map<String,Object>> allTeacherInfo();
 }

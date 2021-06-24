@@ -8,6 +8,7 @@
     <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
     <script type="text/javascript" src="../../js/student/studentCommon.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/student/student.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
 
     <title> Student Assignment </title>
 
@@ -50,8 +51,8 @@
                     <span id="user_name"></span><!-- user name-->
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">Settings</a></dd>
-                    <dd><a href="">Sign out</a></dd>
+                      <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
                 </dl>
             </li>
 
@@ -74,6 +75,9 @@
             <table id="demo" lay-filter="test">
 
             </table>
+        </div>
+        <div class="layui-footer" style="text-align: center; color: #007DDB">
+            Automatic Programming Assignment Grading System
         </div>
 
     </div>
@@ -99,7 +103,7 @@
                                  {field: "number", type: "numbers"},
                                  {field: 'id', title: 'ID', align: "center", hide: true},
                                  {field: 'title', title: 'Assignment Name',
-                                     align: "center",style:'color: #f67d06;',templet:assNameLink},
+                                     align: "center",style:'color: #f67d06;',sort:true,templet:assNameLink},
                                  {field: 'due_date', title: 'Due Date', align: "center", sort: true},
                                  {field: 'submission_date', title: 'Submission Date', align: "center", sort: true},
                                  {field: 'status', title: 'Completion Status',align:"center",sort:true,templet:statusLink},

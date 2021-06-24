@@ -9,6 +9,7 @@
     <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
     <script type="text/javascript" src="../../js/teacher/teacherCommon.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/teacher/teacher.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
 
     <title> Check Students' Assignments </title>
 
@@ -25,7 +26,7 @@
                 cols:[[
                     {field:"number",type:"numbers"},
                     {field: 'id', title: 'ID',align:"center",edit:'text',hide:true},
-                    {field: 'title', title: 'Assignment Name', align:"center",edit:'text'},
+                    {field: 'title', title: 'Assignment Name', align:"center",edit:'text',sort:true},
                     {field: 'due_date', title: 'Due Date',align:"center",edit:'text',sort: true},
                     {field: 'creation_date', title: 'Creation Date',align:"center",edit:'text',sort: true},
                     {field:"operation",title:'Operation',toolbar:"#barDemo",align:"center"}
@@ -104,8 +105,8 @@
                     <span id="user_name"></span><!-- user name-->
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">Settings</a></dd>
-                    <dd><a href="">Sign out</a></dd>
+                    <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
                 </dl>
             </li>
 
@@ -148,6 +149,10 @@
 
             </table>
         </div>
+    </div>
+
+    <div class="layui-footer" style="text-align: center; color: #007DDB">
+        Automatic Programming Assignment Grading System
     </div>
 
 
