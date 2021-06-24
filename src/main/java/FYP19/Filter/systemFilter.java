@@ -20,6 +20,9 @@ public class systemFilter implements Filter {
         if(req.getRequestURI().contains("StudentSetPwd.html")){
             filterChain.doFilter(servletRequest, servletResponse);
         }
+        else if(req.getRequestURI().contains("teacherSetPwd.html")){
+            filterChain.doFilter(servletRequest, servletResponse);
+        }
         else if(user==null){
             resp.sendRedirect(req.getContextPath()+"/status/notLogin.html");
         }

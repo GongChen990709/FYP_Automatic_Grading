@@ -121,9 +121,8 @@
 
         table.render({
             elem: "#demo",
-            url: basepath+"/teacher/report/accuracy",
-            where: {assignment_id:assignment_id,
-                student_id:student_id},
+            url: basepath+"/student/report/accuracy",
+            where: {assignment_id:assignment_id},
 
             cols: [[
                 {field: "number", type: "numbers"},
@@ -176,8 +175,8 @@
 
 
         $.ajax({
-            url:basepath+ "/teacher/report/data",
-            data:{"student_id":student_id,"assignment_id":assignment_id},
+            url:basepath+ "/student/report/data",
+            data:{"assignment_id":assignment_id},
             dataType:'json',
             type:'post',
             success:function (json) {
@@ -189,6 +188,7 @@
                 var grade=json.grade;
                 var avergeGrade=json.averaged_grade
 
+
                 var allGrades= json.allGrades;
 
 
@@ -197,7 +197,7 @@
 
                 $("#banchSize").html(batchSize);
                 $("#time").html(time);
-                // $("#constructorMethod").html(constructorMethod);
+                //$("#constructorMethod").html(constructorMethod);
                 $("#accuracyRate").html(accuracyRate+"%");
                 $("#grade").html(grade);
                 $("#averageGrade").html(avergeGrade);
@@ -261,7 +261,6 @@
 
                     series:[
                         {
-
                             type:'bar',
                             markPoint:{
                                 data:[

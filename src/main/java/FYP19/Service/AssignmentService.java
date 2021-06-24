@@ -234,6 +234,14 @@ public class AssignmentService {
         return assignmentMapper.queryModuleCode(assignment_id);
     }
 
+    public List<Map<String,Object>> teacherViewGradeById(String assignment_id, int ucd_id){
+        return assignmentMapper.teacherViewGradeById(assignment_id,ucd_id);
+    }
+
+    public List<Map<String,Object>>  teacherViewGradeByName(String assignment_id, String name){
+        return assignmentMapper.teacherViewGradeByName(assignment_id, name);
+    }
+
 
 
 

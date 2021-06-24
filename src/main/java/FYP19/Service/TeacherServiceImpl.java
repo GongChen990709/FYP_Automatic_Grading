@@ -33,6 +33,12 @@ public class TeacherServiceImpl implements TeacherService{
     public Teacher queryTeacherById(int id) {
         return teacherMapper.queryTeacherById(id);
     }
+
+    @Override
+    public List<Teacher> allTeachers() {
+        return teacherMapper.allTeachers();
+    }
+
     public int registerModule(Module module) {
         return moduleMapper.insertModule(module);
     }

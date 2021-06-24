@@ -9,6 +9,7 @@
     <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
     <script type="text/javascript" src="../../js/student/studentCommon.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/student/student.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
 
     <title> Submit Assignment </title>
 
@@ -30,7 +31,7 @@
                 auto:false,
                 bindAction:'#fileListAction1',
                 progress: function(percent,elem,index){
-                element.progress('demoList', percent + '%'); //执行进度条。n 即为返回的进度百分比
+                element.progress('demoList1', percent + '%'); //执行进度条。n 即为返回的进度百分比
                 },
                 choose:function (obj) {
                     var files=this.files=obj.pushFile();
@@ -145,8 +146,8 @@
                     <span id="user_name"></span><!-- user name-->
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">Settings</a></dd>
-                    <dd><a href="">Sign out</a></dd>
+                    <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
                 </dl>
             </li>
 
@@ -232,6 +233,9 @@
             <button type="button" class="layui-btn" id="fileListAction1">Submit</button>
         </div>
     </div>
+<!--    <div class="layui-footer" style="text-align: center; color: #007DDB">
+        Automatic Programming Assignment Grading System
+    </div>-->
 </div>
 </body>
 </html>

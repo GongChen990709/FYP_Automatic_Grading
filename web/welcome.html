@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Automatic Assignment Grading System</title>
+    <link rel="stylesheet" type="text/css" href="./resources/css/layui/css/layui.css">
+
+    <script>
+        function goToLogin(){
+            window.location.href="login.html";
+        }
+    </script>
 </head>
-<body>
-    <h1>Welcome to Automatic Assignment Grading System</h1>
-    <a href="login.html">Login</a>
+<body background="website.png" style="  background-repeat: no-repeat; background-size:100% 100%;background-attachment: fixed;">
+
+    <h1 style="color: white; width: 1310px; text-align: center; position: relative; top: 90px; left: 20px; font-size: 50px; font-family:Georgia, 'Times New Roman', Times, serif;">Welcome to Automatic Grading System</h1>
+    
+    <div style="text-align: center; position: relative; top: 267px;">
+        <button onclick="goToLogin()" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="width: 220px; height: 70px; background-color: rgb(123, 18, 194); font-size: 40px;">Login</button>
+
+    </div>
+
+
 </body>
 </html>

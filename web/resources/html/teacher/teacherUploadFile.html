@@ -9,6 +9,7 @@
     <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
     <script type="text/javascript" src="../../js/teacher/teacherCommon.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/teacher/teacher.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
 
     <title> Teacher Upload Files </title>
     <script>
@@ -56,40 +57,44 @@
         function update1() {
             var basepath = "/" + window.location.pathname.split("/")[1];
             var assignment_id=GetAssignmentID();
-            $.ajax({
-                url:basepath+"/assignment/fileStatus",
-                dataType:'json',
-                data:{"assignment_id":assignment_id},
-                type:'post',
-                success:function (json) {
-                    console.log(json);
-                    if(json.pdf=="true"){
-                        $("#file1").html("(Uploaded)")
+            setTimeout(function () {
+                $.ajax({
+                           url:basepath+"/assignment/fileStatus",
+                           dataType:'json',
+                           data:{"assignment_id":assignment_id},
+                           type:'post',
+                           success:function (json) {
+                               console.log(json);
+                               if(json.pdf=="true"){
+                                   $("#file1").html("(Uploaded)")
 
-                    }if(json.pdf=="false"){
-                        $("#file1").html("(Not Uploaded)")
+                               }if(json.pdf=="false"){
+                                   $("#file1").html("(Not Uploaded)")
 
-                    }if(json.java=="true"){
-                        $("#file2").html("(Uploaded)")
+                               }if(json.java=="true"){
+                                   $("#file2").html("(Uploaded)")
 
-                    }if(json.java=="false"){
-                        $("#file2").html("(Not Uploaded)")
+                               }if(json.java=="false"){
+                                   $("#file2").html("(Not Uploaded)")
 
-                    }if(json.dataType=="true"){
-                        $("#file3").html("(Uploaded)")
+                               }if(json.dataType=="true"){
+                                   $("#file3").html("(Uploaded)")
 
-                    }if(json.dataType=="false"){
-                        $("#file3").html("(Not Uploaded)")
+                               }if(json.dataType=="false"){
+                                   $("#file3").html("(Not Uploaded)")
 
-                    }if(json.data=="true"){
-                        $("#file4").html("(Uploaded)")
+                               }if(json.data=="true"){
+                                   $("#file4").html("(Uploaded)")
 
-                    }if(json.data=="false"){
-                        $("#file4").html("(Not Uploaded)")
+                               }if(json.data=="false"){
+                                   $("#file4").html("(Not Uploaded)")
 
-                    }
-                }
-            })
+                               }
+                           }
+                       })
+
+            },500)
+
 
         }
     </script>
@@ -125,7 +130,7 @@
                                    ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
                                    ,'<td><div class="layui-progress layui-progress-big"  lay-filter="progress_'+ index
                                     +'"><div class="layui-progress-bar" lay-percent=""></div></div></td>'
-                                   ,'<td>waiting for uploading</td>'
+                                   ,'<td>waiting for upload</td>'
                                    ,'<td>'
                                    ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">Reupload</button>'
                                    ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">Delete</button>'
@@ -204,7 +209,7 @@
                             ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
                             ,'<td><div class="layui-progress layui-progress-big"  lay-filter="progress_'+ index
                             +'"><div class="layui-progress-bar" lay-percent=""></div></div></td>'
-                            ,'<td>waiting for uploading</td>'
+                            ,'<td>waiting for upload</td>'
                             ,'<td>'
                             ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">Reupload</button>'
                             ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">Delete</button>'
@@ -278,7 +283,7 @@
                             ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
                             ,'<td><div class="layui-progress layui-progress-big"  lay-filter="progress_'+ index
                             +'"><div class="layui-progress-bar" lay-percent=""></div></div></td>'
-                            ,'<td>waiting for uploading</td>'
+                            ,'<td>waiting for upload</td>'
                             ,'<td>'
                             ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">Reupload</button>'
                             ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">Delete</button>'
@@ -352,7 +357,7 @@
                             ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
                             ,'<td><div class="layui-progress layui-progress-big"  lay-filter="progress_'+ index
                             +'"><div class="layui-progress-bar" lay-percent=""></div></div></td>'
-                            ,'<td>waiting for uploading</td>'
+                            ,'<td>waiting for upload</td>'
                             ,'<td>'
                             ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">Reupload</button>'
                             ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">Delete</button>'
@@ -395,6 +400,23 @@
         });
     </script>
 
+    <script>
+        $(function () {
+            var course=GetCourse();
+            var user_name=GetUserName();
+            var assignment_id=GetAssignmentID();
+            $("#course_name").html(course);
+            $("#user_name").html(user_name);
+
+
+
+            html1 = "<span> <a href='teacherSetDataType.html?"+course+"&"+user_name+"&"+assignment_id+" ' class='layui-btn'> " +
+                    "Set" +
+                    "</a> </span>";
+            $(".dataType").html(html1);
+        })
+    </script>
+
 
 
 </head>
@@ -422,8 +444,8 @@
                     <span id="user_name">   </span><!-- user name-->
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">Settings</a></dd>
-                    <dd><a href="">Sign out</a></dd>
+                     <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
                 </dl>
             </li>
         </ul>
@@ -517,7 +539,12 @@
 
          <div class="file3" style="margin-top: 40px">
              <div style="font-size: 25px; font-family: 'Verdana'; margin-bottom: 20px">
-                 3. Please upload the DataType.json: <span id="file3" style="color:red;"> </span>
+                 3. Please upload the dataType.json: <span id="file3" style="color:red;"> </span>
+                 <div>
+                     <span> Or you can click "Set" Button to generate this file</span>
+                     <span class="dataType" style="margin-left: 30px"> </span>
+                 </div>
+
              </div>
 
              <div class="layui-upload">
@@ -581,10 +608,9 @@
 
      </div>
 
-    <!--   <div class="layui-footer">
-           &lt;!&ndash; 底部固定区域 &ndash;&gt;
-           底部固定区域
-       </div>-->
+<!--    <div class="layui-footer" style="text-align: center; color: #007DDB">-->
+<!--        Automatic Programming Assignment Grading System-->
+<!--    </div>-->
 </div>
 
 

@@ -10,7 +10,7 @@
     <script src="../../js/common/Back.js"></script>
     <script src="../../js/admin/adminHome.js"></script>
 
-    
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
     
    <link rel="stylesheet" type="text/css" href="../../css/admin/progressBar.css">
     <link rel="stylesheet" type="text/css" href="../../css/admin/adminStudent.css">
@@ -85,8 +85,8 @@
                 <a href="#">admin</a>
             </div>
             <div id="setting">
-                <a href="../common/userSetting.html">Reset Password</a>  <br/>
-                <a href="../../../login.html">Log Out</a>
+                <a href="../common/userSetting.html">Reset Password</a>
+                <a href="#" onclick="logout()">Log Out</a>
             </div>
         </div>
 
@@ -110,11 +110,11 @@
 
     
         <!-- template area -->
-    <div class="XlsxTemplate" id="XlsxTemplate" style="position: relative;top: 85px;left: 0px; height: 102px;">
-        <div class="tempalteTitle" style="font-size:26px;position: relative;left: 222px;width: 735px;">
+    <div class="XlsxTemplate" id="XlsxTemplate" style="text-align: center; position: relative;top: 85px;left: 0px; height: 102px;">
+        <div class="tempalteTitle" style="font-size:26px;position: relative;">
             Click to download students registration template file
         </div>
-        <button onclick="window.open('../../fileTemplate/Student Registration Template.xlsx')" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);position: relative; top: 21px; left: 570px;">Download</button>
+        <button onclick="window.open('../../fileTemplate/Student Registration Template.xlsx')" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);position: relative; top: 21px; ">Download</button>
         <!-- <button class="TemplateBtn" onclick="window.open('../../fileTemplate/Student Registration Template.xlsx')">Click here to get the registration template!</button> -->
     </div>
     
@@ -126,11 +126,11 @@
     
     
     <!-- style="position: relative;top: 85px;left: 0px; height: 173px;" -->
-    <div class="uploadFile" id="uploadFile" style="position: relative;top: 85px;left: 0px; height: 173px;">
-        <div class="uploadTitle" style="font-size:26px;position: relative;top:15px; left: 280px;width: 824px;">
+    <div class="uploadFile" id="uploadFile" style="text-align: center; position: relative;top: 85px;left: 0px; height: 173px;">
+        <div class="uploadTitle" style="font-size:26px;position: relative;top:15px; left: 0px;">
             Select and upload template file filled with students information
         </div>
-        <div class="chooseFile" style="position: relative;top: 33px;left: 565px;">      
+        <div class="chooseFile" style="position: relative;top: 33px;left: 0px;">
             <a href="javascript:;" class="file">Choose File
                 <input type="file" name="" id="fileupload" multiple onchange="showFileName()">
                 
@@ -140,8 +140,8 @@
 
         </div>
 
-        <div class="submitBTN" style="position: relative; top: -23px; left: 477px;width: 500px;">
-            <button id="button" onclick="uploadStudentXLSX()" >Submit</button>
+        <div class="submitBTN" style="position: relative; top: -23px; ">
+            <button id="button" onclick="uploadStudentXLSX()" style="position: relative; left: 0px">Submit</button>
         </div>
         
         
@@ -187,12 +187,12 @@
 
     
 
-    <div class="historyArea" id="historyArea" style="position: relative; top: -215px; height: 75px;">
-        <button onclick="window.location.href='../../html/admin/showRegisterDate.html'" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);position: relative; top: 21px; left: 533px;">View registration history</button>
+    <div class="historyArea" id="historyArea" style="text-align: center; position: relative; top: -215px; height: 75px;">
+        <button onclick="window.location.href='../../html/admin/showRegisterDate.html'" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);position: relative; top: 21px; left: 0px;">View registration history</button>
     </div>
 
-    <div class="backBtnArea" id="backBtnArea" style="position: relative; top: -215px;height: 50px;">
-        <button id="back" onclick="BackToAdminStudent()">Back</button>
+    <div class="backBtnArea" id="backBtnArea" style="text-align: center; position: relative; top: -215px;height: 50px;">
+        <button id="back" onclick="BackToAdminStudent()" style="position: relative; left: 0px;">Back</button>
     </div>
     
 

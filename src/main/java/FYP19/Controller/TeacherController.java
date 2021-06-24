@@ -2,6 +2,7 @@ package FYP19.Controller;
 
 import FYP19.Entities.Assignment;
 import FYP19.Entities.Module;
+import FYP19.Entities.Students;
 import FYP19.Entities.Teacher;
 import FYP19.Service.TeacherService;
 import FYP19.util.Constants;
@@ -34,6 +35,12 @@ public class TeacherController {
         List<Module> moduleList= teacherService.queryAllModules(teacher.getId());
         resultList.addAll(moduleList);
         return resultList;
+    }
+
+    @RequestMapping("/allTeachers")
+    @ResponseBody
+    public List<Teacher> allTeachers(){
+        return teacherService.allTeachers();
     }
 
 

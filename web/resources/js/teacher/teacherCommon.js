@@ -5,7 +5,7 @@ $(function () {
     //console.log("(course):"+course_name);
 
     var html1 = "<span> <a href='teacherAddAssignment.html?"+ course+ "&"+user_name+" '> " +
-            "Add a assignment" +
+            "Add an assignment" +
             "</a> </span>";
 
     var html2 = "<span> <a href='teacherCheckAssignment.html?"+ course+"&"+ user_name +" '> " + "Check Assignments" +

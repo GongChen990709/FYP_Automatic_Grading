@@ -1,5 +1,6 @@
 package FYP19.Controller;
 
+import FYP19.AutoGrading.JSONConverter.utils.JsonFileReader;
 import FYP19.Entities.Assignment;
 import FYP19.Entities.Students;
 import FYP19.Entities.Teacher;
@@ -8,6 +9,7 @@ import FYP19.Service.StudentsService;
 import FYP19.util.Constants;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import org.apache.commons.collections.map.ListOrderedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -254,6 +258,222 @@ public class AssignmentController {
         String result_json = "{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+assignment_json+"}";
         return result_json;
     }
+
+    //10. view all student grade
+    @RequestMapping("/teacher/viewGrades")
+    @ResponseBody
+    public String teacherViewGrades(HttpServletRequest request){
+        String assignment_id = request.getParameter("assignment_id");
+        List<Map<String, Object>> grades = assignmentService.teacherViewAllGrades(assignment_id);
+        int count = grades.size();
+        String grades_json = JSON.toJSONString(grades);
+        String result_json = "{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+grades_json+"}";
+        return result_json;
+    }
+
+    //11. view student grade by id
+    @RequestMapping("/teacher/viewGradeById")
+    @ResponseBody
+    public String teacherViewGradeById(HttpServletRequest request){
+        String assignment_id = request.getParameter("assignment_id");
+        String ucd_id = request.getParameter("ucd_id");
+        List<Map<String,Object>> returnList = assignmentService.teacherViewGradeById(assignment_id,Integer.parseInt(ucd_id));
+        String grade_json = JSON.toJSONString(returnList);
+        String result_json = "{\"code\":0,\"msg\":\"\",\"count\":"+1+",\"data\":"+grade_json+"}";
+        return result_json;
+    }
+
+    //12. view student grade by name
+    @RequestMapping("/teacher/viewGradeByName")
+    @ResponseBody
+    public String teacherViewGradeByName(HttpServletRequest request){
+        String assignment_id = request.getParameter("assignment_id");
+        String name = request.getParameter("name");
+        List<Map<String,Object>> returnList = assignmentService.teacherViewGradeByName(assignment_id,name);
+        String grade_json = JSON.toJSONString(returnList);
+        String result_json = "{\"code\":0,\"msg\":\"\",\"count\":"+1+",\"data\":"+grade_json+"}";
+        return result_json;
+    }
+
+
+
+    //////////////////////////
+   //Common: Student and teacher report data
+    @RequestMapping("/teacher/report/accuracy")
+    @ResponseBody
+    public String accuracyReport(HttpServletRequest request){
+        String assignment_id = request.getParameter("assignment_id");
+        String ucd_id =  request.getParameter("student_id");
+        String report_path = assignmentService.queryStuReportPath(Integer.parseInt(ucd_id),assignment_id);
+        if(report_path!=null){
+            String report_data = JsonFileReader.readJsonFile(report_path);
+            com.alibaba.fastjson.JSONObject report_json_data = JSON.parseObject(report_data);
+            report_data = report_json_data.getString("accuracy_result");
+            System.out.println(report_data);
+            String result_json = "{\"code\":0,\"msg\":\"\",\"count\":"+1+",\"data\":"+report_data+"}";
+            return result_json;
+        }
+        return "{\"code\":0,\"msg\":\"\",\"count\":"+1+",\"data\":"+ "[]" +"}";
+    }
+
+    @RequestMapping("/student/report/accuracy")
+    @ResponseBody
+    public String accuracyReportStudent(HttpServletRequest request){
+        String assignment_id = request.getParameter("assignment_id");
+        int ucd_id =  ((Students) request.getSession().getAttribute(Constants.USER_SESSION)).getUcd_id();
+        String report_path = assignmentService.queryStuReportPath(ucd_id,assignment_id);
+        if(report_path!=null){
+            String report_data = JsonFileReader.readJsonFile(report_path);
+            com.alibaba.fastjson.JSONObject report_json_data = JSON.parseObject(report_data);
+            report_data = report_json_data.getString("accuracy_result");
+            System.out.println(report_data);
+            String result_json = "{\"code\":0,\"msg\":\"\",\"count\":"+1+",\"data\":"+report_data+"}";
+            return result_json;
+        }
+        return "{\"code\":0,\"msg\":\"\",\"count\":"+1+",\"data\":"+ "[]" +"}";
+    }
+
+
+    @RequestMapping("/teacher/report/data")
+    @ResponseBody
+    public Map<String,Object> dataReport(HttpServletRequest request){
+        Map<String,Object> returnMap = new HashMap<>();
+        String assignment_id = request.getParameter("assignment_id");
+        String ucd_id =  request.getParameter("student_id");
+        String report_path = assignmentService.queryStuReportPath(Integer.parseInt(ucd_id),assignment_id);
+        if(report_path!=null){
+            String report_data = JsonFileReader.readJsonFile(report_path);
+            com.alibaba.fastjson.JSONObject report_json_data = JSON.parseObject(report_data);
+            String time_ns = report_json_data.getString("time_ns");
+            String batchSize = report_json_data.getString("measurementBatchSize");
+            String constructor_method = report_json_data.getString("constructor_method");
+            String accuracy_rate = report_json_data.getString("accuracy_rate");
+            String time_ns_reduced =time_ns.substring(0,time_ns.lastIndexOf("."));
+            /////////
+            returnMap.put("batchSize",batchSize);
+            returnMap.put("time_ns",time_ns_reduced);
+            returnMap.put("constructor_method",constructor_method);
+            returnMap.put("accuracy_rate",accuracy_rate);
+        }
+        /////////
+        Float grade = assignmentService.queryGrade(Integer.parseInt(ucd_id),assignment_id);
+        returnMap.put("grade", Float.toString(grade));
+        Float[] allFloatGrades = assignmentService.queryAllGrades(assignment_id);
+        int [] counter = new int[10];
+        float total=0;
+        for(Float index : allFloatGrades){
+            if(index>=0 && index<10){
+                counter[0]++;
+            }
+            if(index>=10 && index<20){
+                counter[1]++;
+            }
+            if(index>=20 && index<30){
+                counter[2]++;
+            }
+            if(index>=30 && index<40){
+                counter[3]++;
+            }
+            if(index>=40 && index<50){
+                counter[4]++;
+            }
+            if(index>=50 && index<60){
+                counter[5]++;
+            }
+            if(index>=60 && index<70){
+                counter[6]++;
+            }
+            if(index>=70 && index<80){
+                counter[7]++;
+            }
+            if(index>=80 && index<90){
+                counter[8]++;
+            }
+            if(index>=90 && index<=100){
+                counter[9]++;
+            }
+            total = total + index;
+        }
+        float averaged_grade = (float) new BigDecimal(total/allFloatGrades.length).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        returnMap.put("allGrades", counter);
+        returnMap.put("averaged_grade",averaged_grade);
+        return returnMap;
+    }
+
+
+    @RequestMapping("/student/report/data")
+    @ResponseBody
+    public Map<String,Object> dataReportStudent(HttpServletRequest request){
+        Map<String,Object> returnMap = new HashMap<>();
+        String assignment_id = request.getParameter("assignment_id");
+        int ucd_id =  ((Students) request.getSession().getAttribute(Constants.USER_SESSION)).getUcd_id();
+        String report_path = assignmentService.queryStuReportPath(ucd_id,assignment_id);
+        if(report_path!=null){
+            String report_data = JsonFileReader.readJsonFile(report_path);
+            com.alibaba.fastjson.JSONObject report_json_data = JSON.parseObject(report_data);
+            String time_ns = report_json_data.getString("time_ns");
+            String batchSize = report_json_data.getString("measurementBatchSize");
+            String constructor_method = report_json_data.getString("constructor_method");
+            String accuracy_rate = report_json_data.getString("accuracy_rate");
+            String time_ns_reduced =time_ns.substring(0,time_ns.lastIndexOf("."));
+            /////////
+            returnMap.put("batchSize",batchSize);
+            returnMap.put("time_ns",time_ns_reduced);
+            returnMap.put("constructor_method",constructor_method);
+            returnMap.put("accuracy_rate",accuracy_rate);
+        }
+        /////////
+        Float grade = assignmentService.queryGrade(ucd_id,assignment_id);
+        returnMap.put("grade", Float.toString(grade));
+        Float[] allFloatGrades = assignmentService.queryAllGrades(assignment_id);
+        int [] counter = new int[10];
+        float total=0;
+        for(Float index : allFloatGrades){
+            if(index>=0 && index<10){
+                counter[0]++;
+            }
+            if(index>=10 && index<20){
+                counter[1]++;
+            }
+            if(index>=20 && index<30){
+                counter[2]++;
+            }
+            if(index>=30 && index<40){
+                counter[3]++;
+            }
+            if(index>=40 && index<50){
+                counter[4]++;
+            }
+            if(index>=50 && index<60){
+                counter[5]++;
+            }
+            if(index>=60 && index<70){
+                counter[6]++;
+            }
+            if(index>=70 && index<80){
+                counter[7]++;
+            }
+            if(index>=80 && index<90){
+                counter[8]++;
+            }
+            if(index>=90 && index<=100){
+                counter[9]++;
+            }
+            total = total + index;
+        }
+        float averaged_grade = (float) new BigDecimal(total/allFloatGrades.length).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        returnMap.put("allGrades", counter);
+        returnMap.put("averaged_grade",averaged_grade);
+        return returnMap;
+    }
+
+
+
+    //////////////////
+
+/////////////////////////////
+
+
 //////////////////////////////////////////////////////////////////
 //Student Functions Unit
     //1. view all assignments for a module the student registered
@@ -274,8 +494,8 @@ public class AssignmentController {
         Map<String, String> returnMap = new HashMap<>();
         String assignment_id =  request.getParameter("assignment_id");
         Map<String, Object> viewAss = assignmentService.studentViewAssignment(assignment_id);
-        String due_datetime = (String) viewAss.get("due_date");
-//        String due_datetime  = dateConverter(due_date);
+        Date due_date = (Date) viewAss.get("due_date");
+        String due_datetime  = dateConverter(due_date);
         String pdf_path = (String)viewAss.get("pdf_path");
         returnMap.put("due_date", due_datetime);
         returnMap.put("name",(String) viewAss.get("title"));
@@ -304,18 +524,32 @@ public class AssignmentController {
         return result_json;
     }
 
+    //4. View grade and report
+    @RequestMapping("/student/viewGrade")
+    @ResponseBody
+    public String studentViewGrade(HttpServletRequest request){
+        String module_code =  request.getParameter("module_code");
+        int ucd_id = ((Students)request.getSession().getAttribute(Constants.USER_SESSION)).getUcd_id();
+        List<Assignment> assignmentList = assignmentService.queryAssignmentByModule(module_code);
+        List<Map<String, String>> returnList = new ArrayList<>();
+        for(Assignment ass : assignmentList){
+            Map<String, String> returnMap = new HashMap<>();
+            String title = ass.getTitle();
+            String id = ass.getId();
+            returnMap.put("title", title);
+            returnMap.put("id",id);
+            Float grade = assignmentService.queryGrade(ucd_id,ass.getId());
+            if(grade!=null){
+                returnMap.put("score", Float.toString(grade));
+                returnList.add(returnMap);
+            }
+        }
+        String submission_json= JSON.toJSONString(returnList);
+        String result_json = "{\"code\":0,\"msg\":\"\",\"count\":"+1+",\"data\":"+submission_json+"}";
+        return result_json;
+    }
 
 //////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
 
 
 ////////////////////////////////////////////////////////////////////
@@ -395,17 +629,4 @@ public class AssignmentController {
         return sdf.format(date);
     }
 //////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

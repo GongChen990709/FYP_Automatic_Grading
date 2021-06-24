@@ -20,6 +20,7 @@ public interface TeacherMapper {
     Department queryDepartmentByCode(@Param("code") String code);
     int registerTeacher(Teacher teacher);
     int deleteTeacherById(@Param("id") int teacher_id);
+    List<Teacher> allTeachers();
     ////////////////////////////////
 
     ////////////////////////////////

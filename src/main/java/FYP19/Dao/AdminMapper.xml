@@ -30,10 +30,5 @@
         SELECT DISTINCT registration_date FROM FYP_Automatic_Grading.Registration_history
     </select>
 
-<!--    <select id="">-->
-
-<!--    </select>-->
-
-
 
 </mapper>

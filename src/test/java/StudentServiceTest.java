@@ -137,10 +137,8 @@ public class StudentServiceTest {
 //        System.out.println(salt);
 //        String pwd = BCrypt.hashpw("gc",salt);
 //        System.out.println(pwd);
-
-        float a =(float) 3.231213;
-        System.out.println(Float.toString(a));
-        System.out.println(a>3);
+        float a =(float) 3.112;
+        System.out.println(a/2);
     }
 
     @Test
@@ -156,14 +154,14 @@ public class StudentServiceTest {
         System.out.println(dateString);
     }
 
-    //获取当前时间并转换为String
     @Test
     public void tes111(){
-        String grade = "44111.23113";
-
-
-
-        System.out.println(Long.parseLong(grade.substring(0,grade.lastIndexOf("."))));
+        for(int i=0;i<4;i++){
+            String salt = BCrypt.gensalt();
+            System.out.println(salt);
+            String cipherPwd = BCrypt.hashpw("fyp123",salt);
+            System.out.println(cipherPwd);
+        }
 
     }
 
@@ -171,6 +169,8 @@ public class StudentServiceTest {
     public void tesaas(){
         System.out.println(studentsServiceIImp.countStudentNumByCode("COMP"));
     }
+
+
 
 
 

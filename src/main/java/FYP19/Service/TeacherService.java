@@ -10,6 +10,7 @@ import java.util.Map;
 
 public interface TeacherService {
     Teacher queryTeacherById(int id);
+    List<Teacher> allTeachers();
     int registerModule(Module module);
     List<Module> queryAllModules(int teacher_id);
     List<Map<String, Object>> associatedModule();

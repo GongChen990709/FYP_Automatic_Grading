@@ -9,8 +9,9 @@
     <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
     <script type="text/javascript" src="../../js/student/studentCommon.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/student/student.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
 
-    <title> Student Assignment Grade </title>
+    <title> Student View Assignment Grade </title>
 </head>
 
 
@@ -38,8 +39,8 @@
                     <span id="user_name"></span><!-- user name-->
                 </a >
                 <dl class="layui-nav-child">
-                    <dd><a href="">Settings</a ></dd>
-                    <dd><a href="">Sign out</a ></dd>
+                     <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
                 </dl>
             </li>
 
@@ -65,10 +66,9 @@
         </table>
     </div>
 
-    <!--   <div class="layui-footer">
-           &lt;!&ndash; 底部固定区域 &ndash;&gt;
-           底部固定区域
-       </div>-->
+    <div class="layui-footer" style="text-align: center; color: #007DDB">
+        Automatic Programming Assignment Grading System
+    </div>
 </div>
 
 <script type="text/html" id="barDemo">
@@ -81,19 +81,17 @@
         var table = layui.table;
         var $ = layui.jquery;
         var basepath = "/" + window.location.pathname.split("/")[1];
-        var assignment_id=GetAssignmentID();
+
         table.render({
             elem: "#demo",
-            url: "",
-            where: {assignment_id:assignment_id},
+            url: basepath + "/student/viewGrade",
+            where: {module_code:GetCourseID()},
             cols: [[
                 {field: "number", type: "numbers"},
-
+                {field: 'id', title: 'ID', align: "center", hide: true},
                 {field: 'title', title: 'Assignment Name',
                     align: "center",
                 },
-
-
                 {field: 'score', title: 'Score', align: "center"},
                 {field: "operation", title: 'Report', toolbar: "#barDemo", align: "center"}
             ]],
@@ -105,15 +103,15 @@
         table.on('tool(test)',function (obj) {
             var tr= obj.data;
             console.log(tr);
+            var assignment_id=tr.id;
             //得到事件名
             var eventname=obj.event;
 
             if(eventname=='check'){
-                var ass_id= GetAssignmentID();
                 var course=GetCourse();
                 var username=GetUserName();
 
-                window.location.href="../common/report.html?"+course+"&"+username+"&"+ass_id;
+                window.location.href="../student/studentReport.html?"+course+"&"+username+"&"+assignment_id;
             }
 
         });

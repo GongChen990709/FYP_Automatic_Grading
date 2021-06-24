@@ -87,4 +87,8 @@
         WHERE id = #{id}
     </delete>
 
+    <select id="allTeachers" resultType="Teacher">
+        SELECT * FROM FYP_Automatic_Grading.Teacher
+    </select>
+
 </mapper>

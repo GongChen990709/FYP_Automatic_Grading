@@ -8,7 +8,7 @@ public class Constants {
     public static final String REGISTRATION_TIME = "REGISTRATION_TIME";
     public static final String STUDENTS_NEED_GRADING = "STUDENTS_NEED_GRADING";
     public static final String GRADED_COUNT = "GRADED_COUNT";
-    public static final String BENCHMARK_TEST_PATH = "/Users/gongchen/Documents/StageFour/Assignment_Grading_BenchMarkTest/out/artifacts/Assignment_Grading_BenchMarkTest_jar";
-    public static final String BENCHMARK_RESULT_PATH = "/Users/gongchen/Documents/StageFour/Assignment_Grading_BenchMarkTest/out/artifacts/Assignment_Grading_BenchMarkTest_jar/jmh-result.json";
+    public static final String BENCHMARK_TEST_PATH = "/fyp/Assignment_Grading_BenchMarkTest/out/artifacts/Assignment_Grading_BenchMarkTest_jar";
+    public static final String BENCHMARK_RESULT_PATH = "/fyp/Assignment_Grading_BenchMarkTest/out/artifacts/Assignment_Grading_BenchMarkTest_jar/jmh-result.json";
 }
 

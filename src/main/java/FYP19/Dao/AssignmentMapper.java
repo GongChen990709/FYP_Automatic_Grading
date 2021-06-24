@@ -13,7 +13,6 @@ import java.util.Map;
 
 public interface AssignmentMapper {
     int insertAssignmentForm(Assignment assignment);
-
     Assignment queryAssignment(@Param("title") String title);
     List<Assignment> queryAssignmentByModule(@Param("module_code") String module_code);
     List<Assignment> queryAssignmentsByModule(@Param("module_code") String module_code);
@@ -48,11 +47,11 @@ public interface AssignmentMapper {
     int insertAssignmentAssessment(@Param("ucd_id")int ucd_id, @Param("assignment_id") String assignment_id, @Param("grade_details_path") String grade_details_path);
     int updateAssignmentGrade(@Param("grade") float grade, @Param("ucd_id") int ucd_id, @Param("assignment_id") String assignment_id);
     List<Map<String,Object>> teacherViewAllGrades(@Param("assignment_id") String assignment_id);
+    List<Map<String,Object>>  teacherViewGradeById(@Param("assignment_id") String assignment_id, @Param("ucd_id") int ucd_id);
+    List<Map<String,Object>>  teacherViewGradeByName(@Param("assignment_id") String assignment_id, @Param("name") String name);
     String queryStuReportPath(@Param("ucd_id") int ucd_id, @Param("assignment_id")String assignment_id);
     List<String> queryStudentSubmittedAssignmentIds(@Param("ucd_id") int ucd_id);
     List<Map<String, Object>> queryAllAssessment(@Param("assignment_id") String assignment_id);
     List<String> queryAllGradeDetailPaths(@Param("assignment_id") String assignment_id);
     String queryModuleCode(@Param("assignment_id") String assignment_id);
-
-
 }

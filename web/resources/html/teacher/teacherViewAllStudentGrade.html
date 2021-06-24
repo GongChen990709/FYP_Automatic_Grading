@@ -9,8 +9,9 @@
     <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
     <script type="text/javascript" src="../../js/teacher/teacherCommon.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/teacher/teacher.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
 
-    <title> Teacher Course </title>
+    <title> View  Students' Grade </title>
 
 
 
@@ -47,8 +48,8 @@
                     <span id="user_name"></span><!-- user name-->
                 </a >
                 <dl class="layui-nav-child">
-                    <dd><a href="">Settings</a ></dd>
-                    <dd><a href="">Sign out</a ></dd>
+                     <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
                 </dl>
             </li>
 
@@ -136,25 +137,28 @@
                 var table = layui.table;
                 var $ = layui.jquery;
                 var basepath = "/" + window.location.pathname.split("/")[1];
+                var assignment_id=GetAssignmentID();
                 //var assignment_name=GetAssignmentName();
 
                 table.render({
                     elem: "#demo",
                     /*url: "/ReturnGradeServlet?assignment_name="+assignment_name,*/
                     url: basepath+"/teacher/viewGrades",
-                    where:{"assignment_id":GetAssignmentID()},
+                    where:{"assignment_id":assignment_id},
                     height:500,
                     cols: [[
                         {field: "number", type: "numbers"},
                         /*{field: 'assignment_Name', title: 'Assignment Name', align: "center"},*/
                         {field: 'ucd_id', title: 'Student Number', align: "center"},
-                        {field: 'name', title: 'Student Name', align: "center"},
+                        {field: 'name', title: 'Student Name', align: "center",sort:true},
                         {field: 'grade', title: 'Score', sort: true, align: "center"},
                         {filed:'report',title:'Report',toolbar:"#barDemo",align:"center"}
                     ]],
                     page: false,
                     size: "lg",
                     even: true,
+                    toolbar:true,
+                    defaultToolbar: ['filter', 'exports', 'print']
                 });
 
                 table.on('tool(test)',function (obj) {
@@ -164,7 +168,7 @@
                     var eventname=obj.event;
                     var student_id=tr.ucd_id;
                     if(eventname=='check'){
-                        var ass_id= GetAssignmentID();
+
                         var course=GetCourse();
                         var username=GetUserName();
 
@@ -172,7 +176,7 @@
                          link.href="teacherDisplayAllAssSubmitted.html?"+course+"&"+username+"&"+id;
                          link.click();*/
 
-                        window.location.href="../common/report.html?"+course+"&"+username+"&"+ass_id+"&"+student_id;
+                        window.location.href="../common/report.html?"+course+"&"+username+"&"+assignment_id+"&"+student_id;
                     }
 
                 });
@@ -181,14 +185,17 @@
 
                 $(document).on('click','#searchBtn1',function () {
                     //获取搜索文本框的值
-                    var search = $("#demoReload1");
+                    let search = $("#demoReload1");
 
                     //调用数据表格的重载方法
                     table.reload('demo',{
-                        url:"/FindStudentServlet",
+                        url:basepath+"/teacher/viewGradeById",
 
                         where:{  //设定需要传递的参数
-                            student_ID: search.val(),
+                            ucd_id: search.val(),
+                            assignment_id:assignment_id
+
+
                         },
                         method:'post',
                         /* page:{
@@ -201,14 +208,15 @@
 
                 $(document).on('click','#searchBtn2',function () {
                     //获取搜索文本框的值
-                    var search = $("#demoReload2");
+                    let search = $("#demoReload2");
 
                     //调用数据表格的重载方法
                     table.reload('demo',{
-                        url:"/FindStudentServlet",
+                        url:basepath+"/teacher/viewGradeByName",
 
                         where:{  //设定需要传递的参数
-                            student_name: search.val(),
+                            name: search.val(),
+                            assignment_id:assignment_id
                         },
                         method:'post',
                         /* page:{
@@ -224,10 +232,9 @@
 
     </div>
 
-    <!--   <div class="layui-footer">
-           &lt;!&ndash; 底部固定区域 &ndash;&gt;
-           底部固定区域
-       </div>-->
+    <div class="layui-footer" style="text-align: center; color: #007DDB">
+        Automatic Programming Assignment Grading System
+    </div>
 </div>
 
 

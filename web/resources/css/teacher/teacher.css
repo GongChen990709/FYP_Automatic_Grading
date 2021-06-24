@@ -13,8 +13,9 @@
 
 .addButton{
     position: absolute;
+   /* margin: 550px auto;*/
     margin-top: 50px;
-    margin-left: 550px;
+    margin-left: 650px;
 }
 .layui-body{
     position: absolute;

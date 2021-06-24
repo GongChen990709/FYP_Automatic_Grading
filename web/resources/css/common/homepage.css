@@ -74,8 +74,9 @@
 
 .header .identity span{
     font-size: 40px;
-    font-family:fantasy;
-    color: dodgerblue;
+    font-family: Arial, Verdana, Sans-serif;
+    color: cornflowerblue;
+    /*color: black;*/
 }
 
 *{
@@ -106,8 +107,9 @@
     display: none;
     list-style: none;           /*!/隐藏下拉框*/
     opacity: 0.8;
-    background-color: cornsilk;
-    width: 150px;
+    /*background-color: cornsilk;*/
+    background-color: white;
+    width: 190px;
     position: absolute;
     height: 100px;
     box-shadow: 0 0 1px 1px #cccccc;
@@ -120,9 +122,14 @@
     font-size: 35px;
     font-family: Verdana;
 }
-.header .user .user_name a:hover {background-color:#aabdf0}
+.header .user .user_name a:hover {
+    /*background-color:#aabdf0*/
+    opacity: 0.7}
 
-.header .user ul li a:hover {background-color: lightskyblue}
+.header .user ul li a:hover {
+    /*background-color: lightskyblue*/
+    opacity: 0.5;
+}
 
 .header .user ul li{
     margin-top: 15px;
@@ -154,8 +161,13 @@ a{
     width: 1200px;
     /*margin-left: 80px;*/
     margin: 25px auto;
+
 }
 
+.content .banner-img{
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
 
 
 /*.content .banner .banner-img{
@@ -186,7 +198,7 @@ a{
 .info h3{
     /*font-size: 25px;
     color: red;*/
-    margin-top: 15px;
+    margin-top: 40px;
     margin-bottom: 20px;
     /*text-align: justify;*/
 }
@@ -197,8 +209,9 @@ a{
 }
 
 .info h3 span a {
-    font-size: 30px;
-    color: lightskyblue;
+    font-size: 23px;
+    text-align: right;
+    color: cornflowerblue;
     font-family: "Times New Roman";
 
 }
@@ -241,6 +254,7 @@ a{
     overflow: hidden;
     width: 800px;           /*代表从0-11*/
 }
+
 .first-page{
     border-radius: 50%;
     background-color: #c5c5c5;
@@ -262,7 +276,7 @@ a{
 }
 
 .footer p span{
-    color: red;
+    color: #007DDB;
 }
 /*
 .header .menu:hover ul{

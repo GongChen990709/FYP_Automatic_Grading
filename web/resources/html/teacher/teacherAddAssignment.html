@@ -9,9 +9,10 @@
     <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
     <script type="text/javascript" src="../../js/teacher/teacherCommon.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/teacher/teacher.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
 
 
-    <title> Add a Assignment </title>
+    <title> Add an Assignment </title>
 
     <script>
         $(function () {
@@ -56,8 +57,8 @@
                     <span id="user_name"></span><!-- user name-->
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">Settings</a></dd>
-                    <dd><a href="">Sign out</a></dd>
+                    <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href="#" onclick="logout()">Log Out</a> </li>
                 </dl>
             </li>
 
@@ -128,7 +129,7 @@
                                   cols:[[
                                       {field:"number",type:"numbers"},
                                       {field: 'id', title: 'ID',align:"center",hide:true},
-                                      {field: 'title', title: 'Assignment Name', align:"center"},
+                                      {field: 'title', title: 'Assignment Name', align:"center",sort: true},
                                       {field: 'due_date', title: 'Due Date',align:"center",sort: true},
                                       {field: 'creation_date', title: 'Creation Date',align:"center",sort: true},
                                       {field: 'status', title: 'Status',align:"center",sort:true,templet:uploadFile},
@@ -236,14 +237,14 @@
                              maxmin:true,
                              anim:5,
                              resize:true,
-                             content:"<div style='font-size: 20px; font-family: Arial; margin-top: 90px;'>" +
+                             content:"<div style='font-size: 20px; font-family: Arial; margin-top: 50px;'>" +
                                  "<div id='pdf' style='margin-bottom: 20px'> </div > " +
                                  "<div id='java' style='margin-bottom: 20px'></div>" +
                                  "<div id='dataType' style='margin-bottom: 20px'> </div> " +
                                  "<div id='data' style='margin-bottom: 20px'></div>" +
                                  "</div>",
 
-                             area:['500px','600px']
+                             area:['500px','300px']
 
                          });
                          $.ajax({
@@ -371,10 +372,9 @@
 
 
 
-    <!--<div class="layui-footer">
-           &lt;!&ndash; 底部固定区域 &ndash;&gt;
-           底部固定区域
-    </div>-->
+    <div class="layui-footer" style="text-align: center; color: #007DDB">
+           Automatic Programming Assignment Grading System
+    </div>
 </div>
 
 </body>

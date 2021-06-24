@@ -33,7 +33,7 @@
     font-family:fantasy;
 }
 
-.header .admin #setting{
+/* .header .admin #setting{
     display: none;
     position: absolute;
     
@@ -57,7 +57,42 @@
 
 .admin:hover #name a {
     background-color: #aabdf0;
+} */
+
+.header .admin #setting{
+    display: none;
+    position: absolute;
+    
+    background-color: #f9f9f9;
+    min-width: 145px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    text-align: center;
 }
+
+.header .admin #setting a{
+    position: relative;
+    /* float: left; */
+    font-size: 19px;
+    color: black;
+    /* padding: 7px 2px; */
+    padding: 10px 0px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+}
+
+#setting a:hover {
+    min-width: 145px;
+    background-color: #a3a3a3;
+    text-align: center;
+}
+
+
+.admin:hover #name a {
+    background-color: #aabdf0;
+}
+
+
 
 #splitArea{
     position: relative;
