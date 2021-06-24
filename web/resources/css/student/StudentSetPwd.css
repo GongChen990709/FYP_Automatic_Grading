@@ -1,0 +1,175 @@
+.setPwd{
+    position: relative;
+    top: 34px;
+    height: 330px;
+}
+
+.setPwd .form{
+    position:relative;
+    top: 0px;
+    height: 290px;
+
+    width: 23%;
+    
+    background:#ffffff;
+    margin:auto;
+    margin-top: 3%;
+    text-align: center;
+    border-radius: 122px;
+    padding: 70px 63px;
+}
+
+.setPwd .form #StuId{
+    
+    border:0;
+    width: 60%;
+    height: 8%;
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+    background: #00000000;
+    border-bottom: 2px solid#eacda950;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+
+.setPwd .form #teacherId{
+    
+    border:0;
+    width: 60%;
+    height: 8%;
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+    background: #00000000;
+    border-bottom: 2px solid#eacda950;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+
+
+
+.setPwd .form #newpwd{
+    
+    border:0;
+    width: 60%;
+    height: 8%;
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+    background: #00000000;
+    border-bottom: 2px solid#eacda950;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+
+
+.setPwd .form #confirmpwd{
+    
+    border:0;
+    width: 60%;
+    height: 8%;
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+    background: #00000000;
+    border-bottom: 2px solid#eacda950;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+
+.setPwd .form #idmsg{
+    position: relative;
+    top: -10%;
+    left: 72%;
+    color: rgb(230, 22, 22);
+    
+}
+
+.setPwd .form #notInt{
+    position: relative;
+    top: -10%;
+    left: 80%;
+    color: rgb(230, 22, 22);
+    
+}
+
+.setPwd .form #newpwdmsg{
+    position: relative;
+    top: -10%;
+    left: 72%;
+    color: rgb(230, 22, 22);
+    
+}
+
+
+.setPwd .form #confirmmsg{
+    position: relative;
+    top: -10%;
+    left: 72%;
+    color: rgb(230, 22, 22);
+}
+
+
+
+
+/* confirm button */
+.setPwd .form #confirm{
+    position: relative;
+    top: 32px;
+    left:-30px;
+    display: inline-block;
+    padding: 4px 7px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;   
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color:rgb(35, 129, 236);
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px #999;
+}
+
+
+.setPwd .form #confirm:hover {background-color: rgb(123, 18, 194)}
+
+.setPwd .form #confirm:active {
+  background-color: rgb(123, 18, 194);
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+/* back button */
+.setPwd .form #back{
+    position: relative;
+    top: 32px;
+    left:36px;
+    display: inline-block;
+    padding: 4px 7px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;   
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color:rgb(35, 129, 236);
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px #999;
+}
+
+
+.setPwd .form #back:hover {background-color: rgb(123, 18, 194)}
+
+.setPwd .form #back:active {
+  background-color: rgb(123, 18, 194);
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+
+.setPwd .errormsg{
+    position: relative;
+    top: -405px;
+    left: 580px;
+    font-style: normal;
+    color: red;
+}

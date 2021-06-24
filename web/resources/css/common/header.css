@@ -1,0 +1,105 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+
+.header{
+    /*margin:25px auto 0 80px; */  /*//上右下左左右自动*/
+    margin: 30px auto;
+    width: 1200px;
+}
+
+
+.header .logo{
+    float: left;
+    position: relative;
+}
+
+.header .course_name{
+    float: left;
+    position: relative;
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: 40px;
+
+}
+
+.header .course_name a{
+    color: black;
+}
+
+.header .user {
+    float: right;
+    position: relative;
+    margin-top: 20px;
+}
+
+.header .user ul{
+    display: none;
+    list-style: none;           /*!/隐藏下拉框*/
+    opacity: 0.8;
+    background-color: cornsilk;
+    width: 150px;
+    position: absolute;
+    height: 100px;
+    box-shadow: 0 0 1px 1px #cccccc;
+
+}
+
+.header .user .user_name a {
+    color: cornflowerblue;
+    font-style: normal;
+    font-size: 35px;
+    font-family: Verdana;
+}
+.header .user .user_name a:hover {background-color:#aabdf0}
+
+.header .user ul li a:hover {background-color: lightskyblue}
+
+.header .user ul li{
+    margin-top: 15px;
+    /*color: red;*/
+    /*text-align: center; */      /*!/ 下拉框内容的位置*/
+}
+
+.header .user ul a{
+    color: black;
+    font-size: 20px;
+}
+
+a{
+    text-decoration: none;  /* //去除超链接的横线*/
+}
+
+
+.splitArea{
+    position: relative;
+    top: 110px;
+    height: 47px;
+    background-color: rgb(35, 129, 236);
+    z-index: -1;
+    width: 1200px;
+    margin: 30px auto;
+}
+
+.tab{
+    position: relative;
+   /* top: 0px;*/
+    width: 1150px;
+    margin: 70px auto;
+}
+
+.tab ul{
+    list-style: none;
+}
+.tab ul li{
+    float: left;
+    margin-right: 20px;
+}
+
+.tab ul li a{
+    font-family: Verdana ;
+    font-size: 25px;
+    color: white;
+
+}

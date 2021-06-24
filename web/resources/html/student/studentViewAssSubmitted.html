@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">-->
+    <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="../common/layui-v2.6.5/layui/css/layui.css"/>
+    <script type="text/javascript" src="../common/layui-v2.6.5/layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
+    <script type="text/javascript" src="../../js/student/studentCommon.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/student/student.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
+
+    <title> Student View Assignments Submitted </title>
+
+    <script>
+
+    </script>
+
+
+
+</head>
+
+
+
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-green" >
+        <div class="layui-logo layui-hide-xs layui-bg-black">Student</div>
+
+        <ul class="layui-nav layui-layout-left ">
+
+            <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+                <i class="layui-icon layui-icon-spread-left"></i>
+            </li>
+
+            <li class="layui-nav-item"><a href="#" id="course_name"> <!--course name--></a></li>
+
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+                <a href="javascript:;">
+                    <!-- <img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img">-->
+                    <span id="user_name"></span><!-- user name-->
+                </a>
+                <dl class="layui-nav-child">
+                    <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
+                </dl>
+            </li>
+
+            <!--<li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
+                <a href="javascript:;">
+                </a>
+            </li>-->
+
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+
+                <li class="layui-nav-item" id="assignment">   </li>
+                <li class="layui-nav-item" id="grade">   </li>
+
+            </ul>
+        </div>
+    </div>
+
+     <div class="layui-body">
+
+         <div style="font-size: 40px; font-family: Lucida Console; font-weight: 500;
+             margin-bottom: 40px">
+             Submisson History
+         </div>
+
+         <div>
+             <table id="demo" lay-filter="test">
+             </table>
+         </div>
+
+
+     </div>
+    <div class="layui-footer" style="text-align: center; color: #007DDB">
+        Automatic Programming Assignment Grading System
+    </div>
+
+    <script>
+        var assignment_id=GetAssignmentID();
+        var basepath = "/" + window.location.pathname.split("/")[1];
+
+        var download=function(d) {
+            var html= " <a href=' " + basepath +
+                      "/student/javaDownload?id="+assignment_id+  " ' download='' style='color: #1E9FFF'> " +
+                      d.fileName + "</a >";
+            return html;
+
+        }
+    </script>
+
+     <script>
+         layui.use('table', function() {
+             var table = layui.table;
+             var $ = layui.jquery;
+             var id=GetAssignmentID();
+             //var assignment_name = GetAssignmentName();
+             var basepath = "/" + window.location.pathname.split("/")[1];
+             table.render({
+                              elem: "#demo",
+                              url: basepath+"/student/submissionHistory",
+                              where:{assignment_id:id},
+                              cols: [[
+                                  {field: "number", type: "numbers"},
+
+                                  {field:"fileName",title:"File Submitted",templet:download},
+                                  {field:'submission_date',title:'Submission Time',align:"center",sort:true},
+
+                              ]],
+                              page: false,
+                              size: "lg",
+                              even: true,
+
+                          });
+
+           /*  table.on('tool(test)',function (obj) {
+
+                /!* //得到当前操作行的相关信息
+                 var tr= obj.data;
+                 console.log(tr);*!/
+
+                 var assignment_id=GetAssignmentID()
+
+                 var eventname=obj.event;
+
+                 var html= " <a href=' " +basepath +
+                           "/teacher/pdfDownload?id="+id+  " ' download=''> " +
+                           "Download"+json[i].fileName + "</a >";
+
+                 if(eventname=='download'){
+                     window.location.href=
+                         basepath+"studentSubmitAssignment.html?id="+ id + "&" + user_name +"&"+assignment_id;
+                 }
+
+
+             });*/
+
+         })
+
+     </script>
+
+    <!--   <div class="layui-footer">
+           &lt;!&ndash; 底部固定区域 &ndash;&gt;
+           底部固定区域
+       </div>-->
+</div>
+
+
+</body>
+</html>

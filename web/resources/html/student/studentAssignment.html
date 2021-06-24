@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="../common/layui-v2.6.5/layui/css/layui.css"/>
+    <script type="text/javascript" src="../common/layui-v2.6.5/layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
+    <script type="text/javascript" src="../../js/student/studentCommon.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/student/student.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
+
+    <title> Student Assignment </title>
+
+
+
+</head>
+
+
+
+
+
+<body>
+    <div class="layui-layout layui-layout-admin">
+
+      <!--  <div id="common"></div>-->
+
+    <div class="layui-header layui-bg-green" >
+        <div class="layui-logo layui-hide-xs layui-bg-black">Student</div>
+
+        <ul class="layui-nav layui-layout-left ">
+
+            <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+                <i class="layui-icon layui-icon-spread-left"></i>
+            </li>
+
+            <li class="layui-nav-item"><a href="#" id="course_name"> <!--course name--></a></li>
+
+            <!--  <li class="layui-nav-item">
+                  <a href="javascript:;">nav groups</a>
+                  <dl class="layui-nav-child">
+                      <dd><a href="">menu 11</a></dd>
+                      <dd><a href="">menu 22</a></dd>
+                      <dd><a href="">menu 33</a></dd>
+                  </dl>
+              </li>-->
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+                <a href="javascript:;">
+                    <span id="user_name"></span><!-- user name-->
+                </a>
+                <dl class="layui-nav-child">
+                      <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
+                </dl>
+            </li>
+
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+
+                <li class="layui-nav-item" id="assignment">   </li>
+                <li class="layui-nav-item" id="grade">   </li>
+
+            </ul>
+        </div>
+    </div>
+
+        <div class="layui-body">
+            <table id="demo" lay-filter="test">
+
+            </table>
+        </div>
+        <div class="layui-footer" style="text-align: center; color: #007DDB">
+            Automatic Programming Assignment Grading System
+        </div>
+
+    </div>
+
+
+</body>
+
+<!--<script>
+    $('#common').load("studentCommon.html");
+</script>-->
+
+<script>
+        layui.use('table',function () {
+            var table = layui.table;
+            var module_code = GetCourseID();
+            var $ = layui.jquery;
+            var basepath = "/" + window.location.pathname.split("/")[1];
+            table.render({
+                             elem: "#demo",
+                             url: basepath+ "/student/allAssignments",
+                             where: {module_code: module_code},
+                             cols: [[
+                                 {field: "number", type: "numbers"},
+                                 {field: 'id', title: 'ID', align: "center", hide: true},
+                                 {field: 'title', title: 'Assignment Name',
+                                     align: "center",style:'color: #f67d06;',sort:true,templet:assNameLink},
+                                 {field: 'due_date', title: 'Due Date', align: "center", sort: true},
+                                 {field: 'submission_date', title: 'Submission Date', align: "center", sort: true},
+                                 {field: 'status', title: 'Completion Status',align:"center",sort:true,templet:statusLink},
+                                 /*{field: "operation", title: 'Operation', toolbar: "#barDemo", align: "center"}*/
+                             ]],
+                             page: false,
+                             size: "lg",
+                             even: true,
+                         });
+
+
+            table.on('tool(test)',function (obj) {
+                //得到当前操作行的相关信息
+                var tr= obj.data;
+                console.log(tr);
+                var course=GetCourse();
+                var user_name=GetUserName();
+                var assignment_id=tr.id;
+                //得到事件名
+                var eventname=obj.event;
+
+                if(eventname=='AddLinkTOAssName'){
+                    window.location.href= "studentSubmitAssignment.html?"+ course + "&" + user_name +"&"+assignment_id;
+
+                }else if(eventname=='AddLinkTOStatus'){
+                    window.location.href= "studentViewAssSubmitted.html?"+ course + "&" + user_name +"&"+assignment_id;
+                }
+
+
+            });
+
+
+        })
+
+</script>
+
+<script>
+
+    var assNameLink=function(d) {
+            var html1='<a style="color: #1E9FFF" href="javascript:;" lay-event="AddLinkTOAssName" > ' +
+                      d.title + "</a> ";
+
+            return html1;
+
+    }
+    var statusLink  =function (d) {
+        if(d.status=='Submitted'){
+            var html1='<a style="color: #1E9FFF" href=" javascript:;" lay-event="AddLinkTOStatus" > ' +
+                d.status + "</a > ";
+
+            return html1;
+        }else {
+            return d.status;
+
+        }
+    }
+
+
+</script>
+
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn layui-btn-xs" lay-event="download">Download</a>
+</script>
+
+</html>

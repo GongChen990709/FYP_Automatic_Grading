@@ -15,8 +15,41 @@
 <!--Scan all annotations under the package Service-->
     <context:component-scan base-package="FYP19.Service"/>
 
-    <bean id="StudentServiceImpl" class="FYP19.Service.StudentServiceImpl">
-        <property name="studentMapper" ref="studentMapper"/>
+    <bean id="StudentsServiceImpl" class="FYP19.Service.StudentsServiceImpl">
+        <property name="studentsMapper" ref="studentsMapper"/>
+        <property name="userMapper" ref="userMapper"/>
+        <property name="adminMapper" ref="adminMapper"/>
+        <property name="moduleMapper" ref="moduleMapper"/>
+        <property name="assignmentMapper" ref="assignmentMapper"/>
+    </bean>
+
+    <bean id="TeacherServiceImpl" class="FYP19.Service.TeacherServiceImpl">
+        <property name="teacherMapper" ref="teacherMapper"/>
+        <property name="moduleMapper" ref="moduleMapper"/>
+        <property name="userMapper" ref="userMapper"/>
+        <property name="assignmentMapper" ref="assignmentMapper"/>
+        <property name="studentsMapper" ref="studentsMapper"/>
+    </bean>
+
+    <bean id="UserServiceImpl" class="FYP19.Service.UserServiceImpl">
+        <property name="studentsMapper" ref="studentsMapper"/>
+        <property name="teacherMapper" ref="teacherMapper"/>
+        <property name="adminMapper" ref="adminMapper"/>
+        <property name="userMapper" ref="userMapper"/>
+    </bean>
+
+    <bean id="MailService" class="FYP19.Service.MailService">
+        <property name="javaMailSender" ref="javaMailSender"/>
+    </bean>
+
+    <bean id="EncryptionService" class="FYP19.Service.EncryptionService">
+        <property name="studentMapper" ref="studentsMapper"/>
+        <property name="teacherMapper" ref="teacherMapper"/>
+    </bean>
+
+    <bean id="AssignmentService" class="FYP19.Service.AssignmentService">
+        <property name="assignmentMapper" ref="assignmentMapper"/>
+        <property name="studentsMapper" ref="studentsMapper"/>
     </bean>
 
 <!--Declarative transaction supports for database operations-->

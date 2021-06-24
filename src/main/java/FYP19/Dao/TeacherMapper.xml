@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FYP19.Dao.TeacherMapper">
+
+    <select id="queryTeacherById" resultType="Teacher">
+        SELECT * FROM FYP_Automatic_Grading.Teacher
+        WHERE id = #{teacher_id}
+    </select>
+
+    <insert id="insertDepartment" parameterType="Department">
+        INSERT INTO FYP_Automatic_Grading.Department (code, name)
+        VALUES (#{code},#{name})
+    </insert>
+
+    <select id="queryDepartmentByCode" resultType="Department">
+        SELECT * FROM FYP_Automatic_Grading.Department
+        WHERE code = #{code}
+    </select>
+
+    <insert id="registerTeacher" parameterType="Teacher">
+        INSERT INTO FYP_Automatic_Grading.Teacher (id, name, email, department_code)
+        VALUES (#{id},#{name},#{email},#{department_code})
+    </insert>
+
+    <select id="queryDepartByCode" resultType="Department">
+        SELECT * FROM FYP_Automatic_Grading.Department
+        WHERE code = #{depart_code}
+    </select>
+
+
+    <update id="updateActivationCodeById">
+        UPDATE FYP_Automatic_Grading.Teacher
+        SET activation_code = #{A_code}
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="queryActivationCodeById" resultType="string">
+        SELECT activation_code FROM FYP_Automatic_Grading.Teacher
+        WHERE id = #{teacher_id}
+    </select>
+
+
+    <update id="updateSaltById">
+        UPDATE FYP_Automatic_Grading.Teacher
+        SET salt = #{salt}
+        WHERE id = #{teacher_id}
+    </update>
+
+    <update id="updateIsActivatedById">
+        UPDATE FYP_Automatic_Grading.Teacher
+        SET is_activated = #{isActivated}
+        WHERE id = #{teacher_id}
+    </update>
+
+    <update id="updatePwdById">
+        UPDATE FYP_Automatic_Grading.Teacher
+        SET pwd = #{pwd}
+        WHERE id = #{teacher_id}
+    </update>
+
+    <select id="queryIsActivatedById" resultType="boolean">
+        SELECT is_activated FROM FYP_Automatic_Grading.Teacher
+        WHERE id = #{t_id}
+    </select>
+
+    <select id="querySaltById" resultType="string">
+        SELECT salt FROM FYP_Automatic_Grading.Teacher
+        WHERE id = #{t_id}
+    </select>
+
+    <select id="associatedModule" resultType="map">
+        SELECT m.code, m.name, t.id, t.name as teacher_name, t.email FROM FYP_Automatic_Grading.Teacher AS t, FYP_Automatic_Grading.Module AS m
+        WHERE t.id = m.teacher_id
+    </select>
+
+    <select id="allTeacherInfo" resultType="map">
+        SELECT t.department_code, d.name as department_name, t.id, t.name, t.email FROM FYP_Automatic_Grading.Teacher AS t, FYP_Automatic_Grading.Department AS d
+        WHERE t.department_code = d.code AND t.is_activated = 1
+    </select>
+
+    <delete id="deleteTeacherById">
+        DELETE FROM FYP_Automatic_Grading.Role
+        WHERE id = #{id}
+    </delete>
+
+    <select id="allTeachers" resultType="Teacher">
+        SELECT * FROM FYP_Automatic_Grading.Teacher
+    </select>
+
+</mapper>

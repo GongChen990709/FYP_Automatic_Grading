@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set DataType</title>
+
+    <style>
+        *{ margin:0; padding:0;}
+        button, input{ outline:none;}
+        button, .login{ width:120px; height:42px; background:#009688; color:#fff; border:none; border-radius:6px; display: block; margin:20px auto; cursor: pointer;}
+        .popOutBg{ width:100%; height:100%; position: fixed; left:0; top:0; background:rgba(0,0,0,.6); display: none;}
+        .popOut{ position:fixed; width:600px; height:300px; top:50%; left:50%; margin-top:-150px; margin-left:-300px; background:#fff; border-radius:8px; overflow: hidden; display: none;}
+        .popOut > span{ position: absolute; right:10px; top:0; height:42px; line-height:42px; color:#000; font-size:30px; cursor: pointer;}
+        .popOut table{ display: block; margin:42px auto 0; width:520px;}
+        .popOut caption{ width:520px; text-align: center; color:#009688; font-size:18px; line-height:42px;}
+        .popOut table tr td{ color:#666; padding:6px; font-size:14px;}
+        .popOut table tr td:first-child{ text-align: right;}
+        .inp{ width:280px; height:30px; line-height:30px; border:1px solid #999; padding:5px 10px; color:#000; font-size:14px; border-radius:6px;}
+        .inp:focus{ border-color:#009688;}
+    </style>
+
+    <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="../common/layui-v2.6.5/layui/css/layui.css"/>
+    <script type="text/javascript" src="../common/layui-v2.6.5/layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
+    <script type="text/javascript" src="../../js/teacher/teacherCommon.js"></script>
+    <script type="text/javascript" src="../common/AlertComponent/hsycmsAlert.js"></script>
+    <script type="text/javascript" src="../../js/teacher/CreateCode.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/teacher/teacher.css"/>
+    <link rel="stylesheet" type="text/css" href="../common/AlertComponent/hsycmsAlert.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
+
+</head>
+
+
+
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-green" >
+        <div class="layui-logo layui-hide-xs layui-bg-black">Teacher</div>
+        <!-- 头部区域（可配合layui 已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left ">
+            <!-- 移动端显示 -->
+            <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+                <i class="layui-icon layui-icon-spread-left"></i>
+            </li>
+
+            <li class="layui-nav-item"><a href="#" id="course_name"> <!--course name--></a></li>
+            <!--  <li class="layui-nav-item">
+                  <a href="javascript:;">nav groups</a>
+                  <dl class="layui-nav-child">
+                      <dd><a href="">menu 11</a></dd>
+                      <dd><a href="">menu 22</a></dd>
+                      <dd><a href="">menu 33</a></dd>
+                  </dl>
+              </li>-->
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+                <a href="javascript:;">
+                    <!-- <img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img">-->
+                    <span id="user_name"></span><!-- user name-->
+                </a>
+
+                <dl class="layui-nav-child">
+
+                     <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
+
+                </dl>
+            </li>
+
+            <!--<li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
+                <a href="javascript:;">
+                </a>
+            </li>-->
+
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">Assignment</a>
+                    <dl class="layui-nav-child">
+                        <dd id="addAssignment">           </dd>
+                        <dd id="checkAssignment">       </dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item" id="checkGrade">   </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+
+
+
+        <div id="backAndHelp" >
+
+            <div>
+                <input type="button" value="Help" onclick="showWinHelp()" id="helpButton" class="layui-btn"
+                       lay-submit="" lay-filter="demo1"
+                       style="background-color:#009688;position: relative;left: 690px; top:-30px"/>
+
+                <input type="button" value="Back" onclick="backToPreviousPage()" id="backButton" class="layui-btn"
+                       lay-submit="" lay-filter="demo1" style="background-color: #009688;position: relative;
+                        top:-30px; left:700px;"/>
+            </div>
+        </div>
+        <div>
+
+            <!-- <div class="layui-form-item">
+
+                <div class="layui-input-inline">
+                  <input type="text" id="stuIdSearch" name="username" lay-verify="required" placeholder="Search Student By Id" autocomplete="off" class="layui-input">
+                </div>
+
+                <button onclick="searchStudentById()" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);">Search</button>
+            </div> -->
+
+
+
+            <div id="wholeEle" style="position: relative; left: 50px; top: -20px; ">
+
+                <div style="position: relative; top: 0px; margin-bottom: 40px; font-size: 30px; font-family: Arial,
+                 Helvetica, sans-serif
+                  ;font-weight: bold;">
+                    Data Type JSON File Page
+                </div>
+
+
+                <div class="layui-form-item">
+                    <div id="classNameArea" class="layui-input-inline" >
+                        <div style=" font-family: Arial, Helvetica, sans-serif ;font-weight: bold; font-size: 16px; ">
+                            Class Name:
+                        </div>
+                        <input type="text" id="className" name="className" lay-verify="required" placeholder="Class Name" autocomplete="off" class="layui-input"/>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div id="overloadOrNot" class="layui-input-inline">
+                        <div style=" font-family: Arial, Helvetica, sans-serif ;font-weight: bold; font-size: 16px; ">
+                            Whether this function is overload or not?
+                        </div>
+
+                        <select id="overloadOrSingle" onchange="afterClickOverloadOrNot()" lay-verify="required" placeholder="Class Name" autocomplete="off" class="layui-input">
+                            <option value="pleaseSelect">please select</option>
+                            <option value="yes">yes</option>
+                            <option value="no">no</option>
+                        </select>
+
+                    </div>
+                </div>
+
+                <div id="simpleVersion" style="display: none;">
+
+                    <div id="functionArea" class="layui-form-item">
+                        <div class="layui-input-inline">
+                            <div style=" font-family: Arial, Helvetica, sans-serif ;font-weight: bold; font-size: 16px; ">
+                                Function Name:
+                            </div>
+                            <input type="text" id="functionName" name="functionName" value="" lay-verify="required" placeholder="Function Name" autocomplete="off" class="layui-input"/><br/>
+                        </div>
+
+
+                        <div class="layui-input-inline">
+                            <div style=" font-family: Arial, Helvetica, sans-serif ;font-weight: bold; font-size: 16px; ">
+                                Return Type:
+                            </div>
+
+                            <select id="returnType" name="returnType" onchange="afterClickReturnSelectBox()" lay-verify="required"  autocomplete="off" class="layui-input">
+                                <option value ="void">void</option>
+                                <option value ="Double">Double</option>
+                                <option value ="Byte">Byte</option>
+                                <option value ="Float">Float</option>
+                                <option value="Boolean">Boolean</option>
+                                <option value ="Character">Character</option>
+                                <option value ="Integer">Integer</option>
+                                <option value ="Short">Short</option>
+                                <option value ="Long">Long</option>
+                                <option value ="String">String</option>
+                                <option value ="double">double</option>
+                                <option value ="byte">byte</option>
+                                <option value ="float">float</option>
+                                <option value ="boolean">boolean</option>
+                                <option value ="char">char</option>
+                                <option value ="int">int</option>
+                                <option value ="short">short</option>
+                                <option value ="long">long</option>
+
+                                <option value ="list">List</option>
+                                <option value ="map">Map</option>
+                                <option value ="stack">Stack</option>
+                                <option value ="array">Array</option>
+
+
+                            </select>
+                        </div>
+
+
+                        <div class="layui-input-inline" style="position: relative;top: -18px;">
+                            <div style=" font-family: Arial, Helvetica, sans-serif ;font-weight: bold; font-size: 16px; ">
+                                Set the number of parameters:
+                            </div>
+
+                            <input type="number" min="0" id="paraNum" lay-verify="required" value="0" autocomplete="off" class="layui-input">
+                        </div>
+                        <input type="button" value="Confirm" onclick="paraNumButton()" id="paraNumButton" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color:#009688;position: relative;top: 18px;"/>
+
+                        <!-- the select box for parameters -->
+                        <!-- <div id="paraArea"></div> -->
+
+
+                    </div>
+                    <div id="setParamDat" style="display: none;font-family: Arial, Helvetica, sans-serif ;font-weight: bold; font-size: 16px; ">
+                        Set data type for each parameter
+                    </div>
+                    <!-- <br/> -->
+                    <div id="paraArea" style="position: relative; top:10px"></div>
+                    <br/>
+                    <br/>
+
+                    <div class="layui-form-item" style="position: absolute; top: 500px; ">
+
+                        <input type="button" id="addFunc" onclick="addFunction()" value="Add this function"  class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: #009688;">
+
+
+                    </div>
+
+
+                    <!-- <input type="button" id="addFunc" onclick="addFunction()" value="Add this function"  class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);"> -->
+
+                </div>
+
+
+
+                <div id="overloadVersion" style="display: none;">
+                    <div id="overloadfunctionArea" class="layui-form-item">
+
+                        <div id="funcNameandButton" style="display: block;" class="layui-input-inline">
+                            <div style=" font-family: Arial, Helvetica, sans-serif ;font-weight: bold; font-size: 16px; ">
+                                Function Name:
+                            </div>
+                            <input type="text" id="overloadfunctionName" name="functionName" value="" lay-verify="required" placeholder="Function Name" autocomplete="off" class="layui-input"/>
+                            <!-- <input type="button" value="Confirm the function name" onclick="showOverloadFuncArea()"> -->
+                        </div>
+
+                        <div id="overloadFuncSetting" class="layui-input-inline">
+                            <div style=" font-family: Arial, Helvetica, sans-serif ;font-weight: bold; font-size: 16px; ">
+                                Return Type:
+                            </div>
+
+                            <select id="overloadreturnType" name="returnType" onchange="OverloadAfterClickReturnSelectBox()" lay-verify="required" placeholder="Return Type" autocomplete="off" class="layui-input">
+                                <option value ="void">void</option>
+                                <option value ="Double">Double</option>
+                                <option value ="Byte">Byte</option>
+                                <option value ="Float">Float</option>
+                                <option value="Boolean">Boolean</option>
+                                <option value ="Character">Character</option>
+                                <option value ="Integer">Integer</option>
+                                <option value ="Short">Short</option>
+                                <option value ="Long">Long</option>
+                                <option value ="String">String</option>
+                                <option value ="double">double</option>
+                                <option value ="byte">byte</option>
+                                <option value ="float">float</option>
+                                <option value ="boolean">boolean</option>
+                                <option value ="char">char</option>
+                                <option value ="int">int</option>
+                                <option value ="short">short</option>
+                                <option value ="long">long</option>
+
+                                <option value ="list">List</option>
+                                <option value ="map">Map</option>
+                                <option value ="stack">Stack</option>
+                                <option value ="array">Array</option>
+
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="layui-input-inline" style="position: relative;top: -18px;">
+
+                            <div style=" font-family: Arial, Helvetica, sans-serif ;font-weight: bold; font-size: 16px; ">
+                                Set the number of parameters:
+                            </div>
+
+                            <input type="number" min="0" value="0" id="overloadparaNum" lay-verify="required"  autocomplete="off" class="layui-input">
+                        </div>
+                        <input type="button" value="Confirm" onclick="overloadparaNumButton()" id="overloadparaNumButton" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: #009688; position: relative;top:18px ;"/>
+                        <br/>
+                        <!-- <div id="setOverloadParamDat" style="display: none;">
+                            Set data type for each parameter
+                        </div>
+
+                        <div id="overloadparaArea"></div> -->
+
+                        <!-- <div class="layui-form-item">
+                            <input type="button" value="continue" onclick="overloadContinue()">
+                        </div> -->
+                    </div>
+                    <br/>
+                    <div id="setOverloadParamDat" style="display: none; font-family: Arial, Helvetica, sans-serif ;font-weight: bold; font-size: 16px; position: relative; top: -20px;">
+                        Set data type for each parameter
+                    </div>
+                    <!-- the select box for parameters -->
+                    <div id="overloadparaArea" style="position: relative; top: -10px;"></div>
+                    <br/>
+                    <br/>
+
+                    <div class="layui-form-item" style="position: absolute; top: 420px; ">
+                        <input type="button" value="Continue" onclick="overloadContinue()" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: #009688;">
+
+                        (Notice: After click this button, you can continue to set 'Return Type' and 'the number of parameters')
+
+                    </div>
+                    <br/>
+                    <br/>
+
+                    <div class="layui-form-item" style="position: absolute; top: 470px; ">
+                        <!-- <input type="button" value="continue" onclick="overloadContinue()" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);"> -->
+                        <input type="button" id="OverloadAddFunc" onclick="OverloadAddFunction()" value="Add these overload functions" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: #009688;">
+                        (Notice: Before click this button, you must have clicked 'Continue' button)
+
+
+                    </div>
+                    <!-- <input type="button" id="OverloadAddFunc" onclick="OverloadAddFunction()" value="add this function" style="width: 120px; height: 50px;"> -->
+
+
+                </div>
+
+
+
+
+                <br/><br/>
+                <!-- <input type="button" id="formJson" onclick="getJsonFile()" value="Click to generate a json file" style="width: 240px; height: 50px;"> -->
+
+
+            </div>
+
+
+            <div id="getJsonFileBtn" style="position: absolute; top: 575px; left: 330px;">
+                <input type="button" id="formJson" onclick="getJsonFile()" value="Click to generate JSON data and upload" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: #009688;">
+            </div>
+
+
+
+
+
+
+            <!-- -------------------------Help------------------------------------------------------------------- -->
+
+            <div class="popOutBg" id="popOutBgHelp"></div>
+            <div class="popOut" id="popOutHelp" style="background-color: rgba(250, 239, 239, 0.911);">
+                <div style="position: relative; left: 10px;top: 20px; width: 580px; ">
+
+                    1. In the second input box - 'whether this function is overload or not'. If you choose 'yes', you
+                    can define multiple functions in a class with the same function name but different parameters
+                    (overload function). If you choose 'no', you can just define a function with unique function name.
+                    <br/>
+                    2. After you set the number of parameters, you should click 'Confirm' button on the right and set
+                    the data type of each parameter in the drop-down box below.
+                    <br/>
+                    3. When you have completed the setting of one overload function, you should firstly click 'Continue' button
+                    to store this function. Then if you want to continue to add overload function with the same function name as
+                    before, just set the 'Return Type' and 'the number of parameters', then click 'Continue' button to store this
+                    function. If you have finished the setting of these overload functions, click 'Add this function' button.
+                    <br/>
+                    4. You can click "Click to generate a data type JSON file" to generate a json file and it can be sent to back-end
+                    of the system automatically.
+
+
+                </div>
+                <button onclick="closeWinHelp()" style="position: relative; top: 34px; left: 216px;">Close</button>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- ------------------------------------- returnType List         ----------------------------------------------------------------------------------- -->
+
+            <!-- returnType -->
+            <!-- below part is for after choosing 'list' in returnType selectBox, pop the box -->
+            <div class="popOutBg" id="popOutBg"></div>
+            <div class="popOut" id="popOut" style="background-color: rgba(207, 204, 204, 0.836);">
+                <div style="position: relative; left: 200px;top: 30px;">
+                    <form>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                members:
+                                <select id="memberType" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <!-- <option value ="void">void</option> -->
+                                    <option value ="Double">Double</option>
+                                    <option value ="Byte">Byte</option>
+                                    <option value ="Float">Float</option>
+                                    <option value="Boolean">Boolean</option>
+                                    <option value ="Character">Character</option>
+                                    <option value ="Integer">Integer</option>
+                                    <option value ="Short">Short</option>
+                                    <option value ="Long">Long</option>
+                                    <option value ="String">String</option>
+                                    <option value ="double">double</option>
+                                    <option value ="byte">byte</option>
+                                    <option value ="float">float</option>
+                                    <option value ="boolean">boolean</option>
+                                    <option value ="char">char</option>
+                                    <option value ="int">int</option>
+                                    <option value ="short">short</option>
+                                    <option value ="long">long</option>
+
+                                    <!-- <option value ="list">List</option>
+                                    <option value ="map">Map</option>
+                                    <option value ="stack">Stack</option> -->
+
+                                </select>
+                                <br/>
+                                implementName:
+                                <select id="implementNameType" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <option value ="linkedlist">linkedlist</option>
+                                    <option value ="arraylist">arraylist</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                    <button onclick="getValueFromWin()">confirm</button>
+                    <button onclick="closeWin()" style="position: relative; top: 15px;">cancel</button>
+
+                </div>
+            </div>
+
+
+            <!-- ---------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+
+
+            <!-- -------------------------------------------returnType MAP --------------------------------------------- -->
+
+            <!-- returnType -->
+            <!-- below part is for after choosing 'map' in returnType selectBox, pop the box -->
+            <div class="popOutBg" id="popOutBgMAP"></div>
+            <div class="popOut" id="popOutMAP" style="background-color: rgba(207, 204, 204, 0.836);">
+                <div style="position: relative; left: 200px;top: 5px;">
+                    <form>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                Key:
+                                <select id="memberKey" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <!-- <option value ="void">void</option> -->
+                                    <option value ="Double">Double</option>
+                                    <option value ="Byte">Byte</option>
+                                    <option value ="Float">Float</option>
+                                    <option value="Boolean">Boolean</option>
+                                    <option value ="Character">Character</option>
+                                    <option value ="Integer">Integer</option>
+                                    <option value ="Short">Short</option>
+                                    <option value ="Long">Long</option>
+                                    <option value ="String">String</option>
+                                    <option value ="double">double</option>
+                                    <option value ="byte">byte</option>
+                                    <option value ="float">float</option>
+                                    <option value ="boolean">boolean</option>
+                                    <option value ="char">char</option>
+                                    <option value ="int">int</option>
+                                    <option value ="short">short</option>
+                                    <option value ="long">long</option>
+
+                                    <!-- <option value ="list">List</option>
+                                    <option value ="map">Map</option>
+                                    <option value ="stack">Stack</option> -->
+
+                                </select>
+
+                                <br/>
+
+                                Value:
+                                <select id="memberValue" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <!-- <option value ="void">void</option> -->
+                                    <option value ="Double">Double</option>
+                                    <option value ="Byte">Byte</option>
+                                    <option value ="Float">Float</option>
+                                    <option value="Boolean">Boolean</option>
+                                    <option value ="Character">Character</option>
+                                    <option value ="Integer">Integer</option>
+                                    <option value ="Short">Short</option>
+                                    <option value ="Long">Long</option>
+                                    <option value ="String">String</option>
+                                    <option value ="double">double</option>
+                                    <option value ="byte">byte</option>
+                                    <option value ="float">float</option>
+                                    <option value ="boolean">boolean</option>
+                                    <option value ="char">char</option>
+                                    <option value ="int">int</option>
+                                    <option value ="short">short</option>
+                                    <option value ="long">long</option>
+
+                                    <!-- <option value ="list">List</option>
+                                    <option value ="map">Map</option>
+                                    <option value ="stack">Stack</option> -->
+
+                                </select>
+                                <br/>
+                                implementName:
+                                <select id="implementNameTypeMAP" >
+                                    <option value ="hashmap">HashMap</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                    <button onclick="getValueFromWinMAP()" style="position: relative; top: -19px;">confirm</button>
+                    <button onclick="closeWinMAP()" style="position: relative; top: -12px;">cancel</button>
+                </div>
+            </div>
+
+
+            <!-- ------------------------------------------------------------------------------------------------------ -->
+
+
+
+
+
+
+            <!-- --------------------------------------returnType Stack --------------------------------------------- -->
+
+
+            <!-- returnType -->
+            <!-- below part is for after choosing 'stack' in returnType selectBox, pop the box -->
+            <div class="popOutBg" id="popOutBgStack"></div>
+            <div class="popOut" id="popOutStack" style="background-color: rgba(207, 204, 204, 0.836);">
+                <div style="position: relative; left: 200px;top: 30px;">
+                    <form>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                members:
+                                <select id="memberStack" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <!-- <option value ="void">void</option> -->
+                                    <option value ="Double">Double</option>
+                                    <option value ="Byte">Byte</option>
+                                    <option value ="Float">Float</option>
+                                    <option value="Boolean">Boolean</option>
+                                    <option value ="Character">Character</option>
+                                    <option value ="Integer">Integer</option>
+                                    <option value ="Short">Short</option>
+                                    <option value ="Long">Long</option>
+                                    <option value ="String">String</option>
+                                    <option value ="double">double</option>
+                                    <option value ="byte">byte</option>
+                                    <option value ="float">float</option>
+                                    <option value ="boolean">boolean</option>
+                                    <option value ="char">char</option>
+                                    <option value ="int">int</option>
+                                    <option value ="short">short</option>
+                                    <option value ="long">long</option>
+
+                                    <!-- <option value ="list">List</option>
+                                    <option value ="map">Map</option>
+                                    <option value ="stack">Stack</option> -->
+
+                                </select>
+
+                                <br/>
+
+
+                                implementName:
+                                <select id="implementNameTypeStack" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <option value ="stack">Stack</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                    <button onclick="getValueFromWinStack()">confirm</button>
+                    <button onclick="closeWinStack()" style="position: relative; top: 10px;">cancel</button>
+                </div>
+            </div>
+            <!-- --------------------------------------------------------------------------------------------------------- -->
+
+
+
+            <!-- ---------------------------------------ReturnType Array --------------------------------------------------- -->
+
+            <!-- returnType -->
+            <!-- below part is for after choosing 'array' in returnType selectBox, pop the box -->
+            <div class="popOutBg" id="popOutBgArray"></div>
+            <div class="popOut" id="popOutArray" style="background-color: rgba(207, 204, 204, 0.836);">
+                <div style="position: relative; left: 200px;top: 30px;">
+                    <form>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                members:
+                                <select id="memberArray" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <!-- <option value ="void">void</option> -->
+                                    <option value ="Double">Double</option>
+                                    <option value ="Byte">Byte</option>
+                                    <option value ="Float">Float</option>
+                                    <option value="Boolean">Boolean</option>
+                                    <option value ="Character">Character</option>
+                                    <option value ="Integer">Integer</option>
+                                    <option value ="Short">Short</option>
+                                    <option value ="Long">Long</option>
+                                    <option value ="String">String</option>
+                                    <option value ="double">double</option>
+                                    <option value ="byte">byte</option>
+                                    <option value ="float">float</option>
+                                    <option value ="boolean">boolean</option>
+                                    <option value ="char">char</option>
+                                    <option value ="int">int</option>
+                                    <option value ="short">short</option>
+                                    <option value ="long">long</option>
+
+                                    <!-- <option value ="list">List</option>
+                                    <option value ="map">Map</option>
+                                    <option value ="stack">Stack</option> -->
+
+                                </select>
+                                <br/>
+                                implementName:
+                                <select id="implementNameTypeArray" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <option value ="array">array</option>
+
+
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                    <button onclick="getValueFromWinArray()">confirm</button>
+                    <button onclick="closeWinArray()" style="position: relative; top: 10px;">cancel</button>
+                </div>
+
+            </div>
+
+
+            <!-- ----------------------------------------------------------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+            <!-- -----------------------------------------Parameter List -------------------------------------------------------------------- -->
+
+            <!-- parameterType -->
+            <!-- below part is for after choosing 'list' in parameter selectBox, pop the box -->
+            <div class="popOutBg" id="popOutBgParam"></div>
+            <div class="popOut" id="popOutParam" style="background-color: rgba(207, 204, 204, 0.836);">
+                <div style="position: relative; left: 200px;top: 30px;">
+                    <form>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                members:
+                                <select id="memberTypeParam" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <!-- <option value ="void">void</option> -->
+                                    <option value ="Double">Double</option>
+                                    <option value ="Byte">Byte</option>
+                                    <option value ="Float">Float</option>
+                                    <option value="Boolean">Boolean</option>
+                                    <option value ="Character">Character</option>
+                                    <option value ="Integer">Integer</option>
+                                    <option value ="Short">Short</option>
+                                    <option value ="Long">Long</option>
+                                    <option value ="String">String</option>
+                                    <option value ="double">double</option>
+                                    <option value ="byte">byte</option>
+                                    <option value ="float">float</option>
+                                    <option value ="boolean">boolean</option>
+                                    <option value ="char">char</option>
+                                    <option value ="int">int</option>
+                                    <option value ="short">short</option>
+                                    <option value ="long">long</option>
+
+                                    <!-- <option value ="list">List</option>
+                                    <option value ="map">Map</option>
+                                    <option value ="stack">Stack</option> -->
+
+                                </select>
+                                <br/>
+                                implementName:
+                                <select id="implementNameTypeParam" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <option value ="linkedlist">linkedlist</option>
+                                    <option value ="arraylist">arraylist</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                    <button onclick="getValueFromWinParam()">confirm</button>
+                    <button onclick="closeWinParam()" style="position: relative; top: 10px;">cancel</button>
+                </div>
+            </div>
+
+
+            <!-- ------------------------------------------Parameter MAP ----------------------------------------------- -->
+
+            <!-- parameterType -->
+            <!-- below part is for after choosing 'MAP' in parameter selectBox, pop the box -->
+            <div class="popOutBg" id="popOutBgParamMAP"></div>
+            <div class="popOut" id="popOutParamMAP" style="background-color: rgba(207, 204, 204, 0.836);">
+                <div style="position: relative; left: 200px;top: 5px;">
+                    <form>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                Key:
+                                <select id="memberParamMAPKey" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <!-- <option value ="void">void</option> -->
+                                    <option value ="Double">Double</option>
+                                    <option value ="Byte">Byte</option>
+                                    <option value ="Float">Float</option>
+                                    <option value="Boolean">Boolean</option>
+                                    <option value ="Character">Character</option>
+                                    <option value ="Integer">Integer</option>
+                                    <option value ="Short">Short</option>
+                                    <option value ="Long">Long</option>
+                                    <option value ="String">String</option>
+                                    <option value ="double">double</option>
+                                    <option value ="byte">byte</option>
+                                    <option value ="float">float</option>
+                                    <option value ="boolean">boolean</option>
+                                    <option value ="char">char</option>
+                                    <option value ="int">int</option>
+                                    <option value ="short">short</option>
+                                    <option value ="long">long</option>
+
+                                    <!-- <option value ="list">List</option>
+                                    <option value ="map">Map</option>
+                                    <option value ="stack">Stack</option> -->
+
+                                </select>
+
+
+                                Value:
+                                <select id="memberParamMAPValue" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <!-- <option value ="void">void</option> -->
+                                    <option value ="Double">Double</option>
+                                    <option value ="Byte">Byte</option>
+                                    <option value ="Float">Float</option>
+                                    <option value="Boolean">Boolean</option>
+                                    <option value ="Character">Character</option>
+                                    <option value ="Integer">Integer</option>
+                                    <option value ="Short">Short</option>
+                                    <option value ="Long">Long</option>
+                                    <option value ="String">String</option>
+                                    <option value ="double">double</option>
+                                    <option value ="byte">byte</option>
+                                    <option value ="float">float</option>
+                                    <option value ="boolean">boolean</option>
+                                    <option value ="char">char</option>
+                                    <option value ="int">int</option>
+                                    <option value ="short">short</option>
+                                    <option value ="long">long</option>
+
+                                    <!-- <option value ="list">List</option>
+                                    <option value ="map">Map</option>
+                                    <option value ="stack">Stack</option> -->
+
+                                </select>
+
+                                implementName:
+                                <select id="implementNameTypeParamMAP" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <option value ="hashmap">HashMap</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                    <button onclick="getValueFromWinParamMAP()"  style="position: relative; top: -19px;">confirm</button>
+                    <button onclick="closeWinParamMAP()"  style="position: relative; top: -12px;">cancel</button>
+                </div>
+            </div>
+            <!-- ------------------------------------------------------------------------------------------------- -->
+
+
+            <!-- ----------------------------------------Parameter Stack--------------------------------------------- -->
+            <!-- parameterType -->
+            <!-- below part is for after choosing 'stack' in parameter selectBox, pop the box -->
+            <div class="popOutBg" id="popOutBgParamStack"></div>
+            <div class="popOut" id="popOutParamStack" style="background-color: rgba(207, 204, 204, 0.836);">
+                <div style="position: relative; left: 200px;top: 30px;">
+                    <form>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                members:
+                                <select id="memberTypeParamStack" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <!-- <option value ="void">void</option> -->
+                                    <option value ="Double">Double</option>
+                                    <option value ="Byte">Byte</option>
+                                    <option value ="Float">Float</option>
+                                    <option value="Boolean">Boolean</option>
+                                    <option value ="Character">Character</option>
+                                    <option value ="Integer">Integer</option>
+                                    <option value ="Short">Short</option>
+                                    <option value ="Long">Long</option>
+                                    <option value ="String">String</option>
+                                    <option value ="double">double</option>
+                                    <option value ="byte">byte</option>
+                                    <option value ="float">float</option>
+                                    <option value ="boolean">boolean</option>
+                                    <option value ="char">char</option>
+                                    <option value ="int">int</option>
+                                    <option value ="short">short</option>
+                                    <option value ="long">long</option>
+
+                                    <!-- <option value ="list">List</option>
+                                    <option value ="map">Map</option>
+                                    <option value ="stack">Stack</option> -->
+
+                                </select>
+                                <br/>
+                                implementName:
+                                <select id="implementNameTypeParamStack" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <option value ="stack">Stack</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                    <button onclick="getValueFromWinParamStack()">confirm</button>
+                    <button onclick="closeWinParamStack()" style="position: relative; top: 10px;">cancel</button>
+                </div>
+
+            </div>
+
+
+
+            <!------------------------------------parameter Array ------------------------------------------------------ -->
+
+            <!-- parameterType -->
+            <!-- below part is for after choosing 'array' in parameter selectBox, pop the box -->
+            <div class="popOutBg" id="popOutBgParamArray"></div>
+            <div class="popOut" id="popOutParamArray" style="background-color: rgba(207, 204, 204, 0.836);">
+                <div style="position: relative; left: 200px;top: 30px;">
+                    <form>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                members:
+                                <select id="memberTypeParamArray" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <!-- <option value ="void">void</option> -->
+                                    <option value ="Double">Double</option>
+                                    <option value ="Byte">Byte</option>
+                                    <option value ="Float">Float</option>
+                                    <option value="Boolean">Boolean</option>
+                                    <option value ="Character">Character</option>
+                                    <option value ="Integer">Integer</option>
+                                    <option value ="Short">Short</option>
+                                    <option value ="Long">Long</option>
+                                    <option value ="String">String</option>
+                                    <option value ="double">double</option>
+                                    <option value ="byte">byte</option>
+                                    <option value ="float">float</option>
+                                    <option value ="boolean">boolean</option>
+                                    <option value ="char">char</option>
+                                    <option value ="int">int</option>
+                                    <option value ="short">short</option>
+                                    <option value ="long">long</option>
+
+                                    <!-- <option value ="list">List</option>
+                                    <option value ="map">Map</option>
+                                    <option value ="stack">Stack</option> -->
+
+                                </select>
+                                <br/>
+                                implementName:
+                                <select id="implementNameTypeParamArray" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <option value ="array">array</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </form>
+                    <button onclick="getValueFromWinParamArray()">confirm</button>
+                    <button onclick="closeWinParamArray()" style="position: relative; top: 10px;">cancel</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+        <!-- ----------------------------------------alert------------------------------------------- -->
+        <!--提交成功-->
+        <div class="hsycms-model-mask" id="mask-success"></div>
+        <div class="hsycms-model hsycms-model-success" id="success">
+            <div class="hsycms-model-icon">
+                <svg width="50" height="50">
+                    <circle class="hsycms-alert-svgcircle"  cx="25" cy="25" r="24" fill="none" stroke="#238af4" stroke-width="2"></circle>
+                    <polyline class="hsycms-alert-svggou" fill="none" stroke="#238af4" stroke-width="2.5" points="14,25 23,34 36,18" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="hsycms-model-text">Success</div>
+        </div>
+
+        <!--提交失败-->
+        <div class="hsycms-model-mask" id="mask-error"></div>
+        <div class="hsycms-model hsycms-model-error" id="error">
+            <div class="hsycms-model-icon">
+                <svg width="50" height="50">
+                    <circle class="hsycms-alert-svgcircle"  cx="25" cy="25" r="24" fill="none" stroke="#f54655" stroke-width="2"></circle>
+                    <polyline class="hsycms-alert-svgca1" fill="none" stroke="#f54655" stroke-width="2.5" points="18,17 32,35" stroke-linecap="round" stroke-linejoin="round" />
+                    <polyline class="hsycms-alert-svgca2" fill="none" stroke="#f54655" stroke-width="2.5" points="18,35 32,17" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="hsycms-model-text" >Fail</div>
+        </div>
+
+
+
+
+    </div>
+
+    <div class="layui-footer" style="text-align: center; color: #007DDB">
+        Automatic Programming Assignment Grading System
+    </div>
+</div>
+
+
+</body>
+</html>

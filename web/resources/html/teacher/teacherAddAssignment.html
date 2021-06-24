@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">-->
+    <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="../common/layui-v2.6.5/layui/css/layui.css"/>
+    <script type="text/javascript" src="../common/layui-v2.6.5/layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
+    <script type="text/javascript" src="../../js/teacher/teacherCommon.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/teacher/teacher.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
+
+
+    <title> Add an Assignment </title>
+
+    <script>
+        $(function () {
+            var course=GetCourse();
+            var user_name=GetUserName();
+            $("#course_name").html(course);
+            $("#user_name").html(user_name);
+
+            html1 = "<span> <a href='teacherEditAssignment.html?"+course+"&"+user_name+" ' class='layui-btn'> " +
+                    "Add a new Assignment" +
+                    "</a> </span>";
+            console.log(html1);
+            $(".addButton").html(html1);
+        })
+    </script>
+
+
+</head>
+
+
+
+<body>
+<div class="layui-layout layui-layout-admin">
+
+    <
+    <div class="layui-header layui-bg-green" >
+        <div class="layui-logo layui-hide-xs layui-bg-black">Teacher</div>
+        <!-- 头部区域（可配合layui 已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left ">
+            <!-- 移动端显示 -->
+            <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+                <i class="layui-icon layui-icon-spread-left"></i>
+            </li>
+
+            <li class="layui-nav-item"><a href="#" id="course_name"> <!--course name--></a></li>
+
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+                <a href="javascript:;">
+                    <!-- <img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img">-->
+                    <span id="user_name"></span><!-- user name-->
+                </a>
+                <dl class="layui-nav-child">
+                    <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href="#" onclick="logout()">Log Out</a> </li>
+                </dl>
+            </li>
+
+            <!--<li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
+                <a href="javascript:;">
+                </a>
+            </li>-->
+
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">Assignment</a>
+                    <dl class="layui-nav-child">
+                        <dd id="addAssignment">           </dd>
+                        <dd id="checkAssignment">       </dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item" id="checkGrade">   </li>
+
+            </ul>
+        </div>
+    </div>
+
+     <div class="layui-body">
+
+         <div>
+             <div class="table">
+                 Search Assignment：
+                 <div class="layui-inline">
+                     <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+                 </div>
+                 <button class="layui-btn" id="searchBtn" datatype="reload">Search</button>
+
+             </div>
+
+             <table id="demo" lay-filter="test">
+
+             </table>
+         </div>
+
+         <div class="addButton">
+
+         </div>
+
+         <script type="text/html" id="barDemo">
+             <a class="layui-btn layui-btn layui-btn-xs" lay-event="edit">Edit</a>
+             <a class="layui-btn layui-btn layui-btn-xs" lay-event="download">Download</a>
+             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">Delete</a>
+         </script>
+
+         <script type="text/javascript">
+             layui.use('table', function(){
+                 var table = layui.table;
+                 var $ = layui.jquery;
+                 var module_code=GetCourseID();
+                 console.log("modulecode:"+module_code);
+                 var basepath = "/" + window.location.pathname.split("/")[1];
+                 table.render({
+                                  elem:"#demo",
+                                  url:basepath+"/teacher/allAssignments",
+                                  where:{module_code:module_code},
+                                  cols:[[
+                                      {field:"number",type:"numbers"},
+                                      {field: 'id', title: 'ID',align:"center",hide:true},
+                                      {field: 'title', title: 'Assignment Name', align:"center",sort: true},
+                                      {field: 'due_date', title: 'Due Date',align:"center",sort: true},
+                                      {field: 'creation_date', title: 'Creation Date',align:"center",sort: true},
+                                      {field: 'status', title: 'Status',align:"center",sort:true,templet:uploadFile},
+                                      {field:"operation",title:'Operation',toolbar:"#barDemo",align:"center"}
+                                  ]],
+                                  page:false,
+                                  size:"lg",
+                                  even:true,
+                              });
+                 table.on('tool(test)',function (obj) {
+                     //得到当前操作行的相关信息
+                     var tr= obj.data;
+                     console.log(tr);
+                     //得到事件名
+                     var eventname=obj.event;
+                     console.log(eventname);
+                     var basepath = "/" + window.location.pathname.split("/")[1];
+                     if(eventname=='del'){
+
+                         layer.confirm("Delete it?",{btn:['OK','Cancle'],title:"Delete"},function (index) {
+                             $.ajax({
+                                        url:basepath+"/teacher/deleteAssignment",
+                                        type:"post",
+                                        contentType: 'application/json',
+                                        dataType: 'json',
+                                        data:JSON.stringify({"id":tr.id}), // delete....
+                                        success: function (msg) {
+                                            if(msg.code==0){
+                                                obj.del();
+                                                layer.close(index);
+                                                layer.msg("delete successfully",{icon:6});
+                                            }
+                                            else {
+                                                layer.msg("delete failed",{icon:5});
+                                            }
+
+                                        }
+                                    });
+                             return false;
+                         })
+                     } else if(eventname=='edit'){
+                         layer.prompt({
+                                          title:"Modify the Due Date",
+                                          btn:['OK','Cancle'],
+                                          formType:0,
+                                          value:tr.due_date
+                                      },function (value,index) {
+                             //修改指定单元格的值
+                             //value表示输入的值
+                             obj.update({
+                                            due_date:value
+                                        });
+                             layer.close(index);
+                             var data=JSON.stringify({"id":tr.id,"due_date":value});
+                             console.log("Data:"+data);
+                             console.log("value"+value);
+                             $.ajax({
+                                        url:basepath+"/assignment/edit",
+                                        contentType: 'application/json',
+                                        dataType: 'json',
+                                        data:data,
+                                        type:'post',
+                                        success:function (msg) {
+                                            if(msg.code==0){
+                                                layer.msg("modify successfully",{icon:6});
+                                            }
+                                            else {
+                                                layer.alert(msg.errMsg,{icon:5});
+                                                setTimeout(function () {  window.location.href=window.location.href; },2*1000);
+                                            }
+                                        }
+                                    })
+                         });
+
+                     } else if(eventname=='download'){
+
+                         /* 文件下载*/
+                         /*var id= tr.name;
+                         var link =document.createElement('a');
+                         link.href="/download?id:"+id;
+                         link.click();*/
+
+                         /*var html=
+                             " <a href=' " +basepath +
+                             "/teacher/pdfDownload?id="+tr.id+  " ' download=''> " +
+                             "Download" +
+                             "</a >";
+
+                         layer.open({
+                                        type:1,
+                                        title:"File Download",
+                                        content:html,
+                                        area:['500px','600px']
+
+                                    })*/
+                         var id=tr.id;
+                         layer.config({
+                             extend:'myskin/style.css',
+
+                         });
+                         layer.open({
+                             type:1,
+                             title:"File Download",
+                             skin:'layerdemo',
+                             maxmin:true,
+                             anim:5,
+                             resize:true,
+                             content:"<div style='font-size: 20px; font-family: Arial; margin-top: 50px;'>" +
+                                 "<div id='pdf' style='margin-bottom: 20px'> </div > " +
+                                 "<div id='java' style='margin-bottom: 20px'></div>" +
+                                 "<div id='dataType' style='margin-bottom: 20px'> </div> " +
+                                 "<div id='data' style='margin-bottom: 20px'></div>" +
+                                 "</div>",
+
+                             area:['500px','300px']
+
+                         });
+                         $.ajax({
+                             url:basepath+'/assignment/allUploadedFiles',
+                             data: {"id":id},
+                             type:'post',
+                             dataType:'json',
+                             success:function (json) {
+                                /* layer.open({
+                                     type:1,
+                                     title:"File Download",
+                                     skin:"demo-class",
+                                     content:"<div style='font-size: 20px; font-family: Arial; color: #009f95;'>" +
+                                         "<div id='pdf' style='margin-bottom: 20px'> </div > " +
+                                         "<div id='java' style='margin-bottom: 20px'></div>" +
+                                         "<div id='dataType' style='margin-bottom: 20px'> </div> " +
+                                         "<div id='data' style='margin-bottom: 20px'></div>" +
+                                         "</div>",
+
+                                     area:['500px','600px']
+
+                                 });*/
+                                 for(var i=0;i<json.length;i++){
+                                     switch (json[i].type) {
+                                         case "pdf":
+                                             var html= " <a href=' " +basepath +
+                                                 "/teacher/pdfDownload?id="+id+  " ' download=''> " +
+                                                 "Download "+"<b style='color: #009f95; font-family: Arial, Verdana, Sans-serif'>"+json[i].fileName + "</b>"+"</a >";
+                                             $("#pdf").html(html);
+
+                                             break
+                                         case "java":
+                                             var html= " <a href=' " +basepath +
+                                                 "/teacher/JavaDownload?id="+id+  " ' download=''> " +
+                                                 "Download " +"<b style='color: #009f95;font-family: Arial, Verdana, Sans-serif'>"+json[i].fileName + "</b>"+ "</a >";
+                                             $("#java").html(html);
+
+                                             break
+                                         case "dataType":
+                                             var html= " <a href=' " +basepath +
+                                                 "/teacher/datatypeDownload?id="+id+  " ' download=''> " +
+                                                 "Download " +"<b style='color: #009f95;font-family: Arial, Verdana, Sans-serif'>"+json[i].fileName + "</b>"+ "</a >";
+                                             $("#dataType").html(html);
+                                             break
+                                         case "data":
+                                             var html= " <a href=' " +basepath +
+                                                 "/teacher/dataDownload?id="+ id+  " ' download=''> " +
+                                                 "Download " +"<b style='color: #009f95;font-family: Arial, Verdana, Sans-serif'>"+json[i].fileName + "</b>"+ "</a >";
+                                             $("#data").html(html);
+                                             break
+                                     }
+
+                                 }
+                             }
+                         })
+                     }else if(eventname=='fileUpload'){
+                         var course=GetCourse();
+                         var user_name=GetUserName();
+                         var assignment_id=tr.id;
+                         window.location.href= "teacherUploadFile.html?"+ course + "&" + user_name +"&"+assignment_id;
+                     }
+
+                 });
+
+                 /*  table.on('edit(test)',function (obj) {
+                       console.log(obj);
+                       //获取修改后的值
+                       var value_modified = obj.value;
+                       $.ajax({
+                                  url:'',
+                                  data:value_modified,
+                                  type:'post',
+                                  success:function (obj) {
+                                      if(obj.code==0){
+                                          lay.msg("modify successfully",{icon:6});
+                                      }
+                                  }
+                              })
+
+                   });*/
+
+                 $(document).on('click','#searchBtn',function () {
+                     //获取搜索文本框的值
+                     var search = $("#demoReload");
+
+                     //调用数据表格的重载方法
+                     table.reload('demo',{
+                         url:basepath+"/assignment/query",
+
+                         where:{  //设定需要传递的参数
+                             title: search.val(),
+                             module_code: module_code
+                         },
+                         method:'post',
+                         /* page:{
+                              //表示让条件查询从第一页开始 如果未设置 从当前页开始查询 前面不管了
+                              curr:1
+                          }*/
+                     });
+
+                 })
+
+             })
+         </script>
+
+         <script>
+
+             var uploadFile=function(d) {
+                 if(d.status=='Not Completed'){
+                     var html1='<a style="color: #1E9FFF" href="javascript:;" lay-event="fileUpload" > ' +
+                         d.status + "</a > ";
+
+                     return html1;
+                 }else {
+                     return d.status;
+
+                 }
+             }
+
+         </script>
+
+
+
+     </div>
+
+
+
+    <div class="layui-footer" style="text-align: center; color: #007DDB">
+           Automatic Programming Assignment Grading System
+    </div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FYP19.Dao.ModuleMapper">
+    <insert id="insertModule" parameterType="Module">
+        INSERT INTO FYP_Automatic_Grading.Module (code, name, teacher_id)
+        VALUES (#{code},#{name},#{teacher_id})
+    </insert>
+
+    <select id="queryModulesByTid" resultType="Module">
+        SELECT * FROM FYP_Automatic_Grading.Module
+        WHERE teacher_id = #{teacher_id}
+    </select>
+
+    <select id="queryModulesBySid" resultType="Module">
+        SELECT m.code, m.name, m.teacher_id FROM FYP_Automatic_Grading.Module AS m, FYP_Automatic_Grading.Module_registration AS r
+        WHERE m.code = r.module_code
+        AND r.student_id = #{ucd_id}
+    </select>
+
+    <select id="countStudentNumByCode" resultType="int">
+        SELECT COUNT(*) FROM FYP_Automatic_Grading.Module_registration
+        WHERE module_code = #{module_code}
+    </select>
+
+    <delete id="deregisterModule">
+        DELETE FROM FYP_Automatic_Grading.Module_registration
+        WHERE student_id = #{ucd_id} AND module_code = #{module_code}
+    </delete>
+
+    <insert id="registerModule">
+        INSERT INTO FYP_Automatic_Grading.Module_registration (student_id, module_code)
+        VALUES (#{ucd_id},#{module_code})
+    </insert>
+
+    <delete id="deleteModule">
+        DELETE FROM FYP_Automatic_Grading.Module
+        WHERE code = #{module_code}
+    </delete>
+
+</mapper>

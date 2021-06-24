@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../../jquery-3.6.0.js"></script>
+    <script>
+
+    $(function(){
+        //URL传值
+        var Request = new Object();
+        Request = GetRequest();
+        var val= Request["msg"]; 
+        $("#result").text(val);
+
+        var obj = { "moduleName":val};
+        var myJson = JSON.stringify(obj);
+
+        var basepath = "/" + window.location.pathname.split("/")[1];
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: basepath+"/student/oneModule",
+            contentType: "application/json",
+            data: myJson,
+            success: function (json) {
+                var html = "";
+                html = json.name;
+                           
+                $("otherInfo").html(html);
+            }
+        });
+
+    });
+    //URL传值解析函数
+    function GetRequest() {
+        var url = decodeURI(location.search); //获取url中"?"符后的字串 
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+
+
+    function jumpToStudentHome(){
+            window.location.href="studentHome.html";
+    }
+
+    
+
+    </script>
+</head>
+
+
+
+<body>
+    module homework!!!!!
+    <div id="result"></div>
+
+    <div id="otherInfo"></div>
+
+    <input id="logout" type="button"  value="back to studentHome" onclick="javascript:jumpToStudentHome()"/>
+</body>
+</html>

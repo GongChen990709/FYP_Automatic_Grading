@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="../common/layui-v2.6.5/layui/css/layui.css"/>
+    <script type="text/javascript" src="../common/layui-v2.6.5/layui/layui.js"></script>
+    <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
+    <script type="text/javascript" src="../../js/teacher/teacherCommon.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/teacher/teacher.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
+
+    <title> Grading Summary </title>
+
+
+
+</head>
+
+
+
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-green" >
+        <div class="layui-logo layui-hide-xs layui-bg-black">Teacher</div>
+        <!-- 头部区域（可配合layui 已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left ">
+            <!-- 移动端显示 -->
+            <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+                <i class="layui-icon layui-icon-spread-left"></i>
+            </li>
+
+            <li class="layui-nav-item"><a href="#" id="course_name"> <!--course name--></a></li>
+
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+                <a href="javascript:;">
+
+                    <span id="user_name"></span><!-- user name-->
+                </a>
+                <dl class="layui-nav-child">
+                     <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
+                </dl>
+            </li>
+
+
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">Assignment</a>
+                    <dl class="layui-nav-child">
+                        <dd id="addAssignment">           </dd>
+                        <dd id="checkAssignment">       </dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item" id="checkGrade">   </li>
+
+            </ul>
+        </div>
+    </div>
+
+     <div class="layui-body">
+         <div id="assignment_name"; style="font-family: Arial,Verdana,Sans-serif;font-size: 40px; color: #009f95;
+                 margin-bottom: 20px">
+
+         </div>
+         <div id="description" style="font-family: Arial; font-size: 20px; margin-bottom: 40px">
+
+         </div>
+
+         <div style="font-family:Arial,Verdana,Sans-serif; font-size: 40px; margin-bottom: 30px; color: #009f95">
+             Grading Summary
+         </div>
+
+         <div style="margin: 30px auto">
+             <div style=" box-sizing: content-box; background-color: #E9E7E7; font-size: 20px;
+             font-family:Arial, Helvetica,sans-serif;  width: 1000px; height: 50px;
+             line-height: 50px">
+                 <span><b> Participants</b> </span>
+                 <span style="position:absolute; left: 500px" id="participants"></span>
+
+             </div>
+
+             <div style=" box-sizing: content-box; font-size: 20px;
+             font-family:Arial, Helvetica,sans-serif;  width: 1000px; height: 50px;
+             line-height: 50px">
+                 <span > <b> Submitted </b></span>
+                 <span style="position:absolute;left: 500px" id="submitted"></span>
+
+             </div>
+
+             <div style=" box-sizing: content-box; background-color: #E9E7E7; font-size: 20px;
+             font-family:Arial, Helvetica,sans-serif;  width: 1000px; height: 50px;
+             line-height: 50px">
+                 <span > <b>Needs Grading </b></span>
+                 <span style="position:absolute;left: 500px" id="need_grading"> </span>
+
+             </div>
+             <div style=" box-sizing: content-box;  font-size: 20px;
+             font-family:Arial, Helvetica,sans-serif;  width: 1000px; height: 50px;
+             line-height: 50px">
+                 <span > <b>Due Date </b></span>
+                 <span style="position:absolute;left: 500px" id="due_date"></span>
+
+             </div>
+
+         </div>
+
+         <div style="margin-left: 400px">
+             <button type="button" class="layui-btn" id="button" onclick="jump()">View All Submissions</button>
+         </div>
+
+     </div>
+    <div class="layui-footer" style="text-align: center; color: #007DDB">
+        Automatic Programming Assignment Grading System
+    </div>
+
+
+
+</div>
+
+<script>
+    var course=GetCourse();
+    var username=GetUserName();
+    var id=GetAssignmentID();
+
+    function jump() {
+        window.location.href="teacherViewAllSubmission.html?"+course+"&"+username+"&"+id;
+
+    }
+</script>
+
+<script>
+    $(function () {
+
+        var assignment_id=GetAssignmentID();
+        var module_code=GetCourseID();
+        var basepath = "/" + window.location.pathname.split("/")[1];
+
+        $.ajax({
+                   url:basepath+ "/assignment/summary",
+                   data:{"assignment_id":assignment_id,"module_code":module_code},
+                   dataType:'json',
+                   type:'post',
+                   success:function (json) {
+
+                       var assignment_name=json.name;
+                       var description=json.description;
+
+                       var participants=json.participants;
+                       var submitted=json.submitted;
+                       var need_grading=json.notGraded;
+                       console.log(need_grading);
+                       var due_date=json.due_date;
+
+
+                       $("#assignment_name").html(assignment_name);
+                       $("#description").html(description);
+
+                       $("#participants").html(participants);
+                       $("#submitted").html(submitted);
+                       $("#need_grading").html(need_grading);
+                       $("#due_date").html(due_date);
+
+                   }
+               })
+    })
+</script>
+
+
+</body>
+</html>

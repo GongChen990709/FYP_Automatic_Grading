@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Home Page</title>
+    <link rel="stylesheet" type="text/css" href="../../css/common/homepage.css">
+    <script type="text/javascript" src="../../js/common/username.js"></script>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
+    <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
+
+    <script type="text/javascript">
+        var basepath = "/" + window.location.pathname.split("/")[1];
+        $(function () {
+            $.ajax({
+                       url:basepath+"/teacher/allModules",                /*请求的地址*/
+                       type:"get",
+                       dataType:"json",
+                       success:function (json) {
+                           var a="";
+                           for(var i=1;i<=json.length-1;i++){
+                               //course_num="course"+i;
+
+                               a  = '<li>';
+                               a  += '<img src="../../images/dublin'+i+'.jpg" class="img-li">';
+                               //a  += '<img src="../images/dublin2.jpg" class="img-li"/>';
+                               a  += '<div class="info">';
+                               a  += '<h3 id="course'+i+'"> ';
+                               // a +=  '<a href="teacher_01.html" id="course'+i+'"> ' ;
+                               // a +=   '</a>' ;
+                               a +=  '</h3>';
+                               a  += '</div>';
+                               a  += '</li>';
+                               $(".ul").append(a);
+
+                           }
+
+                           //var name=JSON.parse(json);
+                           console.log(json);
+                           //console.log(name);
+                           console.log(json[0].name);
+                           //console.log(json[1].date)
+                           var user_name = json[0].name
+                           $("#username").html(user_name);
+
+                           var html="";
+                           for(var i=1;i<json.length;i++){
+                               console.log(json[i].name);
+
+
+                               //$("#course"+i).html(json[i].name);
+                               //$(".course"+i).html(json[i].name);
+                               //alert(json[i].name);
+                               //$("#course"+i).html(json[i].name);
+                               //$(eval("course"+i)).html(json[i].name);
+                               var course_name=json[i].name;
+                               var course_id=json[i].code;
+                               var course= course_id+"-"+course_name;
+                               console.log(course);
+                               console.log(course_id);
+
+                               html = "<span> <a href='teacherCourse.html?"+  course + "&" +user_name+
+                                      " '> " +
+                                      course +
+                                      "</a> </span>";
+
+                               /*html = "<span>" + " <a href='teacher_courses.html?  '> " +
+                                      course + "</a> </span>";*/
+
+                               $("#course"+i).html(html);
+
+
+
+                           }
+                       }
+
+                   })
+        })
+    </script>
+
+</head>
+
+<body>
+<div class="header">
+
+    <div class="logo">
+        <img src="../../images/UCD_Logo.png">
+    </div>
+
+    <div class="identity">
+        <span> Teacher </span>
+    </div>
+
+<!--    <div class="menu" onmouseleave="show_menu1()">
+        <div class="menu_title" onclick="show_menu()">
+            <a href="#"> Courses </a>   &lt;!&ndash;//当前页面 但不刷新&ndash;&gt;
+        </div>
+        <ul id="menu1" >
+            <li><a href="teacher_01.html">Data Structures and Algorithms</a></li>
+            <li><a href="teacher_02.html">Oriented-object Programming</a></li>
+        </ul>
+    </div>-->
+
+
+    <div class="user" onmouseleave="set1()" >
+        <div class="user_name" onclick="set()">
+            <a href="#" id="username">   </a>    <!--插入用户名-->
+        </div>
+
+        <ul id="menu2">
+            <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+            <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
+        </ul>
+    </div>
+
+</div>
+
+
+
+<div class="content">
+    <div class="homepage_splitArea">
+                <img src="../../images/welcome.png" class="banner-img">
+    </div>
+
+    <div class=img-content>
+        <ul class="ul">
+
+        </ul>
+    </div>
+
+    <!--<script type="text/javascript">
+        var a="";
+
+        $.object({
+                   url:"/homepage",
+                   type:"get",
+                   dataType:"json",
+                   success:function (json) {
+                        console.log(json.length-1);
+                       for(var i=1;i<=json.length-1;i++){
+                           //course_num="course"+i;
+
+                           a  = '<li>';
+                           a  += '<img src="../images/dublin'+i+'.jpg" class="img-li">';
+                           //a  += '<img src="../images/dublin2.jpg" class="img-li"/>';
+                           a  += '<div class="info">';
+                           a  += '<h3 id="course'+i+'"> ';
+                           // a +=  '<a href="teacher_01.html" id="course'+i+'"> ' ;
+                           // a +=   '</a>' ;
+                           a +=  '</h3>';
+                           a  += '</div>';
+                           a  += '</li>';
+                           $(".ul").append(a);
+
+                       }
+                   }
+               })
+
+    </script>-->
+
+
+
+</div>
+
+<div class="footer">
+    <p>
+        <span>Automatic Programming Assignment Grading System</span>
+    </p>
+
+</div>
+
+</body>
+
+</html>

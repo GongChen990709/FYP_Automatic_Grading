@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">-->
+    <script type="text/javascript" src="../../../jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="../common/layui-v2.6.5/layui/css/layui.css"/>
+    <script type="text/javascript" src="../common/layui-v2.6.5/layui/layui.js"></script>
+
+    <script type="text/javascript" src="../../js/common/GetUrlParameter.js"></script>
+    <script type="text/javascript" src="../../js/teacher/teacherCommon.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/teacher/teacher.css"/>
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
+
+
+
+    <title> View All Submissions </title>
+
+
+
+</head>
+
+
+
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-green" >
+        <div class="layui-logo layui-hide-xs layui-bg-black">Teacher</div>
+        <!-- 头部区域（可配合layui 已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left ">
+            <!-- 移动端显示 -->
+            <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+                <i class="layui-icon layui-icon-spread-left"></i>
+            </li>
+
+            <li class="layui-nav-item"><a href=" " id="course_name"> <!--course name--></a ></li>
+
+            <!--  <li class="layui-nav-item">
+                  <a href="javascript:;">nav groups</a >
+                  <dl class="layui-nav-child">
+                      <dd><a href="">menu 11</a ></dd>
+                      <dd><a href="">menu 22</a ></dd>
+                      <dd><a href="">menu 33</a ></dd>
+                  </dl>
+              </li>-->
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+                <a href="javascript:;">
+                    <!-- < img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img">-->
+                    <span id="user_name"></span><!-- user name-->
+                </a >
+                <dl class="layui-nav-child">
+                     <li><a href="../../html/common/userSetting.html">Setting</a> </li>
+                    <li><a href=" javascript:;" onclick="logout()">Log Out</a> </li>
+                </dl>
+            </li>
+
+            <!--<li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
+                <a href="javascript:;">
+                </a >
+            </li>-->
+
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">Assignment</a >
+                    <dl class="layui-nav-child">
+                        <dd id="addAssignment">           </dd>
+                        <dd id="checkAssignment">       </dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item" id="checkGrade">   </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+
+
+        <div id="assignment_name"
+             style="font-size: 40px; font-family: Arial,Verdana,Sans-serif; font-weight: 500;
+             margin-bottom: 50px">
+
+
+        </div>
+
+        <div class="searchone" style="margin-bottom: 20px">
+            Search Student Number：
+            <div class="layui-inline">
+                <input class="layui-input" name="id" id="demoReload1" autocomplete="off">
+            </div>
+            <button class="layui-btn" id="searchBtn1" datatype="reload" style="margin-right: 40px">Search</button>
+
+            Search Student Name：
+            <div class="layui-inline">
+                <input class="layui-input" name="id" id="demoReload2" autocomplete="off">
+            </div>
+            <button class="layui-btn" id="searchBtn2" datatype="reload">Search</button>
+
+        </div>
+
+        <!--<div class="searchone">
+            Search Student Name：
+            <div class="layui-inline">
+                <input class="layui-input" name="id" id="demoReload2" autocomplete="off">
+            </div>
+            <button class="layui-btn" id="searchBtn2" datatype="reload">Search</button>
+
+        </div>-->
+
+        <table id="demo" lay-filter="test">
+
+        </table>
+
+
+        <div id="show" style="display: none">
+
+            <div style="font-size: 15px; font-family: Arial; margin-bottom: 20px" >
+                The back end is automatically grading assignments, please wait patiently
+            </div>
+
+            <div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="demo" style="width:80%;">
+                <div id="percentdiv" class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
+            </div>
+
+
+        </div>
+
+        <script type="text/html" id="toolbar">
+            <div class="layui-btn-container">
+            <button class="layui-btn " lay-event="getCheckData" id="judge">Grade</button>
+            <button class="layui-btn " lay-event="getCheckLength">The number of items selected</button>
+            <button class="layui-btn " lay-event="isAll">Verify select all</button>
+            <button class="layui-btn layui-btn-warm " lay-event="releaseReport">Release Report</button>
+
+            </div>
+        </script>
+
+
+    </div>
+
+    <div class="layui-footer" style="text-align: center; color: #007DDB">
+        Automatic Programming Assignment Grading System
+    </div>
+</div>
+
+
+
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit"> Download </a >
+    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">Delete</a >-->
+</script>
+
+<script>
+    $(function () {
+        var assignment_id=GetAssignmentID();
+        var basepath = "/" + window.location.pathname.split("/")[1];
+
+        $.ajax({
+            url:basepath+"/assignment/assignmentName",
+            data:{"assignment_id":assignment_id},
+            dataType:'json',
+            type:'post',
+            success:function (json) {
+                var assignment_name=json.name;
+                $("#assignment_name").html(assignment_name);
+            }
+        })
+    })
+</script>
+
+
+<script type="text/javascript">
+    layui.use(['layer', 'element', 'table'], function() {
+        var layer = layui.layer,
+            element = layui.element,
+            table = layui.table;
+        var $ = layui.jquery;
+        var id=GetAssignmentID();
+        //var module_code=GetCourseID();
+        var basepath = "/" + window.location.pathname.split("/")[1];
+        //var assignment_name = GetAssignmentName();
+
+
+        table.render({
+            elem: "#demo",
+            url: basepath+ "/assignment/viewSubmissions",
+            where:{assignment_id:id},
+            cols: [[
+                {field: "number", type: "numbers"},
+                {field:"checkbox",type:"checkbox"},
+                {field: 'student_id', title: 'Student Number', align: "center"},
+                {field: 'student_name', title: 'Student Name', align: "center"},
+                {field:'submission_date',title:'Submission Time',align:"center",sort:true},
+                {field:'status',title:'Submission Status',align:"center",sort:true},
+                {field:'grading_status',title:'Grading Status',align:"center",sort:true},
+                {field: 'fileName', title: 'Student Assignments',align:"center",templet:download},
+                /*{filed: 'files', title: 'Students Assignments' , toolbar: "#barDemo",
+                    align: "center"}*/
+            ]],
+            page: false,
+            size: "lg",
+            even: true,
+            toolbar:"#toolbar",
+            defaultToolbar: false
+        });
+        table.on('toolbar(test)',function (obj) {
+            console.log(obj);
+            console.log("id:"+obj.config.id);
+            var checkStatus = table.checkStatus(obj.config.id);
+            console.log(checkStatus);
+            //获取事件名
+            var eventName = obj.event;
+            console.log(eventName);
+            var assignment_id=GetAssignmentID();
+
+            var basepath = "/" + window.location.pathname.split("/")[1];
+
+            switch (eventName) {
+                case "getCheckData":
+                    //获取被选中的数组
+                    var arr = checkStatus.data;
+
+                    var studentIDArr = new Array();
+
+                    for (var i = 0; i < arr.length; i++) {
+                        studentIDArr[i] = arr[i].student_id;
+                    }
+                    console.log(studentIDArr);
+
+                    console.log(JSON.stringify(studentIDArr));
+
+                    var data = {"assignment_id": assignment_id, "student_id": studentIDArr};
+
+                    console.log("data" + JSON.stringify(data));
+
+                    var json = JSON.stringify(data);
+
+                    /*     $.ajax({
+                             url: '',
+                             data: json,
+                             dataType: 'json',
+                             type: 'post',
+                             contentType: 'applicaiton/json',
+
+                             success: function (data) {
+
+                                /!* if (data.code == 0) {
+                                     layer.msg("the sytem have successfully upload the students' assignmnents, " +
+                                         "the back end is automatically grading their assignments, " +
+                                         "please refresh the page to check the grading status.", {icon: 6})
+                                 } else {
+                                     layer.msg("upload failed", {icon: 5})
+                                 }*!/
+                             }
+
+
+                         })*/
+
+                    var timer;
+                    //var t=1;
+                    var confirm = layer.confirm("Start grading the selected students' assignments?' ",
+                        {btn: ['OK', 'Cancle'], title: "Grading"}, function () {
+                            layer.close(confirm);
+
+                            $.ajax({
+                                url: basepath+ "/assignment/grading",
+                                data: json,
+                                dataType: 'json',
+                                type: 'post',
+                                contentType: 'application/json',
+
+                                success: function (data) {
+
+                                    /* if (data.code == 0) {
+                                         layer.msg("the sytem have successfully upload the students' assignmnents, " +
+                                             "the back end is automatically grading their assignments, " +
+                                             "please refresh the page to check the grading status.", {icon: 6})
+                                     } else {
+                                         layer.msg("upload failed", {icon: 5})
+                                     }*/
+                                }
+                            });
+                            layer.config({
+                                extend:'myskin/style.css',
+
+                            });
+                            var show = layer.open({
+                                type: 1,
+                                content: $("#show"),
+                                area:['500px','200px'],
+                                title:"Grading",
+                                skin:'layerdemo',
+                                shade:0,
+
+                                success: function (layero, index) {
+                                    element.progress('demo', '0%');
+                                    timer = setInterval(function () {
+
+                                        $.ajax({
+                                            url: basepath+ "/grading/progress",
+                                            //data: '',
+                                            type: 'post',
+                                            success: function (data) {
+                                                if (data.percentage == 100.0) {
+                                                    //layer.alert("aaaaa");
+                                                    clearInterval(timer);
+                                                    layer.close(show);
+                                                    layer.msg("Students assignments have been graded automatically", {icon: 6})
+                                                } else {
+                                                    element.progress('demo', data.percentage + '%');
+                                                }
+                                            }
+                                        });
+                                    }, 1000);
+                                    /*timer = setInterval(function () {
+                                        element.progress('demo', t+"%");
+                                        if(t>=100){
+                                            clearInterval(timer);
+                                            layer.close(show);
+
+                                        }else {
+                                            t++;
+                                        }
+
+
+                                    }, 100);*/
+                                },
+                                end: function () {
+                                    clearInterval(timer);
+                                    table.reload('demo', {
+                                        url: basepath+ "/assignment/viewSubmissions",
+                                        where: {assignment_id:id},
+                                        method: 'post',
+                                    });
+
+                                }
+                            });
+
+                        });
+                    break
+                case "getCheckLength":
+                    var arr = checkStatus.data;
+                    layer.msg("The number of students selected is " + arr.length)
+                    break
+                case "isAll":
+                    //判断是否全选
+                    var flag = checkStatus.isAll;
+                    var str = flag ? "Select All" : 'Not Select All';
+                    layer.msg(str);
+                    break
+
+                case "releaseReport":
+
+                    $.ajax({
+                        url: basepath + '/releaseGrade',
+                        data: {"assignment_id":assignment_id},
+                        dataType: 'json',
+                        type: 'post',
+
+                       /* contentType: 'applicaiton/json',*/
+                        success: function (data) {
+                            if(data.status=="success"){
+                                layer.msg("success");
+                            }
+                        }
+                    });
+
+                    break
+            }
+        });
+
+        table.on('tool(test)',function (obj) {
+            //得到当前操作行的相关信息
+            var tr= obj.data;
+            console.log(tr);
+            var student_id=tr.student_id;
+            var assignment_id=GetAssignmentID();
+
+            //得到事件名
+            var eventname=obj.event;
+
+            if(eventname=='download'){
+                var link = document.createElement('a');
+                link.href = basepath + "/teacher/studentDownload?student_id="+student_id+"&"+"assignment_id="+assignment_id;
+                link.click();
+            }
+
+
+
+        });
+
+        $(document).on('click','#searchBtn1',function () {
+            //获取搜索文本框的值
+            var search = $("#demoReload1");
+
+            //调用数据表格的重载方法
+            table.reload('demo',{
+                url:basepath+"/teacher/viewGradeById",
+
+                where:{  //设定需要传递的参数
+                    student_ID: search.val(),
+                },
+                method:'post',
+                /* page:{
+                     //表示让条件查询从第一页开始 如果未设置 从当前页开始查询 前面不管了
+                     curr:1
+                 }*/
+            });
+
+        })
+
+        $(document).on('click','#searchBtn2',function () {
+            //获取搜索文本框的值
+            var search = $("#demoReload2");
+
+
+            //调用数据表格的重载方法
+            table.reload('demo',{
+                url:basepath+"/teacher/viewGradeByName",
+
+                where:{  //设定需要传递的参数
+                    student_name: search.val(),
+                },
+                method:'post',
+                /* page:{
+                     //表示让条件查询从第一页开始 如果未设置 从当前页开始查询 前面不管了
+                     curr:1
+                 }*/
+            });
+
+        })
+
+    })
+
+</script>
+
+<script>
+    var assignment_id=GetAssignmentID();
+    var basepath = "/" + window.location.pathname.split("/")[1];
+    var download=function(d) {
+
+        if(typeof d.fileName =="undefined"){
+            return "";
+        }else {
+            return '<a style="color: #1E9FFF" href="javascript:;" lay-event="download" > ' +
+                d.fileName + "</a > ";
+        }
+    }
+</script>
+
+<!--<script>
+    $(function () {
+        $("#judge").click(function () {
+            alert("aaa");
+        })
+    })
+
+
+
+</script>-->
+
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../../jquery-3.6.0.js"></script>
+    <script src="../../js/admin/addStudent.js"></script>
+    <script src="../../js/common/Back.js"></script>
+    <script src="../../js/admin/adminHome.js"></script>
+
+    <script type="text/javascript" src="../../js/common/logout.js"></script>
+    
+   <link rel="stylesheet" type="text/css" href="../../css/admin/progressBar.css">
+    <link rel="stylesheet" type="text/css" href="../../css/admin/adminStudent.css">
+    <script type="text/javascript" src="http://cdn.bootcdn.net/ajax/libs/xlsx/0.16.6/xlsx.full.min.js"></script>
+    <script src="../../js/admin/XlsxUpload.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../resources/css/layui/css/layui.css">
+    
+    <!-- choose file button css -->
+    <style>
+        
+        /* .popOutBg{ width:100%; height:100%; position: fixed; left:0; top:0; background:rgba(0,0,0,.6); display: none;} */
+
+
+        .file {
+            position: relative;
+            display: inline-block;
+           
+            background: rgb(123, 18, 194);
+           
+            border-radius: 4px;
+            padding: 10px 20px;
+            overflow: hidden;
+            
+            color: #ffffff;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+        }
+        .file input {
+            position: absolute;
+           
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        
+       
+
+        .file:hover {
+            
+            opacity: 0.7;
+            filter: alpha(opacity=70);
+        }
+
+        .uploadFile .chooseFile{
+            position: absolute;
+            
+            top: 50px;
+            left:260px;
+            display: inline-block;
+            
+        }
+        
+
+    </style>
+
+
+</head>
+<body>
+    <!-- <div class="popOutBg" id="popOutBg"></div> -->
+
+
+    <div class="header">
+
+        <div class="logo" onclick="Back()">
+            <img src="../../images/admin/UCD_Logo.png" title="back" alt="">
+        </div>
+
+        <div class="admin" onmouseleave="set1()">
+            <div id="name" onclick="set()">
+                <a href="#">admin</a>
+            </div>
+            <div id="setting">
+                <a href="../common/userSetting.html">Reset Password</a>
+                <a href="#" onclick="logout()">Log Out</a>
+            </div>
+        </div>
+
+        <div class="adminLogo">
+            Student
+        </div>
+
+    </div>
+
+    <div id="splitArea">    
+
+    </div>
+
+
+
+
+
+    <!-- --------------------------------------------------------------------------------------------------------- -->
+    
+    
+
+    
+        <!-- template area -->
+    <div class="XlsxTemplate" id="XlsxTemplate" style="text-align: center; position: relative;top: 85px;left: 0px; height: 102px;">
+        <div class="tempalteTitle" style="font-size:26px;position: relative;">
+            Click to download students registration template file
+        </div>
+        <button onclick="window.open('../../fileTemplate/Student Registration Template.xlsx')" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);position: relative; top: 21px; ">Download</button>
+        <!-- <button class="TemplateBtn" onclick="window.open('../../fileTemplate/Student Registration Template.xlsx')">Click here to get the registration template!</button> -->
+    </div>
+    
+    <!-- <hr class="hr1" /> -->
+    <div class="hr1" id="hr1" style="position: relative;top: 97px;height: 20px;">
+        <hr style="height:5px;/*border-width:0px;*/color:black;background-color:rgba(157, 169, 184, 0.644);" />
+    </div>
+
+    
+    
+    <!-- style="position: relative;top: 85px;left: 0px; height: 173px;" -->
+    <div class="uploadFile" id="uploadFile" style="text-align: center; position: relative;top: 85px;left: 0px; height: 173px;">
+        <div class="uploadTitle" style="font-size:26px;position: relative;top:15px; left: 0px;">
+            Select and upload template file filled with students information
+        </div>
+        <div class="chooseFile" style="position: relative;top: 33px;left: 0px;">
+            <a href="javascript:;" class="file">Choose File
+                <input type="file" name="" id="fileupload" multiple onchange="showFileName()">
+                
+            </a>
+            <span id="filename"> </span>
+            
+
+        </div>
+
+        <div class="submitBTN" style="position: relative; top: -23px; ">
+            <button id="button" onclick="uploadStudentXLSX()" style="position: relative; left: 0px">Submit</button>
+        </div>
+        
+        
+    </div>
+    <!-- <div style="position: relative;top: -200px;">
+        <button onclick="window.location.href='../../../resources/html/admin/addMultipleStudent.html'">heheheehe</button>
+        <button onclick="showProgressBar(2,1,5)">click</button>
+        <button onclick="showProgressBar(3,2,5)">click22222</button>
+    </div> -->
+    <div class="container" style="position: relative; top: -213px;">
+        <div class="waitAlert" id="waitAlert" style="font-size:xx-large;position: relative;top:-70px; left: -196px;width: 824px;">
+            The system is sending email to the registered students. Please wait a moment...
+        </div>
+        <div class="progress-wrapper" id="progress-wrapper" style="left: -36px;">
+            
+            <div class="fill" id="fill"></div>
+            
+            <div class="percent-tip" id="percent-tip">
+
+              
+                Email sent successfully:
+                <span id="successNum"></span>
+                <br/>
+                Email sent failed: 
+                <span id="failNum"></span>
+                <br/>
+                Total Email for sending:  
+                <span id="totalNum"></span> 
+                <br/>
+               
+            </div>
+        </div>
+
+    </div>
+        
+    
+
+
+    <div class="hr2" id="hr2" style="position: relative;top: -215px;height: 20px;">
+        <hr style="height:5px;background-color:rgba(157, 169, 184, 0.644);" />
+    </div>
+
+
+    
+
+    <div class="historyArea" id="historyArea" style="text-align: center; position: relative; top: -215px; height: 75px;">
+        <button onclick="window.location.href='../../html/admin/showRegisterDate.html'" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="background-color: rgb(123, 18, 194);position: relative; top: 21px; left: 0px;">View registration history</button>
+    </div>
+
+    <div class="backBtnArea" id="backBtnArea" style="text-align: center; position: relative; top: -215px;height: 50px;">
+        <button id="back" onclick="BackToAdminStudent()" style="position: relative; left: 0px;">Back</button>
+    </div>
+    
+
+    
+</body>
+
+
+<!-- after upload a file,show the file name -->
+<script type="text/javascript">
+    function showFileName(){
+            var filename = $("#fileupload").val();
+            console.log(filename);
+            var res=filename.split('\\');
+            console.log(res);
+            $("#filename").html(res[res.length-1]+"waiting for uploading");
+    }
+
+
+
+</script>
+
+</html>

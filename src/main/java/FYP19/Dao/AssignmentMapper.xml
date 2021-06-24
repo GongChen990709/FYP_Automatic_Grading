@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FYP19.Dao.AssignmentMapper">
+
+    <insert id="insertAssignmentForm" parameterType="Assignment">
+        INSERT INTO FYP_Automatic_Grading.Assignment (id, title, description, module_code, due_date, creation_date)
+        VALUES (#{id},#{title},#{description},#{module_code},#{due_date},#{creation_date})
+    </insert>
+
+    <select id="queryAssignment" resultType="Assignment">
+        SELECT * FROM FYP_Automatic_Grading.Assignment
+        WHERE title = #{title}
+    </select>
+
+
+    <select id="queryAssignmentsByModule" resultType="Assignment">
+        SELECT * FROM FYP_Automatic_Grading.Assignment
+        WHERE module_code = #{module_code}
+    </select>
+
+    <insert id="initFilesPathById">
+        INSERT INTO FYP_Automatic_Grading.Assignment_Files (assignment_id)
+        VALUES (#{id})
+    </insert>
+
+    <update id="updatePdfPathById">
+        UPDATE FYP_Automatic_Grading.Assignment_Files
+        SET pdf_path = #{PdfPath}
+        WHERE assignment_id = #{id}
+    </update>
+
+    <update id="updateJavaPathById">
+        UPDATE FYP_Automatic_Grading.Assignment_Files
+        SET source_path = #{JavaPath}
+        WHERE assignment_id = #{id}
+    </update>
+
+    <update id="updateDataPathById">
+        UPDATE FYP_Automatic_Grading.Assignment_Files
+        SET data_path = #{DataPath}
+        WHERE assignment_id = #{id}
+    </update>
+
+    <update id="updateDataTypePathById">
+        UPDATE FYP_Automatic_Grading.Assignment_Files
+        SET datatype_path = #{DataTypePath}
+        WHERE assignment_id = #{id}
+    </update>
+
+    <select id="queryStatusById" resultType="string">
+        SELECT IF((pdf_path IS NULL) OR (source_path IS NULL) OR (data_path IS NULL) OR (datatype_path IS NULL), 'Not Completed', 'Completed')
+        FROM FYP_Automatic_Grading.Assignment_Files
+        WHERE assignment_id = #{id}
+    </select>
+
+    <select id="queryStudentSourcePath" resultType="string">
+        SELECT source_path FROM FYP_Automatic_Grading.Assignment_submission
+        WHERE student_id = #{ucd_id} AND assignment_id = #{assignment_id}
+    </select>
+
+    <select id="queryPdfPathById" resultType="string">
+        SELECT pdf_path FROM FYP_Automatic_Grading.Assignment_Files
+        WHERE assignment_id = #{id}
+    </select>
+
+    <select id="queryJavaPathById" resultType="string">
+        SELECT source_path FROM FYP_Automatic_Grading.Assignment_Files
+        WHERE assignment_id = #{id}
+    </select>
+
+    <select id="queryDataPathById" resultType="string">
+        SELECT data_path FROM FYP_Automatic_Grading.Assignment_Files
+        WHERE assignment_id = #{id}
+    </select>
+
+    <select id="queryDataTypePathById" resultType="string">
+        SELECT datatype_path FROM FYP_Automatic_Grading.Assignment_Files
+        WHERE assignment_id = #{id}
+    </select>
+
+    <update id="updateDueDateById">
+        UPDATE FYP_Automatic_Grading.Assignment
+        SET due_date = #{due_date}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteAssignmentFilesById">
+        DELETE FROM FYP_Automatic_Grading.Assignment_Files
+        WHERE assignment_id = #{id}
+    </delete>
+
+    <delete id="deleteAssignmentFormById">
+        DELETE FROM FYP_Automatic_Grading.Assignment
+        WHERE id = #{id}
+    </delete>
+
+    <select id="fuzzyQueryByTitle" resultType="Assignment">
+        SELECT * FROM FYP_Automatic_Grading.Assignment
+        WHERE module_code = #{module_code}
+        AND title like '%${title}%'
+    </select>
+
+    <select id="getFilePathsById" resultType="map">
+        SELECT pdf_path, source_path, data_path, datatype_path FROM FYP_Automatic_Grading.Assignment_Files
+        WHERE assignment_id = #{id}
+    </select>
+
+    <select id="countSubmittedById" resultType="int">
+        SELECT COUNT(*) FROM  FYP_Automatic_Grading.Assignment_submission
+        WHERE assignment_id = #{id}
+    </select>
+
+    <select id="countNotGradedById" resultType="int">
+        SELECT COUNT(*) FROM  FYP_Automatic_Grading.Assignment_submission AS s LEFT JOIN FYP_Automatic_Grading.Assignment_assessment AS a
+        ON (s.student_id=a.student_id) AND (s.assignment_id=a.assignment_id)
+        WHERE s.assignment_id = #{id} AND a.student_id IS NULL
+    </select>
+
+    <select id="queryDescriptionById" resultType="string">
+        SELECT description FROM  FYP_Automatic_Grading.Assignment
+        WHERE id = #{id}
+    </select>
+
+    <select id="queryAssignmentByModule" resultType="Assignment">
+        SELECT * FROM FYP_Automatic_Grading.Assignment
+        WHERE module_code = #{module_code}
+    </select>
+
+    <select id="querySubmissionDate" resultType="java.util.Date">
+        SELECT submission_date FROM FYP_Automatic_Grading.Assignment_submission
+        WHERE student_id = #{ucd_id}
+        AND assignment_id = #{assignment_id}
+    </select>
+
+    <select id="studentViewAssignment" resultType="map">
+        SELECT a.title, a.description, a.due_date, f.pdf_path FROM FYP_Automatic_Grading.Assignment AS a, FYP_Automatic_Grading.Assignment_Files as f
+        WHERE a.id = f.assignment_id
+        AND a.id = #{assignment_id}
+    </select>
+
+    <select id="studentSubmissionHistory" resultType="map">
+        SELECT source_path, submission_date FROM FYP_Automatic_Grading.Assignment_submission
+        WHERE student_id = #{ucd_id} AND assignment_id=#{assignment_id}
+    </select>
+
+    <insert id="insertStudentSubmission">
+        INSERT INTO FYP_Automatic_Grading.Assignment_submission (student_id, assignment_id, source_path, submission_date)
+        VALUES (#{ucd_id},#{assignment_id},#{source_path},#{submission_date})
+    </insert>
+
+    <select id="queryGrade" resultType="float">
+        SELECT grade FROM FYP_Automatic_Grading.Assignment_assessment
+        WHERE student_id = #{ucd_id} AND assignment_id = #{assignment_id}
+    </select>
+
+    <select id="queryAllGrades" resultType="float">
+        SELECT grade FROM FYP_Automatic_Grading.Assignment_assessment
+        WHERE assignment_id = #{assignment_id}
+    </select>
+
+    <select id="teacherViewSubmissions" resultType="map">
+        SELECT * FROM
+        (SELECT stu.ucd_id, stu.name, assignment.id FROM FYP_Automatic_Grading.Module_registration AS reg, FYP_Automatic_Grading.Assignment AS assignment, FYP_Automatic_Grading.Student AS stu
+        WHERE assignment.module_code = reg.module_code AND stu.ucd_id = reg.student_id AND assignment.id = #{assignment_id}) a
+        LEFT JOIN FYP_Automatic_Grading.Assignment_submission as s ON a.ucd_id = s.student_id AND a.id = s.assignment_id
+    </select>
+
+    <select id="queryDueDateById" resultType="java.util.Date">
+        SELECT due_date FROM FYP_Automatic_Grading.Assignment
+        WHERE id = #{id}
+    </select>
+
+    <select id="queryNameById" resultType="string">
+        SELECT title FROM FYP_Automatic_Grading.Assignment
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertAssignmentAssessment">
+        INSERT INTO FYP_Automatic_Grading.Assignment_assessment (student_id, assignment_id, grade_details_path)
+        VALUES (#{ucd_id},#{assignment_id},#{grade_details_path})
+    </insert>
+
+    <update id="updateAssignmentGrade">
+        UPDATE FYP_Automatic_Grading.Assignment_assessment
+        SET grade = #{grade}
+        WHERE student_id = #{ucd_id} AND assignment_id = #{assignment_id}
+    </update>
+
+    <select id="teacherViewAllGrades" resultType="map">
+        SELECT * FROM FYP_Automatic_Grading.Student AS S, FYP_Automatic_Grading.Assignment_assessment AS A
+        WHERE S.ucd_id=A.student_id AND A.assignment_id = #{assignment_id} AND A.grade is not null
+    </select>
+
+    <select id="teacherViewGradeById" resultType="map">
+        SELECT * FROM FYP_Automatic_Grading.Student AS S, FYP_Automatic_Grading.Assignment_assessment AS A
+        WHERE S.ucd_id=A.student_id AND A.assignment_id = #{assignment_id} AND A.grade is not null AND S.ucd_id like '%${ucd_id}%'
+    </select>
+
+    <select id="teacherViewGradeByName" resultType="map">
+        SELECT * FROM FYP_Automatic_Grading.Student AS S, FYP_Automatic_Grading.Assignment_assessment AS A
+        WHERE S.ucd_id=A.student_id AND A.assignment_id = #{assignment_id} AND A.grade is not null AND S.name like '%${name}%'
+    </select>
+
+    <select id="queryStuReportPath" resultType="string">
+        SELECT grade_details_path FROM FYP_Automatic_Grading.Assignment_assessment
+        WHERE student_id = #{ucd_id} AND assignment_id = #{assignment_id}
+    </select>
+
+    <select id="queryStudentSubmittedAssignmentIds" resultType="string">
+        SELECT assignment_id FROM FYP_Automatic_Grading.Assignment_submission
+        WHERE student_id = #{ucd_id}
+    </select>
+
+    <select id="queryAllAssessment" resultType="map">
+        SELECT * FROM FYP_Automatic_Grading.Assignment_assessment
+        WHERE assignment_id = #{assignment_id}
+    </select>
+
+    <select id="queryAllGradeDetailPaths" resultType="string">
+        SELECT grade_details_path FROM FYP_Automatic_Grading.Assignment_assessment
+        WHERE assignment_id = #{assignment_id}
+    </select>
+
+    <select id="queryModuleCode" resultType="string">
+        SELECT module_code FROM FYP_Automatic_Grading.Assignment
+        WHERE id = #{assignment_id}
+    </select>
+
+
+
+
+</mapper>

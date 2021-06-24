@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FYP19.Dao.AdminMapper">
+    <select id="queryAdminById" resultType="Administrator">
+        SELECT * FROM FYP_Automatic_Grading.Administrator
+        WHERE id = #{id}
+    </select>
+
+    <select id="querySaltById" resultType="string">
+        SELECT salt FROM FYP_Automatic_Grading.Administrator
+        WHERE id = #{admin_id}
+    </select>
+
+    <insert id="insertStudentHistory" parameterType="Registration_History">
+        INSERT INTO FYP_Automatic_Grading.Registration_history (history_id, registration_date, id, name, major_code, depart_code, email, type, status)
+        VALUES (#{history_id},#{registration_date},#{id},#{name},#{major_code},#{depart_code},#{email},#{type},#{status})
+    </insert>
+
+    <select id="queryStudentHistoryByTimeAndStatus" resultType="Registration_History">
+        SELECT * FROM FYP_Automatic_Grading.Registration_history
+        WHERE registration_date = #{time}
+        AND status like '${status}%'
+        AND type = #{type}
+    </select>
+
+    <select id="queryAllHistoryDates" resultType="string">
+        SELECT DISTINCT registration_date FROM FYP_Automatic_Grading.Registration_history
+    </select>
+
+
+</mapper>

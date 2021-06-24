@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="FYP19.Dao.StudentsMapper">
+
+    <select id="queryStudentById" resultType="Students">
+        SELECT * FROM FYP_Automatic_Grading.Student
+        WHERE ucd_id = #{ucd_id}
+    </select>
+
+    <insert id="registerStudent" parameterType="Students">
+        INSERT INTO FYP_Automatic_Grading.Student (ucd_id, name, email, major_code)
+        VALUES (#{ucd_id},#{name},#{email},#{major_code})
+    </insert>
+
+    <insert id="insertMajor" parameterType="Major">
+        INSERT INTO FYP_Automatic_Grading.Major (code, title)
+        VALUES (#{code},#{title})
+    </insert>
+
+    <select id="queryMajorByCode" resultType="Major">
+        SELECT * FROM FYP_Automatic_Grading.Major
+        WHERE code = #{code}
+    </select>
+
+    <select id="queryActivationCodeById" resultType="string">
+        SELECT activation_code FROM FYP_Automatic_Grading.Student
+        WHERE ucd_id = #{ucd_id}
+    </select>
+
+    <update id="updateActivationCodeById">
+        UPDATE FYP_Automatic_Grading.Student
+        SET activation_code = #{A_code}
+        WHERE ucd_id = #{ucd_id}
+    </update>
+
+    <update id="updateIsActivatedById">
+        UPDATE FYP_Automatic_Grading.Student
+        SET is_activated = #{isActivated}
+        WHERE ucd_id = #{ucd_id}
+    </update>
+
+    <update id="updatePwdById">
+        UPDATE FYP_Automatic_Grading.Student
+        SET pwd = #{pwd}
+        WHERE ucd_id = #{ucd_id}
+    </update>
+
+    <select id="queryIsActivatedById" resultType="boolean">
+        SELECT is_activated FROM FYP_Automatic_Grading.Student
+        WHERE ucd_id = #{ucd_id}
+    </select>
+
+    <update id="updateSaltById">
+        UPDATE FYP_Automatic_Grading.Student
+        SET salt = #{salt}
+        WHERE ucd_id = #{ucd_id}
+    </update>
+
+    <select id="querySaltById" resultType="string">
+        SELECT salt FROM FYP_Automatic_Grading.Student
+        WHERE ucd_id = #{ucd_id}
+    </select>
+
+    <select id="allActivatedStudents" resultType="Students">
+        SELECT * FROM FYP_Automatic_Grading.Student
+        WHERE is_activated = 1
+    </select>
+
+    <delete id="deleteStudentById">
+        DELETE FROM FYP_Automatic_Grading.Role
+        WHERE id = #{ucd_id}
+    </delete>
+
+    <select id="studentsUnderOneModule" resultType="map">
+        SELECT s.ucd_id, s.name, s.email, maj.code, maj.title FROM FYP_Automatic_Grading.Module_registration as reg, FYP_Automatic_Grading.Student as s, FYP_Automatic_Grading.Major as maj
+        WHERE reg.student_id = s.ucd_id AND s.major_code = maj.code AND s.is_activated = 1
+        AND reg.module_code = #{module_code}
+    </select>
+
+    <select id="allActivatedStudentsAndMajor" resultType="map">
+        SELECT s.ucd_id, s.name, s.email, maj.code, maj.title FROM FYP_Automatic_Grading.Student as s, FYP_Automatic_Grading.Major as maj
+        WHERE s.major_code = maj.code AND s.is_activated = 1
+    </select>
+
+
+
+
+
+</mapper>
